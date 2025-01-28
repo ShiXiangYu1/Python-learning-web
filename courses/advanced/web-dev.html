@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web开发基础 - Python高级课程</title>
+    <link href="http://cdn.bytedance.com/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="css/course.css">
+    <link rel="stylesheet" href="http://cdn.bytedance.com/highlight.js/11.7.0/styles/github.min.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav__logo">
+                <a href="../../index.html" class="nav__logo-link">
+                    <svg class="nav__logo-icon" width="40" height="40" viewBox="0 0 40 40">
+                        <path d="M20 0C8.954 0 0 8.954 0 20s8.954 20 20 20 20-8.954 20-20S31.046 0 20 0zm0 36c-8.837 0-16-7.163-16-16S11.163 4 20 4s16 7.163 16 16-7.163 16-16 16z" fill="#306998"/>
+                        <path d="M20 8c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12S26.627 8 20 8zm0 22c-5.514 0-10-4.486-10-10S14.486 10 20 10s10 4.486 10 10-4.486 10-10 10z" fill="#FFD43B"/>
+                    </svg>
+                    <span class="nav__logo-text">Python学习</span>
+                </a>
+            </div>
+            <ul class="nav__menu">
+                <li><a href="../../index.html" class="nav__link">首页</a></li>
+                <li><a href="../basics/index.html" class="nav__link">基础课程</a></li>
+                <li><a href="../intermediate/index.html" class="nav__link">进阶课程</a></li>
+                <li><a href="index.html" class="nav__link nav__link--active">高级课程</a></li>
+                <li><a href="../../examples/index.html" class="nav__link">示例代码</a></li>
+                <li><a href="../../exercises/index.html" class="nav__link">练习题</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main">
+        <div class="course-container">
+            <!-- 侧边导航 -->
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="sidebar-nav__item"><a href="../index.html"><i class="fas fa-home"></i> 首页</a></li>
+                    <li class="sidebar-nav__item"><a href="index.html"><i class="fas fa-book"></i> 课程概述</a></li>
+                    <li class="sidebar-nav__item"><a href="multithreading.html"><i class="fas fa-tasks"></i> 多线程编程</a></li>
+                    <li class="sidebar-nav__item"><a href="network.html"><i class="fas fa-network-wired"></i> 网络编程</a></li>
+                    <li class="sidebar-nav__item"><a href="database.html"><i class="fas fa-database"></i> 数据库操作</a></li>
+                    <li class="sidebar-nav__item sidebar-nav__item--active">
+                        <a href="web-dev.html"><i class="fas fa-globe"></i> Web开发基础</a>
+                        <ul>
+                            <li><a href="#introduction">Web开发简介</a></li>
+                            <li><a href="#http-basics">HTTP基础</a></li>
+                            <li><a href="#flask">Flask框架</a></li>
+                            <li><a href="#templates">模板系统</a></li>
+                            <li><a href="#forms">表单处理</a></li>
+                            <li><a href="#restful">RESTful API</a></li>
+                            <li><a href="#deployment">部署与运维</a></li>
+                            <li><a href="#exercises">练习与实践</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+
+            <section class="course-content">
+                <div class="lesson-header">
+                    <h1 class="lesson-header__title">Web开发基础</h1>
+                    <div class="lesson-header__meta">
+                        <span><i class="fas fa-clock"></i> 学习时长：200分钟</span>
+                        <span><i class="fas fa-tasks"></i> 练习题：5个</span>
+                    </div>
+                </div>
+
+                <!-- Web开发简介 -->
+                <section id="introduction" class="lesson-section">
+                    <h2 class="lesson-section__title">Web开发简介</h2>
+                    <div class="lesson-section__content">
+                        <p>Python在Web开发领域有着广泛的应用，从简单的静态网站到复杂的Web应用程序，Python都能够胜任。本章将介绍Python Web开发的基础知识和常用框架。</p>
+                        
+                        <div class="info-box">
+                            <h3 class="info-box__title">
+                                <i class="fas fa-lightbulb"></i>
+                                为什么选择Python进行Web开发？
+                            </h3>
+                            <ul>
+                                <li>丰富的Web框架选择</li>
+                                <li>简洁优雅的代码风格</li>
+                                <li>强大的第三方库支持</li>
+                                <li>活跃的开发者社区</li>
+                            </ul>
+                        </div>
+
+                        <div class="info-box">
+                            <h3 class="info-box__title">
+                                <i class="fas fa-globe"></i>
+                                Web开发技术栈
+                            </h3>
+                            <ul>
+                                <li>后端框架：Flask、Django、FastAPI</li>
+                                <li>模板引擎：Jinja2、Mako</li>
+                                <li>数据库：SQLAlchemy、MongoDB</li>
+                                <li>前端技术：HTML、CSS、JavaScript</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- HTTP基础 -->
+                <section id="http-basics" class="lesson-section">
+                    <h2 class="lesson-section__title">HTTP基础</h2>
+                    <div class="lesson-section__content">
+                        <p>HTTP是Web应用程序的基础协议，理解HTTP的工作原理对于Web开发至关重要。</p>
+
+                        <h3 class="lesson-section__subtitle">HTTP请求和响应</h3>
+                        <pre><code class="python">from http.server import HTTPServer, BaseHTTPRequestHandler
+
+class SimpleHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        # 设置响应头
+        self.send_response(200)
+        self.send_header('Content-type', 'text/html')
+        self.end_headers()
+        
+        # 发送响应内容
+        content = """
+        <html>
+            <head><title>Simple HTTP Server</title></head>
+            <body>
+                <h1>Hello, World!</h1>
+                <p>Path: {}</p>
+            </body>
+        </html>
+        """.format(self.path)
+        
+        self.wfile.write(content.encode())
+
+# 启动服务器
+def run_server(port=8000):
+    server_address = ('', port)
+    httpd = HTTPServer(server_address, SimpleHandler)
+    print(f'Starting server on port {port}...')
+    httpd.serve_forever()</code></pre>
+
+                        <div class="info-box">
+                            <h3 class="info-box__title">
+                                <i class="fas fa-info-circle"></i>
+                                HTTP方法
+                            </h3>
+                            <ul>
+                                <li>GET：获取资源</li>
+                                <li>POST：创建资源</li>
+                                <li>PUT：更新资源</li>
+                                <li>DELETE：删除资源</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Flask框架 -->
+                <section id="flask" class="lesson-section">
+                    <h2 class="lesson-section__title">Flask框架</h2>
+                    <div class="lesson-section__content">
+                        <p>Flask是一个轻量级的Python Web框架，它提供了基础的Web开发功能，同时保持了很高的灵活性。</p>
+
+                        <h3 class="lesson-section__subtitle">基本应用</h3>
+                        <pre><code class="python">from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return 'Welcome to Flask!'
+
+@app.route('/hello/<name>')
+def hello(name):
+    return f'Hello, {name}!'
+
+@app.route('/api/data', methods=['GET', 'POST'])
+def handle_data():
+    if request.method == 'POST':
+        data = request.get_json()
+        return jsonify({'message': 'Data received', 'data': data})
+    else:
+        return jsonify({'message': 'Send data using POST method'})
+
+if __name__ == '__main__':
+    app.run(debug=True)</code></pre>
+
+                        <div class="warning-box">
+                            <h3 class="warning-box__title">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                注意事项
+                            </h3>
+                            <ul>
+                                <li>生产环境禁用调试模式</li>
+                                <li>正确处理请求异常</li>
+                                <li>使用安全的会话管理</li>
+                                <li>防范常见的Web攻击</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 模板系统 -->
+                <section id="templates" class="lesson-section">
+                    <h2 class="lesson-section__title">模板系统</h2>
+                    <div class="lesson-section__content">
+                        <p>模板系统允许我们将Python代码与HTML分离，使得前后端代码更易于维护。Flask默认使用Jinja2作为模板引擎。</p>
+
+                        <h3 class="lesson-section__subtitle">Jinja2模板示例</h3>
+                        <pre><code class="python">from flask import render_template
+
+@app.route('/users')
+def user_list():
+    users = [
+        {'name': '张三', 'age': 25},
+        {'name': '李四', 'age': 30},
+        {'name': '王五', 'age': 28}
+    ]
+    return render_template('users.html', users=users)
+
+# users.html 模板
+"""
+<!DOCTYPE html>
+<html>
+<head>
+    <title>用户列表</title>
+</head>
+<body>
+    <h1>用户列表</h1>
+    <ul>
+    {% for user in users %}
+        <li>{{ user.name }} - {{ user.age }}岁</li>
+    {% endfor %}
+    </ul>
+</body>
+</html>
+"""</code></pre>
+
+                        <div class="info-box">
+                            <h3 class="info-box__title">
+                                <i class="fas fa-code"></i>
+                                模板语法
+                            </h3>
+                            <ul>
+                                <li>{{ 变量 }} - 显示变量值</li>
+                                <li>{% if 条件 %} - 条件语句</li>
+                                <li>{% for 循环 %} - 循环语句</li>
+                                <li>{% block 内容 %} - 模板继承</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 表单处理 -->
+                <section id="forms" class="lesson-section">
+                    <h2 class="lesson-section__title">表单处理</h2>
+                    <div class="lesson-section__content">
+                        <p>Web应用中的表单处理是一个重要的部分，包括数据验证、文件上传等功能。</p>
+
+                        <h3 class="lesson-section__subtitle">表单示例</h3>
+                        <pre><code class="python">from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SubmitField
+from wtforms.validators import DataRequired, Email, Length
+
+class LoginForm(FlaskForm):
+    email = StringField('邮箱', validators=[
+        DataRequired(),
+        Email()
+    ])
+    password = PasswordField('密码', validators=[
+        DataRequired(),
+        Length(min=6)
+    ])
+    submit = SubmitField('登录')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        email = form.email.data
+        password = form.password.data
+        # 处理登录逻辑
+        return redirect(url_for('dashboard'))
+    return render_template('login.html', form=form)
+
+# login.html 模板
+"""
+<form method="POST">
+    {{ form.csrf_token }}
+    <div>
+        {{ form.email.label }}
+        {{ form.email }}
+        {% if form.email.errors %}
+            <span class="error">{{ form.email.errors[0] }}</span>
+        {% endif %}
+    </div>
+    <div>
+        {{ form.password.label }}
+        {{ form.password }}
+        {% if form.password.errors %}
+            <span class="error">{{ form.password.errors[0] }}</span>
+        {% endif %}
+    </div>
+    {{ form.submit }}
+</form>
+"""</code></pre>
+
+                        <div class="info-box">
+                            <h3 class="info-box__title">
+                                <i class="fas fa-shield-alt"></i>
+                                表单安全
+                            </h3>
+                            <ul>
+                                <li>CSRF保护</li>
+                                <li>输入验证</li>
+                                <li>文件上传限制</li>
+                                <li>XSS防护</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- RESTful API -->
+                <section id="restful" class="lesson-section">
+                    <h2 class="lesson-section__title">RESTful API</h2>
+                    <div class="lesson-section__content">
+                        <p>RESTful API是现代Web应用中常用的接口设计风格，它提供了一种标准的方式来进行客户端和服务器之间的通信。</p>
+
+                        <h3 class="lesson-section__subtitle">API示例</h3>
+                        <pre><code class="python">from flask import Flask, request, jsonify
+from flask_restful import Resource, Api
+
+app = Flask(__name__)
+api = Api(app)
+
+# 模拟数据库
+todos = {}
+
+class TodoList(Resource):
+    def get(self):
+        return jsonify(todos)
+    
+    def post(self):
+        data = request.get_json()
+        todo_id = len(todos) + 1
+        todos[todo_id] = data['task']
+        return {'id': todo_id}, 201
+
+class Todo(Resource):
+    def get(self, todo_id):
+        return {todo_id: todos.get(todo_id)}
+    
+    def put(self, todo_id):
+        data = request.get_json()
+        todos[todo_id] = data['task']
+        return {todo_id: todos[todo_id]}
+    
+    def delete(self, todo_id):
+        del todos[todo_id]
+        return '', 204
+
+api.add_resource(TodoList, '/todos')
+api.add_resource(Todo, '/todos/<int:todo_id>')</code></pre>
+
+                        <div class="info-box">
+                            <h3 class="info-box__title">
+                                <i class="fas fa-exchange-alt"></i>
+                                API设计原则
+                            </h3>
+                            <ul>
+                                <li>使用合适的HTTP方法</li>
+                                <li>返回正确的状态码</li>
+                                <li>提供清晰的错误信息</li>
+                                <li>实现版本控制</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 部署与运维 -->
+                <section id="deployment" class="lesson-section">
+                    <h2 class="lesson-section__title">部署与运维</h2>
+                    <div class="lesson-section__content">
+                        <p>将Web应用部署到生产环境需要考虑多个方面，包括性能、安全性和可维护性。</p>
+
+                        <h3 class="lesson-section__subtitle">使用Gunicorn部署</h3>
+                        <pre><code class="python"># gunicorn配置文件
+"""
+import multiprocessing
+
+bind = "0.0.0.0:8000"
+workers = multiprocessing.cpu_count() * 2 + 1
+worker_class = "gevent"
+timeout = 30
+keepalive = 2
+
+accesslog = "access.log"
+errorlog = "error.log"
+loglevel = "info"
+"""
+
+# 启动命令
+# gunicorn -c gunicorn.conf.py myapp:app</code></pre>
+
+                        <div class="info-box">
+                            <h3 class="info-box__title">
+                                <i class="fas fa-server"></i>
+                                部署清单
+                            </h3>
+                            <ul>
+                                <li>使用生产级Web服务器</li>
+                                <li>配置HTTPS</li>
+                                <li>设置监控和日志</li>
+                                <li>实施备份策略</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 练习与实践 -->
+                <section id="exercises" class="lesson-section">
+                    <h2 class="lesson-section__title">练习与实践</h2>
+                    <div class="lesson-section__content">
+                        <p>通过以下练习，你可以加深对Web开发的理解，并掌握在实际项目中应用这些技术的方法。</p>
+
+                        <div class="info-box">
+                            <h3 class="info-box__title">
+                                <i class="fas fa-graduation-cap"></i>
+                                <span>学习目标</span>
+                            </h3>
+                            <ul>
+                                <li>掌握Flask框架的基本使用</li>
+                                <li>理解HTTP协议和RESTful API</li>
+                                <li>能够开发完整的Web应用</li>
+                                <li>学会部署和维护Web服务</li>
+                            </ul>
+                        </div>
+
+                        <div class="exercise-box">
+                            <h3 class="exercise-box__title">
+                                <i class="fas fa-tasks"></i> 练习1：个人博客系统
+                            </h3>
+                            <p>开发一个简单的个人博客系统，支持文章的发布、编辑和评论功能。</p>
+                            <div class="exercise-box__hint">
+                                <h4><i class="fas fa-lightbulb"></i> 提示：</h4>
+                                <ul>
+                                    <li>设计合理的数据模型</li>
+                                    <li>实现用户认证</li>
+                                    <li>使用模板系统</li>
+                                    <li>添加评论功能</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="exercise-box">
+                            <h3 class="exercise-box__title">
+                                <i class="fas fa-tasks"></i> 练习2：RESTful API服务
+                            </h3>
+                            <p>实现一个符合RESTful规范的API服务，提供资源的CRUD操作。</p>
+                            <div class="exercise-box__hint">
+                                <h4><i class="fas fa-lightbulb"></i> 提示：</h4>
+                                <ul>
+                                    <li>设计API端点</li>
+                                    <li>实现认证机制</li>
+                                    <li>处理错误情况</li>
+                                    <li>编写API文档</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="exercise-box">
+                            <h3 class="exercise-box__title">
+                                <i class="fas fa-tasks"></i> 练习3：文件上传服务
+                            </h3>
+                            <p>开发一个支持文件上传和管理的Web服务，包含文件预览和下载功能。</p>
+                            <div class="exercise-box__hint">
+                                <h4><i class="fas fa-lightbulb"></i> 提示：</h4>
+                                <ul>
+                                    <li>处理文件上传</li>
+                                    <li>实现文件存储</li>
+                                    <li>添加文件预览</li>
+                                    <li>控制访问权限</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="exercise-box">
+                            <h3 class="exercise-box__title">
+                                <i class="fas fa-tasks"></i> 练习4：实时聊天应用
+                            </h3>
+                            <p>使用WebSocket实现一个实时聊天应用，支持群聊和私聊功能。</p>
+                            <div class="exercise-box__hint">
+                                <h4><i class="fas fa-lightbulb"></i> 提示：</h4>
+                                <ul>
+                                    <li>使用WebSocket</li>
+                                    <li>实现消息广播</li>
+                                    <li>添加用户状态</li>
+                                    <li>存储聊天记录</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="exercise-box">
+                            <h3 class="exercise-box__title">
+                                <i class="fas fa-tasks"></i> 练习5：任务管理系统
+                            </h3>
+                            <p>开发一个简单的任务管理系统，支持任务的创建、分配和跟踪。</p>
+                            <div class="exercise-box__hint">
+                                <h4><i class="fas fa-lightbulb"></i> 提示：</h4>
+                                <ul>
+                                    <li>实现用户角色</li>
+                                    <li>添加任务状态</li>
+                                    <li>发送通知提醒</li>
+                                    <li>生成统计报表</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="info-box">
+                            <h3 class="info-box__title">
+                                <i class="fas fa-star"></i>
+                                <span>挑战任务</span>
+                            </h3>
+                            <p>完成基础练习后，你可以尝试以下挑战任务来提升你的Web开发技能：</p>
+                            <ul>
+                                <li>实现一个简单的Web框架</li>
+                                <li>开发性能监控工具</li>
+                                <li>构建微服务架构</li>
+                                <li>实现服务器推送</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer__content">
+            <div class="footer__section">
+                <h4 class="footer__title">关于我们</h4>
+                <p class="footer__text">致力于为初学者提供优质的Python编程学习资源</p>
+            </div>
+            <div class="footer__section">
+                <h4 class="footer__title">快速链接</h4>
+                <ul class="footer__links">
+                    <li><a href="../../index.html">返回首页</a></li>
+                    <li><a href="../../examples/index.html">示例代码</a></li>
+                    <li><a href="../../exercises/index.html">练习题</a></li>
+                </ul>
+            </div>
+            <div class="footer__section">
+                <h4 class="footer__title">学习资源</h4>
+                <ul class="footer__links">
+                    <li><a href="../basics/index.html">基础课程</a></li>
+                    <li><a href="../intermediate/index.html">进阶课程</a></li>
+                    <li><a href="index.html">高级课程</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            <p>&copy; 2024 Python学习网站. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="http://cdn.bytedance.com/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>
+        hljs.highlightAll();
+    </script>
+</body>
+</html> 

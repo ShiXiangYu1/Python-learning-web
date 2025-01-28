@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python函数基础 - Python学习</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/course.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/highlight.js/styles/github.min.css">
+</head>
+<body>
+    <header class="course-header">
+        <h1 class="course-header__title">
+            <i class="fas fa-function"></i>
+            Python函数基础
+        </h1>
+        <p class="course-header__description">
+            本教程将介绍Python函数的基础知识，包括函数的定义、参数传递、返回值、作用域等概念。通过本教程，你将学会如何创建和使用Python函数。
+        </p>
+    </header>
+
+    <main class="course-container">
+        <!-- 导航菜单 -->
+        <nav class="course-nav">
+            <ul class="course-nav__list">
+                <li><a href="#intro" class="course-nav__link">函数简介</a></li>
+                <li><a href="#define" class="course-nav__link">函数定义</a></li>
+                <li><a href="#params" class="course-nav__link">函数参数</a></li>
+                <li><a href="#return" class="course-nav__link">返回值</a></li>
+                <li><a href="#scope" class="course-nav__link">作用域</a></li>
+                <li><a href="#practice" class="course-nav__link">实践练习</a></li>
+            </ul>
+        </nav>
+
+        <div class="course-content">
+            <!-- 函数简介 -->
+            <section id="intro" class="course-section">
+                <h2 class="course-section__title">函数简介</h2>
+                <p>函数是一段可重复使用的代码块，它可以接收输入（参数），执行特定的操作，并返回结果。使用函数可以让代码更加模块化、易于维护和重用。</p>
+                
+                <div class="example-box">
+                    <h3>函数的优点</h3>
+                    <ul class="feature-list">
+                        <li>代码重用：避免重复编写相同的代码</li>
+                        <li>模块化：将复杂的问题分解成小的部分</li>
+                        <li>可维护性：便于修改和维护代码</li>
+                        <li>抽象化：隐藏实现细节，提供清晰的接口</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 函数定义 -->
+            <section id="define" class="course-section">
+                <h2 class="course-section__title">函数定义</h2>
+                <p>在Python中，使用def关键字定义函数。函数可以有参数，也可以没有参数。</p>
+
+                <div class="example-box">
+                    <h3>基本语法</h3>
+                    <pre><code class="python">
+# 最简单的函数
+def say_hello():
+    print("你好，世界！")
+
+# 带参数的函数
+def greet(name):
+    print(f"你好，{name}！")
+
+# 带文档字符串的函数
+def calculate_area(width, height):
+    """计算矩形面积
+    
+    参数:
+        width (float): 矩形的宽度
+        height (float): 矩形的高度
+    
+    返回:
+        float: 矩形的面积
+    """
+    return width * height
+
+# 使用函数
+say_hello()  # 输出: 你好，世界！
+greet("小明")  # 输出: 你好，小明！
+area = calculate_area(5, 3)  # 返回: 15
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>函数命名规范</h3>
+                    <ul class="feature-list">
+                        <li>使用小写字母和下划线</li>
+                        <li>名称应该清晰表达函数的功能</li>
+                        <li>避免使用Python保留字</li>
+                        <li>遵循动词+名词的命名方式</li>
+                    </ul>
+                    <pre><code class="python">
+# 好的函数命名示例
+def calculate_total():
+    pass
+
+def get_user_name():
+    pass
+
+def validate_email():
+    pass
+
+def update_database():
+    pass
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 函数参数 -->
+            <section id="params" class="course-section">
+                <h2 class="course-section__title">函数参数</h2>
+                <p>Python函数支持多种参数类型，包括位置参数、关键字参数、默认参数和可变参数。</p>
+
+                <div class="example-box">
+                    <h3>参数类型</h3>
+                    <pre><code class="python">
+# 位置参数
+def add(a, b):
+    return a + b
+
+# 默认参数
+def greet(name, greeting="你好"):
+    print(f"{greeting}，{name}！")
+
+# 关键字参数
+def create_user(username, email, age):
+    print(f"创建用户: {username}, 邮箱: {email}, 年龄: {age}")
+
+# 可变位置参数
+def sum_numbers(*numbers):
+    return sum(numbers)
+
+# 可变关键字参数
+def print_info(**info):
+    for key, value in info.items():
+        print(f"{key}: {value}")
+
+# 使用示例
+result = add(3, 5)  # 位置参数
+greet("小明")  # 使用默认参数
+create_user(username="admin", email="admin@example.com", age=25)  # 关键字参数
+total = sum_numbers(1, 2, 3, 4, 5)  # 可变位置参数
+print_info(name="小明", age=18, city="北京")  # 可变关键字参数
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>参数顺序</h3>
+                    <pre><code class="python">
+def complex_function(
+    a,          # 位置参数
+    b,          # 位置参数
+    c=10,       # 默认参数
+    *args,      # 可变位置参数
+    d=20,       # 默认参数
+    **kwargs    # 可变关键字参数
+):
+    print(f"a={a}, b={b}, c={c}, d={d}")
+    print(f"args={args}")
+    print(f"kwargs={kwargs}")
+
+# 调用示例
+complex_function(
+    1,                  # a
+    2,                  # b
+    30,                 # c
+    40, 50, 60,        # args
+    d=70,              # d
+    x=80, y=90         # kwargs
+)
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 返回值 -->
+            <section id="return" class="course-section">
+                <h2 class="course-section__title">返回值</h2>
+                <p>函数可以使用return语句返回值。如果没有return语句，函数将返回None。</p>
+
+                <div class="example-box">
+                    <h3>返回值示例</h3>
+                    <pre><code class="python">
+# 返回单个值
+def square(x):
+    return x * x
+
+# 返回多个值
+def get_coordinates():
+    return 3, 4
+
+# 返回字典
+def get_user_info():
+    return {
+        'name': '小明',
+        'age': 18,
+        'city': '北京'
+    }
+
+# 条件返回
+def get_grade(score):
+    if score >= 90:
+        return 'A'
+    elif score >= 80:
+        return 'B'
+    elif score >= 70:
+        return 'C'
+    else:
+        return 'D'
+
+# 使用示例
+result = square(5)  # 返回: 25
+x, y = get_coordinates()  # 解包返回值
+user = get_user_info()  # 返回字典
+grade = get_grade(85)  # 返回: 'B'
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 作用域 -->
+            <section id="scope" class="course-section">
+                <h2 class="course-section__title">作用域</h2>
+                <p>Python中的变量有其作用域，包括局部作用域、全局作用域和内置作用域。</p>
+
+                <div class="example-box">
+                    <h3>作用域示例</h3>
+                    <pre><code class="python">
+# 全局变量
+global_var = 100
+
+def function1():
+    # 局部变量
+    local_var = 200
+    print(f"局部变量: {local_var}")
+    print(f"全局变量: {global_var}")
+
+def function2():
+    # 修改全局变量
+    global global_var
+    global_var = 300
+    print(f"修改后的全局变量: {global_var}")
+
+def function3():
+    # 嵌套作用域
+    outer_var = 400
+    
+    def inner_function():
+        print(f"访问外部变量: {outer_var}")
+    
+    inner_function()
+
+# 使用示例
+function1()
+function2()
+function3()
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>闭包示例</h3>
+                    <pre><code class="python">
+def create_counter():
+    count = 0
+    
+    def counter():
+        nonlocal count
+        count += 1
+        return count
+    
+    return counter
+
+# 使用闭包
+counter = create_counter()
+print(counter())  # 输出: 1
+print(counter())  # 输出: 2
+print(counter())  # 输出: 3
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 实践练习 -->
+            <section id="practice" class="course-section">
+                <h2 class="course-section__title">实践练习</h2>
+                <p>通过以下练习来加深对函数的理解：</p>
+
+                <div class="example-box">
+                    <h3>练习1：计算器函数</h3>
+                    <pre><code class="python">
+def calculator(a, b, operation='+'):
+    """简单计算器函数
+    
+    参数:
+        a (float): 第一个数字
+        b (float): 第二个数字
+        operation (str): 运算符（+、-、*、/）
+    
+    返回:
+        float: 计算结果
+    """
+    if operation == '+':
+        return a + b
+    elif operation == '-':
+        return a - b
+    elif operation == '*':
+        return a * b
+    elif operation == '/':
+        if b != 0:
+            return a / b
+        else:
+            return "错误：除数不能为零"
+    else:
+        return "错误：不支持的运算符"
+
+# 测试计算器
+print(calculator(10, 5, '+'))  # 输出: 15
+print(calculator(10, 5, '-'))  # 输出: 5
+print(calculator(10, 5, '*'))  # 输出: 50
+print(calculator(10, 5, '/'))  # 输出: 2.0
+print(calculator(10, 0, '/'))  # 输出: 错误：除数不能为零
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>练习2：列表处理函数</h3>
+                    <pre><code class="python">
+def process_list(numbers, operation='sum'):
+    """处理数字列表
+    
+    参数:
+        numbers (list): 数字列表
+        operation (str): 操作类型（sum、average、max、min）
+    
+    返回:
+        float: 处理结果
+    """
+    if not numbers:
+        return "错误：列表为空"
+    
+    if operation == 'sum':
+        return sum(numbers)
+    elif operation == 'average':
+        return sum(numbers) / len(numbers)
+    elif operation == 'max':
+        return max(numbers)
+    elif operation == 'min':
+        return min(numbers)
+    else:
+        return "错误：不支持的操作"
+
+# 测试列表处理
+numbers = [1, 2, 3, 4, 5]
+print(process_list(numbers, 'sum'))      # 输出: 15
+print(process_list(numbers, 'average'))  # 输出: 3.0
+print(process_list(numbers, 'max'))      # 输出: 5
+print(process_list(numbers, 'min'))      # 输出: 1
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>练习3：字符串处理函数</h3>
+                    <pre><code class="python">
+def process_string(text, operation='count'):
+    """处理字符串
+    
+    参数:
+        text (str): 输入字符串
+        operation (str): 操作类型（count、reverse、upper、lower）
+    
+    返回:
+        str/int: 处理结果
+    """
+    if not text:
+        return "错误：字符串为空"
+    
+    if operation == 'count':
+        return len(text)
+    elif operation == 'reverse':
+        return text[::-1]
+    elif operation == 'upper':
+        return text.upper()
+    elif operation == 'lower':
+        return text.lower()
+    else:
+        return "错误：不支持的操作"
+
+# 测试字符串处理
+text = "Hello, World!"
+print(process_string(text, 'count'))    # 输出: 13
+print(process_string(text, 'reverse'))  # 输出: !dlroW ,olleH
+print(process_string(text, 'upper'))    # 输出: HELLO, WORLD!
+print(process_string(text, 'lower'))    # 输出: hello, world!
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 返回链接 -->
+            <section class="course-section">
+                <div class="link-box">
+                    <a href="../basic/variables.html" class="link-box__item">
+                        <i class="fas fa-arrow-left"></i>
+                        变量基础
+                    </a>
+                    <a href="../../examples/intermediate/functions.html" class="link-box__item">
+                        <i class="fas fa-code"></i>
+                        中级函数示例
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="https://cdn.bytedance.com/highlight.js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html> 

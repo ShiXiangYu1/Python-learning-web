@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python面向对象编程示例 - Python学习</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/course.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/highlight.js/styles/github.min.css">
+</head>
+<body>
+    <header class="course-header">
+        <h1 class="course-header__title">
+            <i class="fas fa-cube"></i>
+            Python面向对象编程示例
+        </h1>
+        <p class="course-header__description">
+            本页面提供了Python面向对象编程的实用示例，包括类的设计模式、继承与多态、属性装饰器、魔术方法等内容。这些示例将帮助你更好地理解和应用面向对象编程的概念。
+        </p>
+    </header>
+
+    <main class="course-container">
+        <!-- 导航菜单 -->
+        <nav class="course-nav">
+            <ul class="course-nav__list">
+                <li><a href="#basic" class="course-nav__link">基础示例</a></li>
+                <li><a href="#inheritance" class="course-nav__link">继承与多态</a></li>
+                <li><a href="#properties" class="course-nav__link">属性与描述符</a></li>
+                <li><a href="#magic" class="course-nav__link">魔术方法</a></li>
+                <li><a href="#patterns" class="course-nav__link">设计模式</a></li>
+                <li><a href="#practical" class="course-nav__link">实际应用</a></li>
+            </ul>
+        </nav>
+
+        <div class="course-content">
+            <!-- 基础示例 -->
+            <section id="basic" class="course-section">
+                <h2 class="course-section__title">基础示例</h2>
+
+                <div class="example-box">
+                    <h3>银行账户系统</h3>
+                    <pre><code class="python">
+class BankAccount:
+    """银行账户类"""
+    
+    def __init__(self, account_number, owner_name, balance=0):
+        self._account_number = account_number
+        self._owner_name = owner_name
+        self._balance = balance
+        self._transaction_history = []
+    
+    def deposit(self, amount):
+        """存款"""
+        if amount <= 0:
+            raise ValueError("存款金额必须大于0")
+        self._balance += amount
+        self._transaction_history.append(f"存款: +{amount}")
+        return self._balance
+    
+    def withdraw(self, amount):
+        """取款"""
+        if amount <= 0:
+            raise ValueError("取款金额必须大于0")
+        if amount > self._balance:
+            raise ValueError("余额不足")
+        self._balance -= amount
+        self._transaction_history.append(f"取款: -{amount}")
+        return self._balance
+    
+    def get_balance(self):
+        """查询余额"""
+        return self._balance
+    
+    def get_transaction_history(self):
+        """获取交易历史"""
+        return self._transaction_history
+
+# 使用示例
+account = BankAccount("1001", "张三", 1000)
+account.deposit(500)
+account.withdraw(200)
+print(f"当前余额: {account.get_balance()}")
+print("交易记录:", account.get_transaction_history())
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>图书管理系统</h3>
+                    <pre><code class="python">
+class Book:
+    """图书类"""
+    
+    def __init__(self, isbn, title, author, status="可借"):
+        self.isbn = isbn
+        self.title = title
+        self.author = author
+        self.status = status
+
+class Library:
+    """图书馆类"""
+    
+    def __init__(self):
+        self.books = {}
+        self.borrowed_books = {}
+    
+    def add_book(self, book):
+        """添加图书"""
+        self.books[book.isbn] = book
+    
+    def remove_book(self, isbn):
+        """移除图书"""
+        if isbn in self.books:
+            del self.books[isbn]
+    
+    def borrow_book(self, isbn, reader_id):
+        """借书"""
+        if isbn not in self.books:
+            raise ValueError("图书不存在")
+        if self.books[isbn].status != "可借":
+            raise ValueError("图书已被借出")
+        
+        self.books[isbn].status = "已借出"
+        self.borrowed_books[isbn] = reader_id
+    
+    def return_book(self, isbn):
+        """还书"""
+        if isbn not in self.borrowed_books:
+            raise ValueError("该图书未被借出")
+        
+        self.books[isbn].status = "可借"
+        del self.borrowed_books[isbn]
+
+# 使用示例
+library = Library()
+book1 = Book("9787111", "Python编程", "张三")
+library.add_book(book1)
+library.borrow_book("9787111", "reader001")
+library.return_book("9787111")
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 继承与多态 -->
+            <section id="inheritance" class="course-section">
+                <h2 class="course-section__title">继承与多态</h2>
+
+                <div class="example-box">
+                    <h3>形状类继承体系</h3>
+                    <pre><code class="python">
+from abc import ABC, abstractmethod
+import math
+
+class Shape(ABC):
+    """抽象形状类"""
+    
+    @abstractmethod
+    def area(self):
+        """计算面积"""
+        pass
+    
+    @abstractmethod
+    def perimeter(self):
+        """计算周长"""
+        pass
+
+class Circle(Shape):
+    """圆形类"""
+    
+    def __init__(self, radius):
+        self.radius = radius
+    
+    def area(self):
+        return math.pi * self.radius ** 2
+    
+    def perimeter(self):
+        return 2 * math.pi * self.radius
+
+class Rectangle(Shape):
+    """矩形类"""
+    
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+    
+    def area(self):
+        return self.width * self.height
+    
+    def perimeter(self):
+        return 2 * (self.width + self.height)
+
+class Triangle(Shape):
+    """三角形类"""
+    
+    def __init__(self, a, b, c):
+        self.a = a
+        self.b = b
+        self.c = c
+    
+    def area(self):
+        # 海伦公式
+        s = (self.a + self.b + self.c) / 2
+        return math.sqrt(s * (s - self.a) * (s - self.b) * (s - self.c))
+    
+    def perimeter(self):
+        return self.a + self.b + self.c
+
+# 使用示例
+shapes = [
+    Circle(5),
+    Rectangle(4, 6),
+    Triangle(3, 4, 5)
+]
+
+for shape in shapes:
+    print(f"{shape.__class__.__name__}:")
+    print(f"面积: {shape.area():.2f}")
+    print(f"周长: {shape.perimeter():.2f}\n")
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>动物类继承体系</h3>
+                    <pre><code class="python">
+class Animal:
+    """动物基类"""
+    
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+    
+    def make_sound(self):
+        pass
+
+class Pet:
+    """宠物接口"""
+    
+    def play(self):
+        pass
+
+class Dog(Animal, Pet):
+    """狗类"""
+    
+    def __init__(self, name, age, breed):
+        super().__init__(name, age)
+        self.breed = breed
+    
+    def make_sound(self):
+        return "汪汪!"
+    
+    def play(self):
+        return f"{self.name}在玩飞盘"
+
+class Cat(Animal, Pet):
+    """猫类"""
+    
+    def __init__(self, name, age, color):
+        super().__init__(name, age)
+        self.color = color
+    
+    def make_sound(self):
+        return "喵喵!"
+    
+    def play(self):
+        return f"{self.name}在玩毛线球"
+
+# 使用示例
+pets = [
+    Dog("旺财", 3, "金毛"),
+    Cat("咪咪", 2, "橘色")
+]
+
+for pet in pets:
+    print(f"{pet.name} 说: {pet.make_sound()}")
+    print(pet.play())
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 属性与描述符 -->
+            <section id="properties" class="course-section">
+                <h2 class="course-section__title">属性与描述符</h2>
+
+                <div class="example-box">
+                    <h3>属性装饰器示例</h3>
+                    <pre><code class="python">
+class Person:
+    """人员类"""
+    
+    def __init__(self, name, age):
+        self._name = name
+        self._age = age
+    
+    @property
+    def name(self):
+        """获取姓名"""
+        return self._name
+    
+    @name.setter
+    def name(self, value):
+        """设置姓名"""
+        if not isinstance(value, str):
+            raise TypeError("姓名必须是字符串")
+        if len(value) < 2:
+            raise ValueError("姓名长度必须大于1")
+        self._name = value
+    
+    @property
+    def age(self):
+        """获取年龄"""
+        return self._age
+    
+    @age.setter
+    def age(self, value):
+        """设置年龄"""
+        if not isinstance(value, int):
+            raise TypeError("年龄必须是整数")
+        if value < 0 or value > 150:
+            raise ValueError("年龄必须在0-150之间")
+        self._age = value
+
+# 使用示例
+person = Person("张三", 25)
+print(person.name)  # 直接访问属性
+person.age = 30    # 直接设置属性
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>描述符示例</h3>
+                    <pre><code class="python">
+class Quantity:
+    """数量描述符"""
+    
+    def __init__(self, min_value=None, max_value=None):
+        self.min_value = min_value
+        self.max_value = max_value
+        self.name = None
+    
+    def __set_name__(self, owner, name):
+        self.name = name
+    
+    def __get__(self, instance, owner):
+        if instance is None:
+            return self
+        return instance.__dict__[self.name]
+    
+    def __set__(self, instance, value):
+        if not isinstance(value, (int, float)):
+            raise TypeError(f"{self.name}必须是数字")
+        if self.min_value is not None and value < self.min_value:
+            raise ValueError(f"{self.name}不能小于{self.min_value}")
+        if self.max_value is not None and value > self.max_value:
+            raise ValueError(f"{self.name}不能大于{self.max_value}")
+        instance.__dict__[self.name] = value
+
+class Product:
+    """商品类"""
+    
+    price = Quantity(min_value=0)
+    quantity = Quantity(min_value=0)
+    
+    def __init__(self, name, price, quantity):
+        self.name = name
+        self.price = price
+        self.quantity = quantity
+    
+    @property
+    def total_value(self):
+        return self.price * self.quantity
+
+# 使用示例
+product = Product("手机", 2999, 10)
+print(f"总价值: {product.total_value}")
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 魔术方法 -->
+            <section id="magic" class="course-section">
+                <h2 class="course-section__title">魔术方法</h2>
+
+                <div class="example-box">
+                    <h3>自定义容器类</h3>
+                    <pre><code class="python">
+class Stack:
+    """栈类实现"""
+    
+    def __init__(self):
+        self._items = []
+    
+    def __len__(self):
+        """获取栈的大小"""
+        return len(self._items)
+    
+    def __getitem__(self, index):
+        """获取指定位置的元素"""
+        return self._items[index]
+    
+    def __iter__(self):
+        """迭代器方法"""
+        return iter(self._items)
+    
+    def __str__(self):
+        """字符串表示"""
+        return f"Stack({self._items})"
+    
+    def __bool__(self):
+        """布尔值判断"""
+        return bool(self._items)
+    
+    def push(self, item):
+        """入栈"""
+        self._items.append(item)
+    
+    def pop(self):
+        """出栈"""
+        if not self._items:
+            raise IndexError("栈为空")
+        return self._items.pop()
+
+# 使用示例
+stack = Stack()
+stack.push(1)
+stack.push(2)
+stack.push(3)
+
+print(f"栈大小: {len(stack)}")
+print(f"栈内容: {stack}")
+print(f"第二个元素: {stack[1]}")
+
+for item in stack:
+    print(item)
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>比较操作实现</h3>
+                    <pre><code class="python">
+class Temperature:
+    """温度类"""
+    
+    def __init__(self, celsius):
+        self._celsius = celsius
+    
+    def __eq__(self, other):
+        """相等比较"""
+        if not isinstance(other, Temperature):
+            return NotImplemented
+        return self._celsius == other._celsius
+    
+    def __lt__(self, other):
+        """小于比较"""
+        if not isinstance(other, Temperature):
+            return NotImplemented
+        return self._celsius < other._celsius
+    
+    def __add__(self, other):
+        """加法运算"""
+        if isinstance(other, (int, float)):
+            return Temperature(self._celsius + other)
+        if isinstance(other, Temperature):
+            return Temperature(self._celsius + other._celsius)
+        return NotImplemented
+    
+    def __str__(self):
+        """字符串表示"""
+        return f"{self._celsius}°C"
+    
+    @property
+    def fahrenheit(self):
+        """转换为华氏温度"""
+        return self._celsius * 9/5 + 32
+
+# 使用示例
+t1 = Temperature(25)
+t2 = Temperature(30)
+t3 = t1 + 5
+
+print(f"t1: {t1}")
+print(f"t2: {t2}")
+print(f"t3: {t3}")
+print(f"t1 < t2: {t1 < t2}")
+print(f"t1的华氏温度: {t1.fahrenheit}°F")
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 设计模式 -->
+            <section id="patterns" class="course-section">
+                <h2 class="course-section__title">设计模式</h2>
+
+                <div class="example-box">
+                    <h3>单例模式</h3>
+                    <pre><code class="python">
+class Singleton:
+    """单例类装饰器"""
+    
+    def __init__(self, cls):
+        self._cls = cls
+        self._instance = None
+    
+    def __call__(self, *args, **kwargs):
+        if self._instance is None:
+            self._instance = self._cls(*args, **kwargs)
+        return self._instance
+
+@Singleton
+class DatabaseConnection:
+    """数据库连接类"""
+    
+    def __init__(self, host, port):
+        self.host = host
+        self.port = port
+        print(f"创建到 {host}:{port} 的连接")
+    
+    def query(self, sql):
+        print(f"执行查询: {sql}")
+
+# 使用示例
+db1 = DatabaseConnection("localhost", 3306)
+db2 = DatabaseConnection("localhost", 3306)
+print(f"db1 和 db2 是同一个实例: {db1 is db2}")
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>观察者模式</h3>
+                    <pre><code class="python">
+from abc import ABC, abstractmethod
+
+class Observer(ABC):
+    """观察者抽象类"""
+    
+    @abstractmethod
+    def update(self, message):
+        pass
+
+class Subject:
+    """主题类"""
+    
+    def __init__(self):
+        self._observers = []
+        self._state = None
+    
+    def attach(self, observer):
+        """添加观察者"""
+        if observer not in self._observers:
+            self._observers.append(observer)
+    
+    def detach(self, observer):
+        """移除观察者"""
+        self._observers.remove(observer)
+    
+    def notify(self, message):
+        """通知所有观察者"""
+        for observer in self._observers:
+            observer.update(message)
+
+class NewsAgency(Subject):
+    """新闻机构类"""
+    
+    def publish_news(self, news):
+        """发布新闻"""
+        print(f"\n发布新闻: {news}")
+        self.notify(news)
+
+class NewsSubscriber(Observer):
+    """新闻订阅者类"""
+    
+    def __init__(self, name):
+        self.name = name
+    
+    def update(self, message):
+        print(f"{self.name} 收到新闻: {message}")
+
+# 使用示例
+agency = NewsAgency()
+subscriber1 = NewsSubscriber("张三")
+subscriber2 = NewsSubscriber("李四")
+
+agency.attach(subscriber1)
+agency.attach(subscriber2)
+agency.publish_news("Python 4.0 发布!")
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 实际应用 -->
+            <section id="practical" class="course-section">
+                <h2 class="course-section__title">实际应用</h2>
+
+                <div class="example-box">
+                    <h3>购物车系统</h3>
+                    <pre><code class="python">
+class Product:
+    """商品类"""
+    
+    def __init__(self, id, name, price):
+        self.id = id
+        self.name = name
+        self.price = price
+    
+    def __str__(self):
+        return f"{self.name} (¥{self.price})"
+
+class CartItem:
+    """购物车项目类"""
+    
+    def __init__(self, product, quantity=1):
+        self.product = product
+        self.quantity = quantity
+    
+    @property
+    def total_price(self):
+        return self.product.price * self.quantity
+    
+    def __str__(self):
+        return f"{self.product.name} x {self.quantity}"
+
+class ShoppingCart:
+    """购物车类"""
+    
+    def __init__(self):
+        self._items = {}
+    
+    def add_item(self, product, quantity=1):
+        """添加商品"""
+        if product.id in self._items:
+            self._items[product.id].quantity += quantity
+        else:
+            self._items[product.id] = CartItem(product, quantity)
+    
+    def remove_item(self, product_id):
+        """移除商品"""
+        if product_id in self._items:
+            del self._items[product_id]
+    
+    def update_quantity(self, product_id, quantity):
+        """更新数量"""
+        if product_id in self._items:
+            if quantity > 0:
+                self._items[product_id].quantity = quantity
+            else:
+                self.remove_item(product_id)
+    
+    @property
+    def total(self):
+        """购物车总价"""
+        return sum(item.total_price for item in self._items.values())
+    
+    def __str__(self):
+        """购物车内容展示"""
+        if not self._items:
+            return "购物车为空"
+        
+        cart_items = "\n".join(
+            f"{item}: ¥{item.total_price}"
+            for item in self._items.values()
+        )
+        return f"购物车内容:\n{cart_items}\n总计: ¥{self.total}"
+
+# 使用示例
+# 创建商品
+phone = Product(1, "手机", 2999)
+laptop = Product(2, "笔记本", 5999)
+headphone = Product(3, "耳机", 299)
+
+# 创建购物车并添加商品
+cart = ShoppingCart()
+cart.add_item(phone)
+cart.add_item(laptop)
+cart.add_item(headphone, 2)
+
+print(cart)
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>日志系统</h3>
+                    <pre><code class="python">
+import time
+from enum import Enum, auto
+
+class LogLevel(Enum):
+    """日志级别"""
+    DEBUG = auto()
+    INFO = auto()
+    WARNING = auto()
+    ERROR = auto()
+
+class Logger:
+    """日志记录器"""
+    
+    _instance = None
+    
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            cls._instance._handlers = []
+        return cls._instance
+    
+    def add_handler(self, handler):
+        """添加处理器"""
+        self._handlers.append(handler)
+    
+    def log(self, level, message):
+        """记录日志"""
+        log_entry = LogEntry(level, message)
+        for handler in self._handlers:
+            handler.handle(log_entry)
+
+class LogEntry:
+    """日志条目"""
+    
+    def __init__(self, level, message):
+        self.level = level
+        self.message = message
+        self.timestamp = time.time()
+    
+    def __str__(self):
+        return f"[{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(self.timestamp))}] {self.level.name}: {self.message}"
+
+class LogHandler(ABC):
+    """日志处理器抽象类"""
+    
+    @abstractmethod
+    def handle(self, entry):
+        pass
+
+class ConsoleHandler(LogHandler):
+    """控制台日志处理器"""
+    
+    def handle(self, entry):
+        print(entry)
+
+class FileHandler(LogHandler):
+    """文件日志处理器"""
+    
+    def __init__(self, filename):
+        self.filename = filename
+    
+    def handle(self, entry):
+        with open(self.filename, 'a', encoding='utf-8') as f:
+            f.write(f"{entry}\n")
+
+# 使用示例
+logger = Logger()
+logger.add_handler(ConsoleHandler())
+logger.add_handler(FileHandler('app.log'))
+
+logger.log(LogLevel.INFO, "应用程序启动")
+logger.log(LogLevel.WARNING, "磁盘空间不足")
+logger.log(LogLevel.ERROR, "数据库连接失败")
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 返回链接 -->
+            <section class="course-section">
+                <div class="link-box">
+                    <a href="../../courses/basic/oop.html" class="link-box__item">
+                        <i class="fas fa-book"></i>
+                        返回面向对象编程教程
+                    </a>
+                    <a href="../../examples/advanced/oop_advanced.html" class="link-box__item">
+                        <i class="fas fa-code"></i>
+                        高级面向对象编程示例
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="https://cdn.bytedance.com/highlight.js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html> 

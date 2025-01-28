@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python字典练习题 - Python学习</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/course.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/highlight.js/styles/github.min.css">
+</head>
+<body>
+    <header class="course-header">
+        <h1 class="course-header__title">
+            <i class="fas fa-tasks"></i>
+            Python字典练习题
+        </h1>
+        <p class="course-header__description">
+            通过这些精心设计的练习题，从不同角度和难度提升你的Python字典操作能力。每道题都提供详细解答和说明。
+        </p>
+    </header>
+
+    <main class="course-container">
+        <!-- 导航菜单 -->
+        <nav class="course-nav">
+            <ul class="course-nav__list">
+                <li><a href="#basic" class="course-nav__link">基础练习</a></li>
+                <li><a href="#intermediate" class="course-nav__link">进阶练习</a></li>
+                <li><a href="#practical" class="course-nav__link">实际应用</a></li>
+                <li><a href="#algorithm" class="course-nav__link">算法实现</a></li>
+            </ul>
+        </nav>
+
+        <div class="course-content">
+            <!-- 基础练习 -->
+            <section id="basic" class="course-section">
+                <h2 class="course-section__title">基础练习</h2>
+                
+                <div class="exercise-box">
+                    <h3 class="exercise-box__title">
+                        <span class="difficulty easy">简单</span>
+                        练习1：字符统计
+                    </h3>
+                    <p class="exercise-box__desc">编写一个函数，统计字符串中每个字符出现的次数。</p>
+                    <details>
+                        <summary>查看解答</summary>
+                        <div class="code-block">
+                            <pre><code class="python">
+def count_chars(text):
+    char_count = {}
+    for char in text:
+        char_count[char] = char_count.get(char, 0) + 1
+    return char_count
+
+# 测试
+text = "hello world"
+result = count_chars(text)
+print(result)  # {'h': 1, 'e': 1, 'l': 3, 'o': 2, ' ': 1, 'w': 1, 'r': 1, 'd': 1}
+
+# 使用Counter类的替代方案
+from collections import Counter
+result2 = Counter(text)
+print(dict(result2))  # 相同的结果
+                            </code></pre>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="exercise-box">
+                    <h3 class="exercise-box__title">
+                        <span class="difficulty easy">简单</span>
+                        练习2：字典合并
+                    </h3>
+                    <p class="exercise-box__desc">合并两个字典，如果有重复的键，保留第二个字典的值。</p>
+                    <details>
+                        <summary>查看解答</summary>
+                        <div class="code-block">
+                            <pre><code class="python">
+def merge_dicts(dict1, dict2):
+    # 方法1：使用update方法
+    result = dict1.copy()
+    result.update(dict2)
+    return result
+
+    # 方法2：使用字典解包（Python 3.5+）
+    # return {**dict1, **dict2}
+
+# 测试
+dict1 = {'a': 1, 'b': 2, 'c': 3}
+dict2 = {'b': 4, 'd': 5, 'e': 6}
+result = merge_dicts(dict1, dict2)
+print(result)  # {'a': 1, 'b': 4, 'c': 3, 'd': 5, 'e': 6}
+                            </code></pre>
+                        </div>
+                    </details>
+                </div>
+            </section>
+
+            <!-- 进阶练习 -->
+            <section id="intermediate" class="course-section">
+                <h2 class="course-section__title">进阶练习</h2>
+                
+                <div class="exercise-box">
+                    <h3 class="exercise-box__title">
+                        <span class="difficulty medium">中等</span>
+                        练习1：嵌套字典处理
+                    </h3>
+                    <p class="exercise-box__desc">实现一个函数，可以递归地获取嵌套字典中的所有值。</p>
+                    <details>
+                        <summary>查看解答</summary>
+                        <div class="code-block">
+                            <pre><code class="python">
+def get_all_values(nested_dict):
+    values = []
+    
+    def extract_values(d):
+        for value in d.values():
+            if isinstance(value, dict):
+                extract_values(value)
+            else:
+                values.append(value)
+    
+    extract_values(nested_dict)
+    return values
+
+# 测试
+data = {
+    'a': 1,
+    'b': {
+        'c': 2,
+        'd': {
+            'e': 3,
+            'f': 4
+        }
+    },
+    'g': 5
+}
+result = get_all_values(data)
+print(result)  # [1, 2, 3, 4, 5]
+                            </code></pre>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="exercise-box">
+                    <h3 class="exercise-box__title">
+                        <span class="difficulty medium">中等</span>
+                        练习2：字典排序
+                    </h3>
+                    <p class="exercise-box__desc">按值对字典进行排序，返回排序后的键值对列表。</p>
+                    <details>
+                        <summary>查看解答</summary>
+                        <div class="code-block">
+                            <pre><code class="python">
+def sort_dict_by_value(d, reverse=False):
+    # 方法1：使用sorted和lambda
+    return sorted(d.items(), key=lambda x: x[1], reverse=reverse)
+
+    # 方法2：使用operator模块
+    # from operator import itemgetter
+    # return sorted(d.items(), key=itemgetter(1), reverse=reverse)
+
+# 测试
+scores = {
+    '张三': 85,
+    '李四': 92,
+    '王五': 78,
+    '赵六': 95
+}
+result = sort_dict_by_value(scores, reverse=True)
+print("成绩排名：")
+for name, score in result:
+    print(f"{name}: {score}")
+                            </code></pre>
+                        </div>
+                    </details>
+                </div>
+            </section>
+
+            <!-- 实际应用 -->
+            <section id="practical" class="course-section">
+                <h2 class="course-section__title">实际应用</h2>
+                
+                <div class="exercise-box">
+                    <h3 class="exercise-box__title">
+                        <span class="difficulty hard">困难</span>
+                        练习1：通讯录系统
+                    </h3>
+                    <p class="exercise-box__desc">实现一个通讯录系统，支持以下功能：</p>
+                    <ol>
+                        <li>添加联系人（姓名、电话、邮箱等）</li>
+                        <li>删除联系人</li>
+                        <li>更新联系人信息</li>
+                        <li>搜索联系人</li>
+                        <li>显示所有联系人</li>
+                    </ol>
+                    <details>
+                        <summary>查看解答</summary>
+                        <div class="code-block">
+                            <pre><code class="python">
+class ContactBook:
+    def __init__(self):
+        self.contacts = {}
+    
+    def add_contact(self, name, phone, email=None):
+        self.contacts[name] = {
+            'phone': phone,
+            'email': email
+        }
+        print(f"已添加联系人：{name}")
+    
+    def delete_contact(self, name):
+        if name in self.contacts:
+            del self.contacts[name]
+            print(f"已删除联系人：{name}")
+        else:
+            print(f"未找到联系人：{name}")
+    
+    def update_contact(self, name, phone=None, email=None):
+        if name in self.contacts:
+            if phone:
+                self.contacts[name]['phone'] = phone
+            if email:
+                self.contacts[name]['email'] = email
+            print(f"已更新联系人：{name}")
+        else:
+            print(f"未找到联系人：{name}")
+    
+    def search_contact(self, name):
+        return self.contacts.get(name, None)
+    
+    def display_all(self):
+        if not self.contacts:
+            print("通讯录为空")
+            return
+        
+        print("\n通讯录:")
+        for name, info in self.contacts.items():
+            print(f"姓名：{name}")
+            print(f"电话：{info['phone']}")
+            if info['email']:
+                print(f"邮箱：{info['email']}")
+            print("-" * 20)
+
+# 使用示例
+book = ContactBook()
+book.add_contact("张三", "13812345678", "zhangsan@example.com")
+book.add_contact("李四", "13987654321")
+book.display_all()
+
+book.update_contact("张三", email="new_email@example.com")
+print(book.search_contact("张三"))
+
+book.delete_contact("李四")
+book.display_all()
+                            </code></pre>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="exercise-box">
+                    <h3 class="exercise-box__title">
+                        <span class="difficulty hard">困难</span>
+                        练习2：商品库存系统
+                    </h3>
+                    <p class="exercise-box__desc">实现一个商品库存管理系统，包含以下功能：</p>
+                    <ol>
+                        <li>添加商品（名称、价格、库存量）</li>
+                        <li>更新库存</li>
+                        <li>查看库存状态</li>
+                        <li>生成库存报告</li>
+                        <li>计算库存总值</li>
+                    </ol>
+                    <details>
+                        <summary>查看解答</summary>
+                        <div class="code-block">
+                            <pre><code class="python">
+class InventorySystem:
+    def __init__(self):
+        self.inventory = {}
+    
+    def add_product(self, name, price, quantity):
+        if name in self.inventory:
+            print(f"商品 {name} 已存在")
+            return
+        
+        self.inventory[name] = {
+            'price': price,
+            'quantity': quantity
+        }
+        print(f"已添加商品：{name}")
+    
+    def update_stock(self, name, quantity_change):
+        if name not in self.inventory:
+            print(f"商品 {name} 不存在")
+            return
+        
+        new_quantity = self.inventory[name]['quantity'] + quantity_change
+        if new_quantity < 0:
+            print("库存不足")
+            return
+        
+        self.inventory[name]['quantity'] = new_quantity
+        print(f"已更新 {name} 的库存，当前库存：{new_quantity}")
+    
+    def check_stock(self, name):
+        if name in self.inventory:
+            return self.inventory[name]['quantity']
+        return 0
+    
+    def generate_report(self):
+        print("\n库存报告:")
+        print("-" * 40)
+        print(f"{'商品名称':<15}{'价格':>8}{'库存':>8}{'总值':>12}")
+        print("-" * 40)
+        
+        for name, info in self.inventory.items():
+            total = info['price'] * info['quantity']
+            print(f"{name:<15}{info['price']:>8.2f}{info['quantity']:>8}"
+                  f"{total:>12.2f}")
+        print("-" * 40)
+        print(f"库存总值：{self.get_total_value():.2f}")
+    
+    def get_total_value(self):
+        return sum(info['price'] * info['quantity'] 
+                  for info in self.inventory.values())
+
+# 使用示例
+inventory = InventorySystem()
+inventory.add_product("苹果", 5.0, 100)
+inventory.add_product("香蕉", 3.5, 150)
+inventory.add_product("橙子", 4.0, 80)
+
+inventory.update_stock("苹果", -20)  # 减少20个苹果
+inventory.update_stock("香蕉", 50)   # 增加50个香蕉
+
+inventory.generate_report()
+                            </code></pre>
+                        </div>
+                    </details>
+                </div>
+            </section>
+
+            <!-- 算法实现 -->
+            <section id="algorithm" class="course-section">
+                <h2 class="course-section__title">算法实现</h2>
+                
+                <div class="exercise-box">
+                    <h3 class="exercise-box__title">
+                        <span class="difficulty hard">困难</span>
+                        练习1：LRU缓存实现
+                    </h3>
+                    <p class="exercise-box__desc">使用字典实现一个LRU（最近最少使用）缓存。要求：</p>
+                    <ol>
+                        <li>设置缓存容量上限</li>
+                        <li>支持获取和存储操作</li>
+                        <li>当缓存满时，删除最久未使用的项</li>
+                        <li>访问项时更新其为最近使用</li>
+                    </ol>
+                    <details>
+                        <summary>查看解答</summary>
+                        <div class="code-block">
+                            <pre><code class="python">
+from collections import OrderedDict
+
+class LRUCache:
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.cache = OrderedDict()
+    
+    def get(self, key):
+        if key not in self.cache:
+            return -1
+        
+        # 移动到末尾（最近使用）
+        value = self.cache.pop(key)
+        self.cache[key] = value
+        return value
+    
+    def put(self, key, value):
+        if key in self.cache:
+            self.cache.pop(key)
+        elif len(self.cache) >= self.capacity:
+            # 删除最久未使用的项（第一个）
+            self.cache.popitem(last=False)
+        
+        self.cache[key] = value
+
+# 使用示例
+cache = LRUCache(2)  # 容量为2的缓存
+cache.put(1, 1)
+cache.put(2, 2)
+print(cache.get(1))       # 返回 1
+cache.put(3, 3)          # 删除 key 2
+print(cache.get(2))       # 返回 -1 (未找到)
+cache.put(4, 4)          # 删除 key 1
+print(cache.get(1))       # 返回 -1 (未找到)
+print(cache.get(3))       # 返回 3
+print(cache.get(4))       # 返回 4
+                            </code></pre>
+                        </div>
+                    </details>
+                </div>
+            </section>
+
+            <!-- 返回链接 -->
+            <section class="course-section">
+                <div class="link-box">
+                    <a href="../courses/basic/dicts.html" class="link-box__item">
+                        <i class="fas fa-book"></i>
+                        返回字典教程
+                    </a>
+                    <a href="../examples/basics/dict_operations.html" class="link-box__item">
+                        <i class="fas fa-code"></i>
+                        查看字典示例
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="https://cdn.bytedance.com/highlight.js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html> 

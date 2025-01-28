@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python文件操作 - Python学习网站</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="css/course.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/highlight.js/11.7.0/styles/github.min.css">
+</head>
+<body>
+    <div class="course-container">
+        <!-- 侧边导航 -->
+        <nav class="sidebar-nav">
+            <ul>
+                <li class="sidebar-nav__item"><a href="../index.html"><i class="fas fa-home"></i> 首页</a></li>
+                <li class="sidebar-nav__item"><a href="index.html"><i class="fas fa-book"></i> 课程概述</a></li>
+                <li class="sidebar-nav__item"><a href="oop.html"><i class="fas fa-cube"></i> 面向对象编程</a></li>
+                <li class="sidebar-nav__item sidebar-nav__item--active">
+                    <a href="file-handling.html"><i class="fas fa-file-alt"></i> 文件操作</a>
+                    <ul>
+                        <li><a href="#file-basics">文件操作基础</a></li>
+                        <li><a href="#file-modes">文件打开模式</a></li>
+                        <li><a href="#read-write">读写操作</a></li>
+                        <li><a href="#context-manager">上下文管理器</a></li>
+                        <li><a href="#binary-files">二进制文件</a></li>
+                        <li><a href="#exercises">练习与实践</a></li>
+                    </ul>
+                </li>
+                <li class="sidebar-nav__item"><a href="exception-handling.html"><i class="fas fa-exclamation-triangle"></i> 异常处理</a></li>
+                <li class="sidebar-nav__item"><a href="iterators-generators.html"><i class="fas fa-sync"></i> 迭代器和生成器</a></li>
+                <li class="sidebar-nav__item"><a href="decorators-closures.html"><i class="fas fa-magic"></i> 装饰器和闭包</a></li>
+                <li class="sidebar-nav__item"><a href="modules-packages.html"><i class="fas fa-boxes"></i> 模块和包</a></li>
+            </ul>
+        </nav>
+
+        <!-- 主要内容区 -->
+        <main class="course-content">
+            <!-- 课程标题 -->
+            <header class="lesson-header">
+                <h1 class="lesson-header__title">Python文件操作</h1>
+                <div class="lesson-header__meta">
+                    <span><i class="fas fa-clock"></i> 学习时长：2小时</span>
+                    <span><i class="fas fa-layer-group"></i> 难度：中级</span>
+                    <span><i class="fas fa-tasks"></i> 练习：5个</span>
+                </div>
+            </header>
+
+            <!-- 文件操作基础 -->
+            <section id="file-basics" class="lesson-section">
+                <h2>文件操作基础</h2>
+                <div class="info-box">
+                    <div class="info-box__title">
+                        <i class="fas fa-info-circle"></i>
+                        <span>什么是文件操作？</span>
+                    </div>
+                    <p>文件操作是程序开发中的重要组成部分，它允许我们读取和写入文件，实现数据的持久化存储。Python提供了简单而强大的文件操作接口。</p>
+                </div>
+
+                <h3>文件路径</h3>
+                <p>在Python中，文件路径可以是相对路径或绝对路径：</p>
+                <pre><code class="python">
+# 相对路径
+file_path = "data/example.txt"
+
+# 绝对路径
+file_path = "C:/Users/username/Documents/example.txt"
+
+# 使用原始字符串处理Windows路径
+file_path = r"C:\Users\username\Documents\example.txt"
+                </code></pre>
+            </section>
+
+            <!-- 文件打开模式 -->
+            <section id="file-modes" class="lesson-section">
+                <h2>文件打开模式</h2>
+                <div class="example-box">
+                    <div class="example-box__title">
+                        <i class="fas fa-lightbulb"></i>
+                        <span>常用文件模式</span>
+                    </div>
+                    <pre><code class="python">
+# 只读模式
+file = open('example.txt', 'r')
+
+# 写入模式（覆盖原有内容）
+file = open('example.txt', 'w')
+
+# 追加模式
+file = open('example.txt', 'a')
+
+# 读写模式
+file = open('example.txt', 'r+')
+                    </code></pre>
+                </div>
+
+                <div class="warning-box">
+                    <div class="warning-box__title">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>注意事项</span>
+                    </div>
+                    <p>打开文件后必须记得关闭文件，否则可能导致资源泄露。推荐使用with语句自动处理文件的关闭。</p>
+                </div>
+            </section>
+
+            <!-- 读写操作 -->
+            <section id="read-write" class="lesson-section">
+                <h2>读写操作</h2>
+                <h3>文件读取</h3>
+                <pre><code class="python">
+# 读取整个文件
+with open('example.txt', 'r', encoding='utf-8') as file:
+    content = file.read()
+
+# 逐行读取
+with open('example.txt', 'r', encoding='utf-8') as file:
+    for line in file:
+        print(line.strip())
+
+# 读取指定字节数
+with open('example.txt', 'r', encoding='utf-8') as file:
+    chunk = file.read(1024)  # 读取1024个字节
+                </code></pre>
+
+                <h3>文件写入</h3>
+                <pre><code class="python">
+# 写入字符串
+with open('example.txt', 'w', encoding='utf-8') as file:
+    file.write('Hello, World!\n')
+    file.write('这是第二行')
+
+# 写入多行
+lines = ['第一行', '第二行', '第三行']
+with open('example.txt', 'w', encoding='utf-8') as file:
+    file.writelines(line + '\n' for line in lines)
+                </code></pre>
+            </section>
+
+            <!-- 上下文管理器 -->
+            <section id="context-manager" class="lesson-section">
+                <h2>上下文管理器</h2>
+                <div class="info-box">
+                    <div class="info-box__title">
+                        <i class="fas fa-info-circle"></i>
+                        <span>with语句的优势</span>
+                    </div>
+                    <p>使用with语句可以自动处理文件的关闭，即使发生异常也能确保文件被正确关闭。</p>
+                </div>
+
+                <pre><code class="python">
+# 不使用with语句
+file = open('example.txt', 'r')
+try:
+    content = file.read()
+finally:
+    file.close()
+
+# 使用with语句（推荐）
+with open('example.txt', 'r') as file:
+    content = file.read()
+# 文件会自动关闭
+                </code></pre>
+            </section>
+
+            <!-- 二进制文件 -->
+            <section id="binary-files" class="lesson-section">
+                <h2>二进制文件操作</h2>
+                <p>处理图片、音频等二进制文件时，需要使用二进制模式：</p>
+                <pre><code class="python">
+# 读取二进制文件
+with open('image.jpg', 'rb') as file:
+    binary_data = file.read()
+
+# 写入二进制文件
+with open('copy.jpg', 'wb') as file:
+    file.write(binary_data)
+                </code></pre>
+            </section>
+
+            <!-- 练习部分 -->
+            <section id="exercises" class="lesson-section">
+                <h2>练习与实践</h2>
+                
+                <div class="exercise-box">
+                    <h3 class="exercise-box__title">
+                        <i class="fas fa-tasks"></i> 练习1：文件复制器
+                    </h3>
+                    <p>创建一个函数，可以复制文本文件的内容到新文件，并在复制时统计文件的行数和字符数。</p>
+                    <div class="exercise-box__hint">
+                        提示：使用with语句同时打开两个文件，一个用于读取，一个用于写入。
+                    </div>
+                    <pre><code class="python">
+def copy_file(source_path, target_path):
+    """
+    复制文件内容并统计信息
+    返回元组：(行数, 字符数)
+    """
+    # 在此编写你的代码
+    pass
+                    </code></pre>
+                </div>
+
+                <div class="exercise-box">
+                    <h3 class="exercise-box__title">
+                        <i class="fas fa-tasks"></i> 练习2：日志分析器
+                    </h3>
+                    <p>编写一个程序，读取日志文件并统计每种日志级别(INFO, WARNING, ERROR)的出现次数。</p>
+                    <div class="exercise-box__hint">
+                        提示：使用字典来存储统计结果，可以使用字符串的split()方法分割日志行。
+                    </div>
+                    <pre><code class="python">
+def analyze_log(log_file_path):
+    """
+    分析日志文件，返回各日志级别的统计结果
+    返回字典：{'INFO': count, 'WARNING': count, 'ERROR': count}
+    """
+    # 在此编写你的代码
+    pass
+                    </code></pre>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="https://cdn.bytedance.com/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>
+        hljs.highlightAll();
+    </script>
+</body>
+</html> 

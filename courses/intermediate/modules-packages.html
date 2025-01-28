@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python模块和包 - Python学习网站</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="css/course.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/highlight.js/11.7.0/styles/github.min.css">
+</head>
+<body>
+    <div class="course-container">
+        <!-- 侧边导航 -->
+        <nav class="sidebar-nav">
+            <ul>
+                <li class="sidebar-nav__item"><a href="../index.html"><i class="fas fa-home"></i> 首页</a></li>
+                <li class="sidebar-nav__item"><a href="index.html"><i class="fas fa-book"></i> 课程概述</a></li>
+                <li class="sidebar-nav__item"><a href="oop.html"><i class="fas fa-cube"></i> 面向对象编程</a></li>
+                <li class="sidebar-nav__item"><a href="file-handling.html"><i class="fas fa-file-alt"></i> 文件操作</a></li>
+                <li class="sidebar-nav__item"><a href="exception-handling.html"><i class="fas fa-exclamation-triangle"></i> 异常处理</a></li>
+                <li class="sidebar-nav__item sidebar-nav__item--active">
+                    <a href="modules-packages.html"><i class="fas fa-boxes"></i> 模块和包</a>
+                    <ul>
+                        <li><a href="#module-basics">模块基础</a></li>
+                        <li><a href="#import-syntax">导入语法</a></li>
+                        <li><a href="#package-structure">包的结构</a></li>
+                        <li><a href="#module-search">模块搜索路径</a></li>
+                        <li><a href="#creating-modules">创建模块</a></li>
+                        <li><a href="#exercises">练习与实践</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- 主要内容区 -->
+        <main class="course-content">
+            <!-- 课程标题 -->
+            <header class="lesson-header">
+                <h1 class="lesson-header__title">Python模块和包</h1>
+                <div class="lesson-header__meta">
+                    <span><i class="fas fa-clock"></i> 学习时长：2.5小时</span>
+                    <span><i class="fas fa-layer-group"></i> 难度：中级</span>
+                    <span><i class="fas fa-tasks"></i> 练习：4个</span>
+                </div>
+            </header>
+
+            <!-- 模块基础 -->
+            <section id="module-basics" class="lesson-section">
+                <h2>模块基础</h2>
+                <div class="info-box">
+                    <div class="info-box__title">
+                        <i class="fas fa-info-circle"></i>
+                        <span>什么是模块？</span>
+                    </div>
+                    <p>模块是一个包含Python代码的文件。它可以包含函数、类和变量，以及可执行的代码。模块帮助我们组织相关的代码，使程序结构更清晰。</p>
+                </div>
+
+                <h3>模块的优势</h3>
+                <ul>
+                    <li>代码重用：一次编写，多处使用</li>
+                    <li>命名空间：避免命名冲突</li>
+                    <li>可维护性：代码组织更清晰</li>
+                    <li>封装：隐藏实现细节</li>
+                </ul>
+            </section>
+
+            <!-- 导入语法 -->
+            <section id="import-syntax" class="lesson-section">
+                <h2>导入语法</h2>
+                <div class="example-box">
+                    <div class="example-box__title">
+                        <i class="fas fa-lightbulb"></i>
+                        <span>导入方式</span>
+                    </div>
+                    <pre><code class="python">
+# 导入整个模块
+import math
+
+# 导入特定函数
+from math import sqrt, pi
+
+# 使用别名
+import numpy as np
+
+# 导入所有内容（不推荐）
+from math import *
+                    </code></pre>
+                </div>
+
+                <div class="warning-box">
+                    <div class="warning-box__title">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>注意事项</span>
+                    </div>
+                    <p>避免使用 from module import * 这种方式，因为它可能导致命名冲突，并且使代码的依赖关系不明确。</p>
+                </div>
+            </section>
+
+            <!-- 包的结构 -->
+            <section id="package-structure" class="lesson-section">
+                <h2>包的结构</h2>
+                <p>包是一种组织模块的方式，它包含多个模块和子包。一个典型的包结构如下：</p>
+                <pre><code class="python">
+mypackage/
+    __init__.py
+    module1.py
+    module2.py
+    subpackage/
+        __init__.py
+        module3.py
+        module4.py
+                </code></pre>
+
+                <div class="info-box">
+                    <div class="info-box__title">
+                        <i class="fas fa-folder-open"></i>
+                        <span>__init__.py的作用</span>
+                    </div>
+                    <p>__init__.py 文件使Python将目录视为包。它可以为空，也可以包含包的初始化代码。</p>
+                </div>
+
+                <h3>包的导入</h3>
+                <pre><code class="python">
+# 导入包中的模块
+from mypackage import module1
+
+# 导入子包中的模块
+from mypackage.subpackage import module3
+
+# 导入特定函数
+from mypackage.module1 import some_function
+                </code></pre>
+            </section>
+
+            <!-- 模块搜索路径 -->
+            <section id="module-search" class="lesson-section">
+                <h2>模块搜索路径</h2>
+                <p>Python在导入模块时会按照特定顺序搜索以下位置：</p>
+                <pre><code class="python">
+import sys
+print(sys.path)  # 查看模块搜索路径
+
+# 添加自定义搜索路径
+import sys
+sys.path.append('/path/to/my/modules')
+                </code></pre>
+
+                <div class="info-box">
+                    <div class="info-box__title">
+                        <i class="fas fa-search"></i>
+                        <span>搜索顺序</span>
+                    </div>
+                    <ol>
+                        <li>当前目录</li>
+                        <li>PYTHONPATH环境变量中的目录</li>
+                        <li>Python标准库目录</li>
+                        <li>site-packages目录（第三方包）</li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- 创建模块 -->
+            <section id="creating-modules" class="lesson-section">
+                <h2>创建模块</h2>
+                <p>让我们创建一个简单的数学工具模块：</p>
+                <pre><code class="python">
+# mathutils.py
+"""
+数学工具模块
+提供基本的数学计算功能
+"""
+
+def factorial(n):
+    """计算阶乘"""
+    if n < 0:
+        raise ValueError("阶乘不能用于负数")
+    if n == 0:
+        return 1
+    return n * factorial(n - 1)
+
+def is_prime(n):
+    """判断是否为素数"""
+    if n < 2:
+        return False
+    for i in range(2, int(n ** 0.5) + 1):
+        if n % i == 0:
+            return False
+    return True
+
+# 模块级别的变量
+PI = 3.14159
+
+if __name__ == '__main__':
+    # 模块测试代码
+    print(factorial(5))  # 120
+    print(is_prime(17))  # True
+                </code></pre>
+
+                <div class="info-box">
+                    <div class="info-box__title">
+                        <i class="fas fa-code"></i>
+                        <span>模块编写建议</span>
+                    </div>
+                    <ul>
+                        <li>添加模块文档字符串</li>
+                        <li>为函数添加文档字符串</li>
+                        <li>使用 if __name__ == '__main__' 进行测试</li>
+                        <li>遵循PEP 8编码规范</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 实际应用场景 -->
+            <section id="real-world-applications" class="lesson-section">
+                <h2>实际应用场景</h2>
+
+                <!-- 数据处理工具包 -->
+                <div class="example-box">
+                    <div class="example-box__title">
+                        <i class="fas fa-database"></i>
+                        <span>数据处理工具包</span>
+                    </div>
+                    <pre><code class="python">
+# data_tools/
+#     __init__.py
+#     readers/
+#         __init__.py
+#         csv_reader.py
+#         excel_reader.py
+#         json_reader.py
+#     processors/
+#         __init__.py
+#         cleaner.py
+#         transformer.py
+#     exporters/
+#         __init__.py
+#         csv_writer.py
+#         excel_writer.py
+
+# csv_reader.py
+import pandas as pd
+
+class CSVReader:
+    def __init__(self, encoding='utf-8'):
+        self.encoding = encoding
+    
+    def read(self, file_path):
+        return pd.read_csv(file_path, encoding=self.encoding)
+
+# cleaner.py
+class DataCleaner:
+    def remove_duplicates(self, df):
+        return df.drop_duplicates()
+    
+    def fill_missing(self, df, method='mean'):
+        if method == 'mean':
+            return df.fillna(df.mean())
+        return df.fillna(method=method)
+
+# 使用示例
+from data_tools.readers import csv_reader
+from data_tools.processors import cleaner
+
+reader = csv_reader.CSVReader()
+cleaner = cleaner.DataCleaner()
+
+data = reader.read('sales.csv')
+cleaned_data = cleaner.remove_duplicates(data)
+                    </code></pre>
+                </div>
+
+                <!-- 日志分析系统 -->
+                <div class="example-box">
+                    <div class="example-box__title">
+                        <i class="fas fa-chart-line"></i>
+                        <span>日志分析系统</span>
+                    </div>
+                    <pre><code class="python">
+# log_analyzer/
+#     __init__.py
+#     collectors/
+#         __init__.py
+#         file_collector.py
+#         db_collector.py
+#     parsers/
+#         __init__.py
+#         apache_parser.py
+#         nginx_parser.py
+#     analyzers/
+#         __init__.py
+#         traffic_analyzer.py
+#         error_analyzer.py
+#     reporters/
+#         __init__.py
+#         html_reporter.py
+#         pdf_reporter.py
+
+# nginx_parser.py
+import re
+from datetime import datetime
+
+class NginxLogParser:
+    def __init__(self):
+        self.pattern = r'(\d+\.\d+\.\d+\.\d+).*\[(.*?)\].*"(\w+) (.*?) HTTP.*" (\d+) (\d+)'
+    
+    def parse_line(self, line):
+        match = re.match(self.pattern, line)
+        if match:
+            return {
+                'ip': match.group(1),
+                'timestamp': datetime.strptime(match.group(2), '%d/%b/%Y:%H:%M:%S %z'),
+                'method': match.group(3),
+                'path': match.group(4),
+                'status': int(match.group(5)),
+                'bytes': int(match.group(6))
+            }
+        return None
+
+# traffic_analyzer.py
+from collections import Counter
+
+class TrafficAnalyzer:
+    def analyze_ips(self, logs):
+        ip_counter = Counter(log['ip'] for log in logs)
+        return ip_counter.most_common(10)
+    
+    def analyze_paths(self, logs):
+        path_counter = Counter(log['path'] for log in logs)
+        return path_counter.most_common(10)
+
+# 使用示例
+from log_analyzer.parsers.nginx_parser import NginxLogParser
+from log_analyzer.analyzers.traffic_analyzer import TrafficAnalyzer
+
+parser = NginxLogParser()
+analyzer = TrafficAnalyzer()
+
+with open('nginx.log', 'r') as f:
+    logs = [parser.parse_line(line) for line in f if line.strip()]
+    
+top_ips = analyzer.analyze_ips(logs)
+top_paths = analyzer.analyze_paths(logs)
+                    </code></pre>
+                </div>
+
+                <!-- 自动化测试框架 -->
+                <div class="example-box">
+                    <div class="example-box__title">
+                        <i class="fas fa-vial"></i>
+                        <span>自动化测试框架</span>
+                    </div>
+                    <pre><code class="python">
+# test_framework/
+#     __init__.py
+#     core/
+#         __init__.py
+#         test_case.py
+#         test_suite.py
+#         test_runner.py
+#     assertions/
+#         __init__.py
+#         basic_assertions.py
+#         web_assertions.py
+#     reporters/
+#         __init__.py
+#         html_reporter.py
+#         junit_reporter.py
+
+# test_case.py
+class TestCase:
+    def setUp(self):
+        """测试前准备工作"""
+        pass
+        
+    def tearDown(self):
+        """测试后清理工作"""
+        pass
+        
+    def run(self):
+        """运行测试"""
+        self.setUp()
+        try:
+            test_methods = [m for m in dir(self) if m.startswith('test_')]
+            for method in test_methods:
+                getattr(self, method)()
+        finally:
+            self.tearDown()
+
+# web_assertions.py
+class WebAssertions:
+    def assert_element_present(self, driver, selector):
+        elements = driver.find_elements_by_css_selector(selector)
+        if not elements:
+            raise AssertionError(f"Element {selector} not found")
+    
+    def assert_text_present(self, driver, text):
+        if text not in driver.page_source:
+            raise AssertionError(f"Text '{text}' not found in page")
+
+# 使用示例
+from test_framework.core.test_case import TestCase
+from test_framework.assertions.web_assertions import WebAssertions
+from selenium import webdriver
+
+class LoginTest(TestCase, WebAssertions):
+    def setUp(self):
+        self.driver = webdriver.Chrome()
+        
+    def test_login_page(self):
+        self.driver.get("http://example.com/login")
+        self.assert_element_present(self.driver, "#login-form")
+        self.assert_text_present(self.driver, "Login")
+        
+    def tearDown(self):
+        self.driver.quit()
+                    </code></pre>
+                </div>
+
+                <!-- 配置管理系统 -->
+                <div class="example-box">
+                    <div class="example-box__title">
+                        <i class="fas fa-cogs"></i>
+                        <span>配置管理系统</span>
+                    </div>
+                    <pre><code class="python">
+# config_manager/
+#     __init__.py
+#     loaders/
+#         __init__.py
+#         yaml_loader.py
+#         json_loader.py
+#         env_loader.py
+#     validators/
+#         __init__.py
+#         schema.py
+#         validator.py
+#     handlers/
+#         __init__.py
+#         file_handler.py
+#         cache_handler.py
+
+# yaml_loader.py
+import yaml
+
+class YAMLLoader:
+    def load(self, file_path):
+        with open(file_path, 'r') as f:
+            return yaml.safe_load(f)
+    
+    def dump(self, data, file_path):
+        with open(file_path, 'w') as f:
+            yaml.dump(data, f)
+
+# schema.py
+class ConfigSchema:
+    def __init__(self, schema):
+        self.schema = schema
+    
+    def validate(self, config):
+        for key, type_info in self.schema.items():
+            if key not in config:
+                raise ValueError(f"Missing required key: {key}")
+            if not isinstance(config[key], type_info['type']):
+                raise TypeError(f"Invalid type for {key}")
+
+# 使用示例
+from config_manager.loaders.yaml_loader import YAMLLoader
+from config_manager.validators.schema import ConfigSchema
+
+loader = YAMLLoader()
+schema = ConfigSchema({
+    'database': {'type': dict},
+    'api_key': {'type': str},
+    'debug': {'type': bool}
+})
+
+config = loader.load('config.yml')
+schema.validate(config)
+                    </code></pre>
+                </div>
+
+                <!-- 任务调度系统 -->
+                <div class="example-box">
+                    <div class="example-box__title">
+                        <i class="fas fa-clock"></i>
+                        <span>任务调度系统</span>
+                    </div>
+                    <pre><code class="python">
+# task_scheduler/
+#     __init__.py
+#     scheduler/
+#         __init__.py
+#         job_scheduler.py    # 任务调度器
+#         cron_parser.py      # Cron表达式解析
+#     tasks/
+#         __init__.py
+#         base_task.py       # 任务基类
+#         periodic_task.py    # 周期性任务
+#         one_time_task.py   # 一次性任务
+#     executors/
+#         __init__.py
+#         thread_executor.py  # 线程执行器
+#         process_executor.py # 进程执行器
+#     storage/
+#         __init__.py
+#         task_store.py      # 任务存储
+#         result_store.py    # 结果存储
+
+# job_scheduler.py
+from datetime import datetime
+import threading
+
+class JobScheduler:
+    def __init__(self):
+        self.tasks = {}
+        self._running = False
+        self._lock = threading.Lock()
+    
+    def add_task(self, task, schedule):
+        with self._lock:
+            self.tasks[task.id] = (task, schedule)
+    
+    def remove_task(self, task_id):
+        with self._lock:
+            self.tasks.pop(task_id, None)
+    
+    def start(self):
+        self._running = True
+        while self._running:
+            now = datetime.now()
+            for task_id, (task, schedule) in self.tasks.items():
+                if schedule.should_run(now):
+                    self._execute_task(task)
+    
+    def _execute_task(self, task):
+        try:
+            task.execute()
+        except Exception as e:
+            self._handle_error(task, e)
+
+# base_task.py
+from abc import ABC, abstractmethod
+
+class BaseTask(ABC):
+    def __init__(self, task_id, name):
+        self.id = task_id
+        self.name = name
+        self.retries = 0
+        self.max_retries = 3
+    
+    @abstractmethod
+    def execute(self):
+        pass
+    
+    def on_success(self):
+        pass
+    
+    def on_failure(self, error):
+        if self.retries < self.max_retries:
+            self.retries += 1
+            return True
+        return False
+
+# 使用示例
+from task_scheduler.scheduler import job_scheduler
+from task_scheduler.tasks.periodic_task import PeriodicTask
+
+class DataBackupTask(PeriodicTask):
+    def execute(self):
+        # 执行数据备份
+        print(f"Backing up data at {datetime.now()}")
+
+scheduler = job_scheduler.JobScheduler()
+backup_task = DataBackupTask("backup_001", "Daily Backup")
+scheduler.add_task(backup_task, "0 0 * * *")  # 每天午夜执行
+scheduler.start()
+                    </code></pre>
+                </div>
+
+                <!-- 内容管理系统 -->
+                <div class="example-box">
+                    <div class="example-box__title">
+                        <i class="fas fa-newspaper"></i>
+                        <span>内容管理系统</span>
+                    </div>
+                    <pre><code class="python">
+# cms/
+#     __init__.py
+#     models/
+#         __init__.py
+#         content.py        # 内容模型
+#         category.py       # 分类模型
+#         user.py          # 用户模型
+#     services/
+#         __init__.py
+#         content_service.py    # 内容服务
+#         search_service.py     # 搜索服务
+#         auth_service.py       # 认证服务
+#     templates/
+#         __init__.py
+#         template_engine.py    # 模板引擎
+#         template_loader.py    # 模板加载器
+#     plugins/
+#         __init__.py
+#         plugin_manager.py     # 插件管理器
+#         seo_plugin.py        # SEO插件
+#         cache_plugin.py      # 缓存插件
+
+# content.py
+from datetime import datetime
+
+class Content:
+    def __init__(self, title, body, author):
+        self.title = title
+        self.body = body
+        self.author = author
+        self.created_at = datetime.now()
+        self.status = 'draft'
+        self.metadata = {}
+    
+    def publish(self):
+        self.status = 'published'
+        self.published_at = datetime.now()
+    
+    def add_metadata(self, key, value):
+        self.metadata[key] = value
+
+# plugin_manager.py
+class PluginManager:
+    def __init__(self):
+        self.plugins = {}
+        self.hooks = {}
+    
+    def register_plugin(self, plugin):
+        self.plugins[plugin.name] = plugin
+        for hook in plugin.get_hooks():
+            if hook not in self.hooks:
+                self.hooks[hook] = []
+            self.hooks[hook].append(plugin)
+    
+    def execute_hook(self, hook_name, *args, **kwargs):
+        if hook_name in self.hooks:
+            for plugin in self.hooks[hook_name]:
+                plugin.execute_hook(hook_name, *args, **kwargs)
+
+# 使用示例
+from cms.models.content import Content
+from cms.services.content_service import ContentService
+from cms.plugins.plugin_manager import PluginManager
+
+# 创建内容
+content = Content(
+    title="Python模块化编程",
+    body="模块化编程是Python的核心特性...",
+    author="admin"
+)
+
+# 添加元数据
+content.add_metadata("keywords", "Python, 模块化, 编程")
+content.add_metadata("description", "学习Python模块化编程的完整指南")
+
+# 使用服务层处理内容
+service = ContentService()
+service.save(content)
+
+# 使用插件系统
+plugin_manager = PluginManager()
+plugin_manager.register_plugin(SEOPlugin())
+plugin_manager.execute_hook('pre_publish', content)
+                    </code></pre>
+                </div>
+
+                <!-- 数据库迁移工具 -->
+                <div class="example-box">
+                    <div class="example-box__title">
+                        <i class="fas fa-database"></i>
+                        <span>数据库迁移工具</span>
+                    </div>
+                    <pre><code class="python">
+# db_migrator/
+#     __init__.py
+#     core/
+#         __init__.py
+#         migrator.py       # 迁移核心
+#         version.py        # 版本控制
+#     dialects/
+#         __init__.py
+#         mysql.py         # MySQL方言
+#         postgresql.py    # PostgreSQL方言
+#     operations/
+#         __init__.py
+#         table.py         # 表操作
+#         column.py        # 列操作
+#         index.py         # 索引操作
+
+# migrator.py
+class Migrator:
+    def __init__(self, connection, dialect):
+        self.connection = connection
+        self.dialect = dialect
+        self.operations = []
+    
+    def create_table(self, name, columns):
+        operation = CreateTable(name, columns)
+        self.operations.append(operation)
+    
+    def add_column(self, table, column):
+        operation = AddColumn(table, column)
+        self.operations.append(operation)
+    
+    def migrate(self):
+        for operation in self.operations:
+            sql = operation.to_sql(self.dialect)
+            self.execute(sql)
+    
+    def rollback(self):
+        for operation in reversed(self.operations):
+            sql = operation.rollback_sql(self.dialect)
+            self.execute(sql)
+
+# 使用示例
+from db_migrator.core.migrator import Migrator
+from db_migrator.dialects.mysql import MySQLDialect
+
+# 创建迁移器
+migrator = Migrator(connection, MySQLDialect())
+
+# 定义迁移操作
+migrator.create_table('users', [
+    Column('id', 'INT', primary_key=True),
+    Column('username', 'VARCHAR(255)', unique=True),
+    Column('created_at', 'TIMESTAMP')
+])
+
+migrator.add_column('users', 
+    Column('email', 'VARCHAR(255)', nullable=False)
+)
+
+# 执行迁移
+try:
+    migrator.migrate()
+except Exception as e:
+    migrator.rollback()
+    raise e
+                    </code></pre>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box__title">
+                        <i class="fas fa-lightbulb"></i>
+                        <span>项目设计要点</span>
+                    </div>
+                    <ul>
+                        <li>使用抽象基类定义接口规范</li>
+                        <li>实现插件系统支持扩展</li>
+                        <li>使用工厂模式创建对象</li>
+                        <li>实现适当的错误处理机制</li>
+                        <li>提供完整的日志记录</li>
+                        <li>支持配置的灵活管理</li>
+                        <li>考虑并发和线程安全</li>
+                        <li>实现优雅的回滚机制</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 高级主题 -->
+            <section id="advanced-topics" class="lesson-section">
+                <h2>高级主题</h2>
+
+                <!-- 相对导入 -->
+                <div class="example-box">
+                    <div class="example-box__title">
+                        <i class="fas fa-route"></i>
+                        <span>相对导入</span>
+                    </div>
+                    <p>相对导入使用点号表示相对路径，一个点表示当前目录，两个点表示上级目录：</p>
+                    <pre><code class="python">
+mypackage/
+    __init__.py
+    subpackage1/
+        __init__.py
+        module_a.py
+        module_b.py
+    subpackage2/
+        __init__.py
+        module_c.py
+        module_d.py
+
+# module_b.py中的相对导入
+from . import module_a           # 导入同级目录的module_a
+from .. import subpackage2      # 导入上级目录的subpackage2
+from ..subpackage2 import module_c  # 导入平级包的模块
+                    </code></pre>
+                    
+                    <div class="warning-box">
+                        <div class="warning-box__title">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span>注意事项</span>
+                        </div>
+                        <p>相对导入只能在包内使用，不能在顶级脚本中使用。且必须使用from语句。</p>
+                    </div>
+                </div>
+
+                <!-- 命名空间包 -->
+                <div class="example-box">
+                    <div class="example-box__title">
+                        <i class="fas fa-box-open"></i>
+                        <span>命名空间包</span>
+                    </div>
+                    <p>命名空间包是一种特殊的包，它可以跨越多个目录，不需要__init__.py文件：</p>
+                    <pre><code class="python">
+# 目录1: /path1/mypackage/module1.py
+# 目录2: /path2/mypackage/module2.py
+
+# Python会将两个目录中的mypackage合并成一个命名空间包
+
+import sys
+sys.path.extend(['/path1', '/path2'])
+
+from mypackage import module1  # 从目录1加载
+from mypackage import module2  # 从目录2加载
+                    </code></pre>
+                </div>
+
+                <!-- 延迟导入 -->
+                <div class="example-box">
+                    <div class="example-box__title">
+                        <i class="fas fa-clock"></i>
+                        <span>延迟导入</span>
+                    </div>
+                    <p>延迟导入可以提高程序启动速度，只在需要时才导入模块：</p>
+                    <pre><code class="python">
+class ImageProcessor:
+    def __init__(self):
+        self.PIL = None  # 延迟导入PIL
+    
+    def process_image(self, image_path):
+        if self.PIL is None:
+            # 只在需要时导入
+            import PIL.Image
+            self.PIL = PIL.Image
+        
+        return self.PIL.open(image_path)
+                    </code></pre>
+                </div>
+
+                <!-- 导入钩子 -->
+                <div class="example-box">
+                    <div class="example-box__title">
+                        <i class="fas fa-plug"></i>
+                        <span>导入钩子</span>
+                    </div>
+                    <p>通过__import__()函数和importlib模块可以实现自定义导入行为：</p>
+                    <pre><code class="python">
+import importlib
+
+# 动态导入模块
+module_name = "math"
+math = importlib.import_module(module_name)
+
+# 重新加载模块
+importlib.reload(math)
+
+# 自定义导入器
+class CustomImporter:
+    @classmethod
+    def find_spec(cls, fullname, path, target=None):
+        # 实现模块查找逻辑
+        pass
+    
+    @classmethod
+    def create_module(cls, spec):
+        # 创建模块对象
+        pass
+    
+    @classmethod
+    def exec_module(cls, module):
+        # 执行模块代码
+        pass
+                    </code></pre>
+                </div>
+
+                <!-- 包的属性 -->
+                <div class="example-box">
+                    <div class="example-box__title">
+                        <i class="fas fa-cog"></i>
+                        <span>包的特殊属性</span>
+                    </div>
+                    <pre><code class="python">
+# __all__ 变量控制 from package import * 导入的内容
+# mypackage/__init__.py
+__all__ = ['module1', 'module2', 'useful_function']
+
+# __path__ 属性包含包的搜索路径
+import mypackage
+print(mypackage.__path__)
+
+# __package__ 属性表示包的完整路径
+print(mypackage.__package__)
+                    </code></pre>
+                </div>
+
+                <!-- 循环导入 -->
+                <div class="example-box">
+                    <div class="example-box__title">
+                        <i class="fas fa-sync"></i>
+                        <span>处理循环导入</span>
+                    </div>
+                    <p>循环导入是一个常见的问题，这里有几种解决方案：</p>
+                    <pre><code class="python">
+# 方案1：延迟导入
+# module_a.py
+class ClassA:
+    def method_with_b(self):
+        from module_b import ClassB  # 在方法内部导入
+        return ClassB()
+
+# 方案2：重构代码结构
+# 将共享的代码移到第三个模块
+
+# 方案3：使用依赖注入
+class ClassA:
+    def __init__(self, b_instance):
+        self.b = b_instance  # 通过参数注入依赖
+                    </code></pre>
+                    
+                    <div class="warning-box">
+                        <div class="warning-box__title">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span>最佳实践</span>
+                        </div>
+                        <ul>
+                            <li>优先考虑重构代码结构，避免循环依赖</li>
+                            <li>如果无法避免，使用延迟导入或依赖注入</li>
+                            <li>保持模块之间的依赖关系清晰</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            </section>
+
+            <!-- 练习部分 -->
+            <section id="exercises" class="lesson-section">
+                <h2>练习与实践</h2>
+                
+                <div class="exercise-box">
+                    <h3 class="exercise-box__title">
+                        <i class="fas fa-tasks"></i> 练习1：创建字符串工具模块
+                    </h3>
+                    <p>创建一个字符串处理工具模块，包含常用的字符串操作函数。</p>
+                    <div class="exercise-box__hint">
+                        提示：实现函数如reverse_string、count_words、is_palindrome等。
+                    </div>
+                    <pre><code class="python">
+# strutils.py
+def reverse_string(text):
+    """反转字符串"""
+    # 在此编写你的代码
+    pass
+
+def count_words(text):
+    """统计单词数量"""
+    # 在此编写你的代码
+    pass
+
+def is_palindrome(text):
+    """判断是否为回文"""
+    # 在此编写你的代码
+    pass
+                    </code></pre>
+                </div>
+
+                <div class="exercise-box">
+                    <h3 class="exercise-box__title">
+                        <i class="fas fa-tasks"></i> 练习2：创建计算器包
+                    </h3>
+                    <p>创建一个计算器包，包含基础运算和高级运算两个模块。</p>
+                    <div class="exercise-box__hint">
+                        提示：创建包结构，实现基本四则运算和科学计算功能。
+                    </div>
+                    <pre><code class="python">
+calculator/
+    __init__.py
+    basic.py      # 加减乘除
+    advanced.py   # 幂运算、对数等
+                    </code></pre>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="https://cdn.bytedance.com/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

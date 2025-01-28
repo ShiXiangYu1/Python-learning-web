@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网络编程 - Python高级课程</title>
+    <link href="http://cdn.bytedance.com/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="css/course.css">
+    <link rel="stylesheet" href="http://cdn.bytedance.com/highlight.js/11.7.0/styles/github.min.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav__logo">
+                <a href="../../index.html" class="nav__logo-link">
+                    <svg class="nav__logo-icon" width="40" height="40" viewBox="0 0 40 40">
+                        <path d="M20 0C8.954 0 0 8.954 0 20s8.954 20 20 20 20-8.954 20-20S31.046 0 20 0zm0 36c-8.837 0-16-7.163-16-16S11.163 4 20 4s16 7.163 16 16-7.163 16-16 16z" fill="#306998"/>
+                        <path d="M20 8c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12S26.627 8 20 8zm0 22c-5.514 0-10-4.486-10-10S14.486 10 20 10s10 4.486 10 10-4.486 10-10 10z" fill="#FFD43B"/>
+                    </svg>
+                    <span class="nav__logo-text">Python学习</span>
+                </a>
+            </div>
+            <ul class="nav__menu">
+                <li><a href="../../index.html" class="nav__link">首页</a></li>
+                <li><a href="../basics/index.html" class="nav__link">基础课程</a></li>
+                <li><a href="../intermediate/index.html" class="nav__link">进阶课程</a></li>
+                <li><a href="index.html" class="nav__link nav__link--active">高级课程</a></li>
+                <li><a href="../../examples/index.html" class="nav__link">示例代码</a></li>
+                <li><a href="../../exercises/index.html" class="nav__link">练习题</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main">
+        <div class="course-container">
+            <!-- 侧边导航 -->
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="sidebar-nav__item"><a href="../index.html"><i class="fas fa-home"></i> 首页</a></li>
+                    <li class="sidebar-nav__item"><a href="index.html"><i class="fas fa-book"></i> 课程概述</a></li>
+                    <li class="sidebar-nav__item"><a href="multithreading.html"><i class="fas fa-tasks"></i> 多线程编程</a></li>
+                    <li class="sidebar-nav__item sidebar-nav__item--active">
+                        <a href="network.html"><i class="fas fa-network-wired"></i> 网络编程</a>
+                        <ul>
+                            <li><a href="#introduction">网络编程简介</a></li>
+                            <li><a href="#socket-basics">Socket基础</a></li>
+                            <li><a href="#tcp-programming">TCP编程</a></li>
+                            <li><a href="#udp-programming">UDP编程</a></li>
+                            <li><a href="#http-programming">HTTP编程</a></li>
+                            <li><a href="#advanced-topics">高级主题</a></li>
+                            <li><a href="#exercises">练习与实践</a></li>
+                        </ul>
+                    </li>
+                    <li class="sidebar-nav__item"><a href="database.html"><i class="fas fa-database"></i> 数据库操作</a></li>
+                    <li class="sidebar-nav__item"><a href="web-dev.html"><i class="fas fa-globe"></i> Web开发基础</a></li>
+                </ul>
+            </nav>
+
+            <section class="course-content">
+                <div class="lesson-header">
+                    <h1 class="lesson-header__title">网络编程</h1>
+                    <div class="lesson-header__meta">
+                        <span><i class="fas fa-clock"></i> 学习时长：150分钟</span>
+                        <span><i class="fas fa-tasks"></i> 练习题：5个</span>
+                    </div>
+                </div>
+
+                <!-- 网络编程简介 -->
+                <section id="introduction" class="lesson-section">
+                    <h2 class="lesson-section__title">网络编程简介</h2>
+                    <div class="lesson-section__content">
+                        <p>网络编程是Python高级开发中的重要组成部分，它使得程序能够通过网络进行通信和数据交换。本章将介绍Python网络编程的基础概念、常用协议以及实际应用场景。</p>
+                        
+                        <div class="info-box">
+                            <h3 class="info-box__title">
+                                <i class="fas fa-lightbulb"></i>
+                                为什么要学习网络编程？
+                            </h3>
+                            <ul>
+                                <li>开发网络应用和服务的基础技能</li>
+                                <li>实现分布式系统和微服务架构</li>
+                                <li>构建高性能的网络通信程序</li>
+                                <li>理解现代互联网应用的工作原理</li>
+                            </ul>
+                        </div>
+
+                        <div class="info-box">
+                            <h3 class="info-box__title">
+                                <i class="fas fa-network-wired"></i>
+                                网络编程的应用场景
+                            </h3>
+                            <ul>
+                                <li>Web服务器和客户端开发</li>
+                                <li>即时通讯系统</li>
+                                <li>分布式计算</li>
+                                <li>网络爬虫</li>
+                                <li>物联网设备通信</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Socket基础 -->
+                <section id="socket-basics" class="lesson-section">
+                    <h2 class="lesson-section__title">Socket基础</h2>
+                    <div class="lesson-section__content">
+                        <p>Socket是网络编程的基础，它提供了计算机网络中进程间通信的端点。Python的socket模块提供了创建网络应用的底层支持。</p>
+
+                        <h3 class="lesson-section__subtitle">Socket的基本概念</h3>
+                        <pre><code class="python">import socket
+
+# 创建TCP Socket
+tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# 创建UDP Socket
+udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+# 获取主机名和IP地址
+hostname = socket.gethostname()
+ip_address = socket.gethostbyname(hostname)
+print(f"主机名：{hostname}")
+print(f"IP地址：{ip_address}")</code></pre>
+
+                        <div class="info-box">
+                            <h3 class="info-box__title">
+                                <i class="fas fa-info-circle"></i>
+                                Socket的特点
+                            </h3>
+                            <ul>
+                                <li>支持TCP和UDP协议</li>
+                                <li>可以进行同步和异步通信</li>
+                                <li>支持IPv4和IPv6</li>
+                                <li>可以设置多种socket选项</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TCP编程 -->
+                <section id="tcp-programming" class="lesson-section">
+                    <h2 class="lesson-section__title">TCP编程</h2>
+                    <div class="lesson-section__content">
+                        <p>TCP（传输控制协议）提供可靠的、面向连接的通信服务。它适用于需要保证数据完整性和顺序的应用场景。</p>
+
+                        <h3 class="lesson-section__subtitle">TCP服务器</h3>
+                        <pre><code class="python">import socket
+import threading
+
+class TCPServer:
+    def __init__(self, host='localhost', port=8888):
+        self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.server_socket.bind((host, port))
+        self.server_socket.listen(5)
+        print(f"服务器启动，监听 {host}:{port}")
+    
+    def handle_client(self, client_socket, addr):
+        print(f"接受来自 {addr} 的连接")
+        while True:
+            try:
+                data = client_socket.recv(1024)
+                if not data:
+                    break
+                print(f"收到消息：{data.decode()}")
+                response = f"服务器已收到消息：{data.decode()}"
+                client_socket.send(response.encode())
+            except Exception as e:
+                print(f"处理客户端消息时出错：{e}")
+                break
+        client_socket.close()
+    
+    def start(self):
+        while True:
+            client_socket, addr = self.server_socket.accept()
+            client_thread = threading.Thread(
+                target=self.handle_client,
+                args=(client_socket, addr)
+            )
+            client_thread.start()</code></pre>
+
+                        <h3 class="lesson-section__subtitle">TCP客户端</h3>
+                        <pre><code class="python">class TCPClient:
+    def __init__(self, host='localhost', port=8888):
+        self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.server_address = (host, port)
+    
+    def connect(self):
+        try:
+            self.client_socket.connect(self.server_address)
+            print(f"已连接到服务器 {self.server_address}")
+        except Exception as e:
+            print(f"连接服务器失败：{e}")
+            return False
+        return True
+    
+    def send_message(self, message):
+        try:
+            self.client_socket.send(message.encode())
+            response = self.client_socket.recv(1024)
+            print(f"服务器响应：{response.decode()}")
+        except Exception as e:
+            print(f"发送消息时出错：{e}")
+    
+    def close(self):
+        self.client_socket.close()</code></pre>
+
+                        <div class="warning-box">
+                            <h3 class="warning-box__title">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                注意事项
+                            </h3>
+                            <ul>
+                                <li>正确处理连接的建立和断开</li>
+                                <li>处理网络异常和超时情况</li>
+                                <li>注意资源的及时释放</li>
+                                <li>考虑并发连接的处理</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- UDP编程 -->
+                <section id="udp-programming" class="lesson-section">
+                    <h2 class="lesson-section__title">UDP编程</h2>
+                    <div class="lesson-section__content">
+                        <p>UDP（用户数据报协议）提供无连接的通信服务，适用于对实时性要求高但对可靠性要求相对较低的场景。</p>
+
+                        <h3 class="lesson-section__subtitle">UDP服务器</h3>
+                        <pre><code class="python">class UDPServer:
+    def __init__(self, host='localhost', port=9999):
+        self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.server_socket.bind((host, port))
+        print(f"UDP服务器启动，监听 {host}:{port}")
+    
+    def start(self):
+        while True:
+            try:
+                data, addr = self.server_socket.recvfrom(1024)
+                print(f"收到来自 {addr} 的消息：{data.decode()}")
+                response = f"服务器已收到消息：{data.decode()}"
+                self.server_socket.sendto(response.encode(), addr)
+            except Exception as e:
+                print(f"处理消息时出错：{e}")
+                break
+        self.server_socket.close()</code></pre>
+
+                        <h3 class="lesson-section__subtitle">UDP客户端</h3>
+                        <pre><code class="python">class UDPClient:
+    def __init__(self, server_host='localhost', server_port=9999):
+        self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.server_address = (server_host, server_port)
+    
+    def send_message(self, message):
+        try:
+            self.client_socket.sendto(message.encode(), self.server_address)
+            data, _ = self.client_socket.recvfrom(1024)
+            print(f"服务器响应：{data.decode()}")
+        except Exception as e:
+            print(f"发送消息时出错：{e}")
+    
+    def close(self):
+        self.client_socket.close()</code></pre>
+
+                        <div class="info-box">
+                            <h3 class="info-box__title">
+                                <i class="fas fa-lightbulb"></i>
+                                UDP vs TCP
+                            </h3>
+                            <ul>
+                                <li>UDP无需建立连接，传输速度更快</li>
+                                <li>UDP不保证数据包的顺序和到达</li>
+                                <li>UDP适合实时数据传输</li>
+                                <li>UDP数据包大小有限制</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- HTTP编程 -->
+                <section id="http-programming" class="lesson-section">
+                    <h2 class="lesson-section__title">HTTP编程</h2>
+                    <div class="lesson-section__content">
+                        <p>HTTP是最常用的应用层协议，Python提供了多种方式来进行HTTP通信，从底层的socket到高级的requests库。</p>
+
+                        <h3 class="lesson-section__subtitle">使用requests库</h3>
+                        <pre><code class="python">import requests
+
+# 发送GET请求
+def get_example():
+    response = requests.get('https://api.example.com/data')
+    if response.status_code == 200:
+        return response.json()
+    return None
+
+# 发送POST请求
+def post_example(data):
+    headers = {'Content-Type': 'application/json'}
+    response = requests.post(
+        'https://api.example.com/create',
+        json=data,
+        headers=headers
+    )
+    return response.status_code == 201</code></pre>
+
+                        <h3 class="lesson-section__subtitle">简单的HTTP服务器</h3>
+                        <pre><code class="python">from http.server import HTTPServer, BaseHTTPRequestHandler
+import json
+
+class SimpleHTTPHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        if self.path == '/api/data':
+            self.send_response(200)
+            self.send_header('Content-type', 'application/json')
+            self.end_headers()
+            
+            response_data = {
+                'message': 'Hello, World!',
+                'status': 'success'
+            }
+            self.wfile.write(json.dumps(response_data).encode())
+        else:
+            self.send_error(404, 'Not Found')
+    
+    def do_POST(self):
+        if self.path == '/api/submit':
+            content_length = int(self.headers['Content-Length'])
+            post_data = self.rfile.read(content_length)
+            data = json.loads(post_data.decode())
+            
+            self.send_response(201)
+            self.send_header('Content-type', 'application/json')
+            self.end_headers()
+            
+            response = {
+                'message': 'Data received',
+                'data': data
+            }
+            self.wfile.write(json.dumps(response).encode())
+        else:
+            self.send_error(404, 'Not Found')
+
+def run_server(port=8000):
+    server_address = ('', port)
+    httpd = HTTPServer(server_address, SimpleHTTPHandler)
+    print(f'Starting server on port {port}...')
+    httpd.serve_forever()</code></pre>
+
+                        <div class="info-box">
+                            <h3 class="info-box__title">
+                                <i class="fas fa-star"></i>
+                                HTTP编程最佳实践
+                            </h3>
+                            <ul>
+                                <li>使用合适的HTTP方法</li>
+                                <li>正确处理状态码</li>
+                                <li>设置适当的请求头</li>
+                                <li>处理异常情况</li>
+                                <li>使用会话保持连接</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 高级主题 -->
+                <section id="advanced-topics" class="lesson-section">
+                    <h2 class="lesson-section__title">高级主题</h2>
+                    <div class="lesson-section__content">
+                        <h3 class="lesson-section__subtitle">异步网络编程</h3>
+                        <pre><code class="python">import asyncio
+import aiohttp
+
+async def fetch_url(session, url):
+    async with session.get(url) as response:
+        return await response.text()
+
+async def main():
+    urls = [
+        'http://example.com/api/1',
+        'http://example.com/api/2',
+        'http://example.com/api/3'
+    ]
+    
+    async with aiohttp.ClientSession() as session:
+        tasks = [fetch_url(session, url) for url in urls]
+        results = await asyncio.gather(*tasks)
+        return results
+
+# 运行异步任务
+asyncio.run(main())</code></pre>
+
+                        <h3 class="lesson-section__subtitle">WebSocket编程</h3>
+                        <pre><code class="python">import websockets
+import asyncio
+
+async def websocket_handler(websocket, path):
+    try:
+        async for message in websocket:
+            print(f"收到消息: {message}")
+            response = f"服务器收到: {message}"
+            await websocket.send(response)
+    except websockets.exceptions.ConnectionClosed:
+        print("客户端断开连接")
+
+async def start_server():
+    server = await websockets.serve(
+        websocket_handler,
+        "localhost",
+        8765
+    )
+    print("WebSocket服务器启动")
+    await server.wait_closed()</code></pre>
+
+                        <div class="info-box">
+                            <h3 class="info-box__title">
+                                <i class="fas fa-graduation-cap"></i>
+                                高级特性
+                            </h3>
+                            <ul>
+                                <li>异步I/O提高并发性能</li>
+                                <li>WebSocket实现实时通信</li>
+                                <li>SSL/TLS加密通信</li>
+                                <li>代理和转发</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 练习与实践 -->
+                <section id="exercises" class="lesson-section">
+                    <h2 class="lesson-section__title">练习与实践</h2>
+                    <div class="lesson-section__content">
+                        <p>通过以下练习，你可以加深对网络编程的理解，并掌握在实际场景中应用网络编程技术的技巧。</p>
+
+                        <div class="info-box">
+                            <h3 class="info-box__title">
+                                <i class="fas fa-graduation-cap"></i>
+                                <span>学习目标</span>
+                            </h3>
+                            <ul>
+                                <li>掌握基本的Socket编程</li>
+                                <li>理解TCP和UDP的使用场景</li>
+                                <li>能够开发简单的HTTP服务</li>
+                                <li>学会处理并发连接</li>
+                            </ul>
+                        </div>
+
+                        <div class="exercise-box">
+                            <h3 class="exercise-box__title">
+                                <i class="fas fa-tasks"></i> 练习1：简单聊天室
+                            </h3>
+                            <p>实现一个基于TCP的多人聊天室，支持用户加入、发送消息和退出功能。</p>
+                            <div class="exercise-box__hint">
+                                <h4><i class="fas fa-lightbulb"></i> 提示：</h4>
+                                <ul>
+                                    <li>使用多线程处理多个客户端连接</li>
+                                    <li>实现消息广播功能</li>
+                                    <li>处理客户端异常断开的情况</li>
+                                    <li>添加用户名功能</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="exercise-box">
+                            <h3 class="exercise-box__title">
+                                <i class="fas fa-tasks"></i> 练习2：文件传输服务
+                            </h3>
+                            <p>开发一个基于TCP的文件传输程序，支持上传和下载功能。</p>
+                            <div class="exercise-box__hint">
+                                <h4><i class="fas fa-lightbulb"></i> 提示：</h4>
+                                <ul>
+                                    <li>实现文件的分块传输</li>
+                                    <li>添加进度显示功能</li>
+                                    <li>处理大文件传输</li>
+                                    <li>实现断点续传</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="exercise-box">
+                            <h3 class="exercise-box__title">
+                                <i class="fas fa-tasks"></i> 练习3：HTTP API服务器
+                            </h3>
+                            <p>实现一个简单的RESTful API服务器，支持基本的CRUD操作。</p>
+                            <div class="exercise-box__hint">
+                                <h4><i class="fas fa-lightbulb"></i> 提示：</h4>
+                                <ul>
+                                    <li>使用适当的HTTP方法</li>
+                                    <li>实现JSON数据处理</li>
+                                    <li>添加错误处理</li>
+                                    <li>实现数据持久化</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="exercise-box">
+                            <h3 class="exercise-box__title">
+                                <i class="fas fa-tasks"></i> 练习4：网络监控工具
+                            </h3>
+                            <p>开发一个网络监控工具，可以监控指定主机的端口状态和响应时间。</p>
+                            <div class="exercise-box__hint">
+                                <h4><i class="fas fa-lightbulb"></i> 提示：</h4>
+                                <ul>
+                                    <li>使用多线程进行并发检测</li>
+                                    <li>实现超时处理</li>
+                                    <li>记录监控日志</li>
+                                    <li>添加告警功能</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="exercise-box">
+                            <h3 class="exercise-box__title">
+                                <i class="fas fa-tasks"></i> 练习5：WebSocket聊天应用
+                            </h3>
+                            <p>实现一个基于WebSocket的实时聊天应用，支持在线状态显示和消息推送。</p>
+                            <div class="exercise-box__hint">
+                                <h4><i class="fas fa-lightbulb"></i> 提示：</h4>
+                                <ul>
+                                    <li>使用asyncio和websockets</li>
+                                    <li>实现心跳检测</li>
+                                    <li>添加用户状态管理</li>
+                                    <li>实现消息历史记录</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="info-box">
+                            <h3 class="info-box__title">
+                                <i class="fas fa-star"></i>
+                                <span>挑战任务</span>
+                            </h3>
+                            <p>完成基础练习后，你可以尝试以下挑战任务来提升你的网络编程技能：</p>
+                            <ul>
+                                <li>实现一个简单的代理服务器</li>
+                                <li>开发一个基于UDP的视频流服务</li>
+                                <li>实现一个简单的负载均衡器</li>
+                                <li>开发一个分布式计算框架</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer__content">
+            <div class="footer__section">
+                <h4 class="footer__title">关于我们</h4>
+                <p class="footer__text">致力于为初学者提供优质的Python编程学习资源</p>
+            </div>
+            <div class="footer__section">
+                <h4 class="footer__title">快速链接</h4>
+                <ul class="footer__links">
+                    <li><a href="../../index.html">返回首页</a></li>
+                    <li><a href="../../examples/index.html">示例代码</a></li>
+                    <li><a href="../../exercises/index.html">练习题</a></li>
+                </ul>
+            </div>
+            <div class="footer__section">
+                <h4 class="footer__title">学习资源</h4>
+                <ul class="footer__links">
+                    <li><a href="../basics/index.html">基础课程</a></li>
+                    <li><a href="../intermediate/index.html">进阶课程</a></li>
+                    <li><a href="index.html">高级课程</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            <p>&copy; 2024 Python学习网站. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="http://cdn.bytedance.com/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>
+        hljs.highlightAll();
+    </script>
+</body>
+</html> 

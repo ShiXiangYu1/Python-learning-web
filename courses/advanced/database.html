@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据库操作 - Python高级课程</title>
+    <link href="http://cdn.bytedance.com/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="css/course.css">
+    <link rel="stylesheet" href="http://cdn.bytedance.com/highlight.js/11.7.0/styles/github.min.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav__logo">
+                <a href="../../index.html" class="nav__logo-link">
+                    <svg class="nav__logo-icon" width="40" height="40" viewBox="0 0 40 40">
+                        <path d="M20 0C8.954 0 0 8.954 0 20s8.954 20 20 20 20-8.954 20-20S31.046 0 20 0zm0 36c-8.837 0-16-7.163-16-16S11.163 4 20 4s16 7.163 16 16-7.163 16-16 16z" fill="#306998"/>
+                        <path d="M20 8c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12S26.627 8 20 8zm0 22c-5.514 0-10-4.486-10-10S14.486 10 20 10s10 4.486 10 10-4.486 10-10 10z" fill="#FFD43B"/>
+                    </svg>
+                    <span class="nav__logo-text">Python学习</span>
+                </a>
+            </div>
+            <ul class="nav__menu">
+                <li><a href="../../index.html" class="nav__link">首页</a></li>
+                <li><a href="../basics/index.html" class="nav__link">基础课程</a></li>
+                <li><a href="../intermediate/index.html" class="nav__link">进阶课程</a></li>
+                <li><a href="index.html" class="nav__link nav__link--active">高级课程</a></li>
+                <li><a href="../../examples/index.html" class="nav__link">示例代码</a></li>
+                <li><a href="../../exercises/index.html" class="nav__link">练习题</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main">
+        <div class="course-container">
+            <!-- 侧边导航 -->
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="sidebar-nav__item"><a href="../index.html"><i class="fas fa-home"></i> 首页</a></li>
+                    <li class="sidebar-nav__item"><a href="index.html"><i class="fas fa-book"></i> 课程概述</a></li>
+                    <li class="sidebar-nav__item"><a href="multithreading.html"><i class="fas fa-tasks"></i> 多线程编程</a></li>
+                    <li class="sidebar-nav__item"><a href="network.html"><i class="fas fa-network-wired"></i> 网络编程</a></li>
+                    <li class="sidebar-nav__item sidebar-nav__item--active">
+                        <a href="database.html"><i class="fas fa-database"></i> 数据库操作</a>
+                        <ul>
+                            <li><a href="#introduction">数据库操作简介</a></li>
+                            <li><a href="#sqlite">SQLite数据库</a></li>
+                            <li><a href="#mysql">MySQL数据库</a></li>
+                            <li><a href="#orm">ORM框架</a></li>
+                            <li><a href="#nosql">NoSQL数据库</a></li>
+                            <li><a href="#best-practices">最佳实践</a></li>
+                            <li><a href="#exercises">练习与实践</a></li>
+                        </ul>
+                    </li>
+                    <li class="sidebar-nav__item"><a href="web-dev.html"><i class="fas fa-globe"></i> Web开发基础</a></li>
+                </ul>
+            </nav>
+
+            <section class="course-content">
+                <div class="lesson-header">
+                    <h1 class="lesson-header__title">数据库操作</h1>
+                    <div class="lesson-header__meta">
+                        <span><i class="fas fa-clock"></i> 学习时长：180分钟</span>
+                        <span><i class="fas fa-tasks"></i> 练习题：5个</span>
+                    </div>
+                </div>
+
+                <!-- 数据库操作简介 -->
+                <section id="introduction" class="lesson-section">
+                    <h2 class="lesson-section__title">数据库操作简介</h2>
+                    <div class="lesson-section__content">
+                        <p>数据库操作是现代应用程序开发中不可或缺的一部分。Python提供了丰富的数据库操作工具和库，使得开发者能够方便地与各种类型的数据库进行交互。</p>
+                        
+                        <div class="info-box">
+                            <h3 class="info-box__title">
+                                <i class="fas fa-lightbulb"></i>
+                                为什么要学习数据库操作？
+                            </h3>
+                            <ul>
+                                <li>实现数据的持久化存储</li>
+                                <li>高效管理大量结构化数据</li>
+                                <li>保证数据的一致性和安全性</li>
+                                <li>支持复杂的数据查询和分析</li>
+                            </ul>
+                        </div>
+
+                        <div class="info-box">
+                            <h3 class="info-box__title">
+                                <i class="fas fa-database"></i>
+                                常见数据库类型
+                            </h3>
+                            <ul>
+                                <li>关系型数据库：SQLite、MySQL、PostgreSQL</li>
+                                <li>文档型数据库：MongoDB</li>
+                                <li>键值存储：Redis</li>
+                                <li>列式数据库：Cassandra</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SQLite数据库 -->
+                <section id="sqlite" class="lesson-section">
+                    <h2 class="lesson-section__title">SQLite数据库</h2>
+                    <div class="lesson-section__content">
+                        <p>SQLite是一个轻量级的关系型数据库，它不需要独立的服务器进程，适合嵌入式应用和小型项目。Python标准库内置了sqlite3模块。</p>
+
+                        <h3 class="lesson-section__subtitle">基本操作</h3>
+                        <pre><code class="python">import sqlite3
+
+# 连接数据库（如果不存在则创建）
+conn = sqlite3.connect('example.db')
+cursor = conn.cursor()
+
+# 创建表
+cursor.execute('''
+    CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        age INTEGER,
+        email TEXT UNIQUE
+    )
+''')
+
+# 插入数据
+def insert_user(name, age, email):
+    cursor.execute('''
+        INSERT INTO users (name, age, email)
+        VALUES (?, ?, ?)
+    ''', (name, age, email))
+    conn.commit()
+
+# 查询数据
+def get_users():
+    cursor.execute('SELECT * FROM users')
+    return cursor.fetchall()
+
+# 使用示例
+insert_user('张三', 25, 'zhangsan@example.com')
+users = get_users()
+print(users)
+
+# 关闭连接
+conn.close()</code></pre>
+
+                        <div class="info-box">
+                            <h3 class="info-box__title">
+                                <i class="fas fa-info-circle"></i>
+                                SQLite特点
+                            </h3>
+                            <ul>
+                                <li>轻量级，零配置</li>
+                                <li>支持事务和ACID特性</li>
+                                <li>适合单文件应用</li>
+                                <li>并发访问限制</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- MySQL数据库 -->
+                <section id="mysql" class="lesson-section">
+                    <h2 class="lesson-section__title">MySQL数据库</h2>
+                    <div class="lesson-section__content">
+                        <p>MySQL是最流行的开源关系型数据库之一，适合各种规模的应用。Python可以通过mysql-connector-python等库与MySQL交互。</p>
+
+                        <h3 class="lesson-section__subtitle">连接与基本操作</h3>
+                        <pre><code class="python">import mysql.connector
+
+# 建立连接
+def get_connection():
+    return mysql.connector.connect(
+        host="localhost",
+        user="your_username",
+        password="your_password",
+        database="your_database"
+    )
+
+# 创建表
+def create_table(conn):
+    cursor = conn.cursor()
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS products (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(255) NOT NULL,
+            price DECIMAL(10, 2),
+            stock INT DEFAULT 0
+        )
+    ''')
+    conn.commit()
+
+# 插入数据
+def add_product(conn, name, price, stock):
+    cursor = conn.cursor()
+    sql = "INSERT INTO products (name, price, stock) VALUES (%s, %s, %s)"
+    cursor.execute(sql, (name, price, stock))
+    conn.commit()
+    return cursor.lastrowid
+
+# 查询数据
+def get_products(conn):
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM products")
+    return cursor.fetchall()
+
+# 使用事务
+def transfer_stock(conn, from_id, to_id, amount):
+    cursor = conn.cursor()
+    try:
+        cursor.execute("START TRANSACTION")
+        
+        # 减少源产品库存
+        cursor.execute("""
+            UPDATE products 
+            SET stock = stock - %s 
+            WHERE id = %s AND stock >= %s
+        """, (amount, from_id, amount))
+        
+        if cursor.rowcount == 0:
+            raise Exception("库存不足")
+        
+        # 增加目标产品库存
+        cursor.execute("""
+            UPDATE products 
+            SET stock = stock + %s 
+            WHERE id = %s
+        """, (amount, to_id))
+        
+        conn.commit()
+        return True
+    except Exception as e:
+        conn.rollback()
+        print(f"转移库存失败：{e}")
+        return False</code></pre>
+
+                        <div class="warning-box">
+                            <h3 class="warning-box__title">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                注意事项
+                            </h3>
+                            <ul>
+                                <li>始终使用参数化查询防止SQL注入</li>
+                                <li>及时关闭数据库连接</li>
+                                <li>正确处理事务</li>
+                                <li>注意连接池的使用</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ORM框架 -->
+                <section id="orm" class="lesson-section">
+                    <h2 class="lesson-section__title">ORM框架</h2>
+                    <div class="lesson-section__content">
+                        <p>ORM（对象关系映射）框架可以让开发者用面向对象的方式操作数据库，而不需要直接写SQL语句。SQLAlchemy是Python最流行的ORM框架之一。</p>
+
+                        <h3 class="lesson-section__subtitle">SQLAlchemy基础</h3>
+                        <pre><code class="python">from sqlalchemy import create_engine, Column, Integer, String, Float
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+
+# 创建基类
+Base = declarative_base()
+
+# 定义模型
+class Product(Base):
+    __tablename__ = 'products'
+    
+    id = Column(Integer, primary_key=True)
+    name = Column(String(255), nullable=False)
+    price = Column(Float)
+    stock = Column(Integer, default=0)
+    
+    def __repr__(self):
+        return f"<Product(name='{self.name}', price={self.price})>"
+
+# 创建数据库引擎
+engine = create_engine('sqlite:///products.db')
+Base.metadata.create_all(engine)
+
+# 创建会话
+Session = sessionmaker(bind=engine)
+session = Session()
+
+# 添加数据
+def add_product(name, price, stock):
+    product = Product(name=name, price=price, stock=stock)
+    session.add(product)
+    session.commit()
+    return product
+
+# 查询数据
+def get_products():
+    return session.query(Product).all()
+
+# 更新数据
+def update_product_price(product_id, new_price):
+    product = session.query(Product).get(product_id)
+    if product:
+        product.price = new_price
+        session.commit()
+        return True
+    return False
+
+# 删除数据
+def delete_product(product_id):
+    product = session.query(Product).get(product_id)
+    if product:
+        session.delete(product)
+        session.commit()
+        return True
+    return False</code></pre>
+
+                        <div class="info-box">
+                            <h3 class="info-box__title">
+                                <i class="fas fa-star"></i>
+                                ORM的优势
+                            </h3>
+                            <ul>
+                                <li>更直观的数据操作方式</li>
+                                <li>自动处理数据库差异</li>
+                                <li>内置防SQL注入机制</li>
+                                <li>支持数据库迁移</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- NoSQL数据库 -->
+                <section id="nosql" class="lesson-section">
+                    <h2 class="lesson-section__title">NoSQL数据库</h2>
+                    <div class="lesson-section__content">
+                        <p>NoSQL数据库提供了一种更灵活的数据存储方式，适合处理非结构化数据和大规模数据。这里以MongoDB为例介绍NoSQL数据库的使用。</p>
+
+                        <h3 class="lesson-section__subtitle">MongoDB操作</h3>
+                        <pre><code class="python">from pymongo import MongoClient
+
+# 连接MongoDB
+client = MongoClient('mongodb://localhost:27017/')
+db = client['example_db']
+collection = db['users']
+
+# 插入文档
+def insert_user(user_data):
+    return collection.insert_one(user_data)
+
+# 查询文档
+def find_users(query=None):
+    return list(collection.find(query or {}))
+
+# 更新文档
+def update_user(user_id, update_data):
+    return collection.update_one(
+        {'_id': user_id},
+        {'$set': update_data}
+    )
+
+# 删除文档
+def delete_user(user_id):
+    return collection.delete_one({'_id': user_id})
+
+# 使用示例
+user = {
+    'name': '张三',
+    'age': 25,
+    'skills': ['Python', 'MongoDB'],
+    'contact': {
+        'email': 'zhangsan@example.com',
+        'phone': '1234567890'
+    }
+}
+
+# 插入用户
+result = insert_user(user)
+print(f"插入的文档ID: {result.inserted_id}")
+
+# 查询用户
+users = find_users({'age': {'$gt': 20}})
+for user in users:
+    print(user)
+
+# 更新用户
+update_user(result.inserted_id, {
+    'age': 26,
+    'skills': ['Python', 'MongoDB', 'Redis']
+})</code></pre>
+
+                        <div class="info-box">
+                            <h3 class="info-box__title">
+                                <i class="fas fa-database"></i>
+                                NoSQL特点
+                            </h3>
+                            <ul>
+                                <li>灵活的数据模型</li>
+                                <li>高度可扩展性</li>
+                                <li>适合大数据应用</li>
+                                <li>支持复杂的查询操作</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 最佳实践 -->
+                <section id="best-practices" class="lesson-section">
+                    <h2 class="lesson-section__title">最佳实践</h2>
+                    <div class="lesson-section__content">
+                        <div class="info-box">
+                            <h3 class="info-box__title">
+                                <i class="fas fa-check-circle"></i>
+                                数据库操作建议
+                            </h3>
+                            <ul>
+                                <li>使用连接池管理数据库连接</li>
+                                <li>正确处理事务和异常</li>
+                                <li>使用参数化查询防止SQL注入</li>
+                                <li>定期备份重要数据</li>
+                                <li>优化查询性能</li>
+                                <li>合理设计数据库结构</li>
+                            </ul>
+                        </div>
+
+                        <h3 class="lesson-section__subtitle">连接池示例</h3>
+                        <pre><code class="python">from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.pool import QueuePool
+
+engine = create_engine('mysql+mysqlconnector://user:pass@localhost/db',
+                      poolclass=QueuePool,
+                      pool_size=5,
+                      max_overflow=10,
+                      pool_timeout=30)
+
+Session = sessionmaker(bind=engine)
+
+def get_session():
+    return Session()</code></pre>
+
+                        <h3 class="lesson-section__subtitle">查询优化示例</h3>
+                        <pre><code class="python">from sqlalchemy import func
+
+# 使用索引
+def get_user_by_email(email):
+    return session.query(User).filter(
+        User.email == email
+    ).first()
+
+# 选择需要的列
+def get_user_names():
+    return session.query(User.name).all()
+
+# 使用聚合函数
+def get_user_stats():
+    return session.query(
+        func.count(User.id).label('total_users'),
+        func.avg(User.age).label('avg_age')
+    ).first()
+
+# 批量操作
+def bulk_insert_users(users):
+    session.bulk_insert_mappings(User, users)
+    session.commit()</code></pre>
+                    </div>
+                </section>
+
+                <!-- 练习与实践 -->
+                <section id="exercises" class="lesson-section">
+                    <h2 class="lesson-section__title">练习与实践</h2>
+                    <div class="lesson-section__content">
+                        <p>通过以下练习，你可以加深对数据库操作的理解，并掌握在实际场景中应用数据库技术的技巧。</p>
+
+                        <div class="info-box">
+                            <h3 class="info-box__title">
+                                <i class="fas fa-graduation-cap"></i>
+                                <span>学习目标</span>
+                            </h3>
+                            <ul>
+                                <li>掌握基本的SQL操作</li>
+                                <li>理解ORM的使用方法</li>
+                                <li>能够处理复杂的数据关系</li>
+                                <li>学会数据库性能优化</li>
+                            </ul>
+                        </div>
+
+                        <div class="exercise-box">
+                            <h3 class="exercise-box__title">
+                                <i class="fas fa-tasks"></i> 练习1：图书管理系统
+                            </h3>
+                            <p>实现一个简单的图书管理系统，包含图书、作者、分类等基本信息的管理。</p>
+                            <div class="exercise-box__hint">
+                                <h4><i class="fas fa-lightbulb"></i> 提示：</h4>
+                                <ul>
+                                    <li>设计合适的数据库结构</li>
+                                    <li>实现基本的CRUD操作</li>
+                                    <li>处理一对多、多对多关系</li>
+                                    <li>添加搜索和过滤功能</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="exercise-box">
+                            <h3 class="exercise-box__title">
+                                <i class="fas fa-tasks"></i> 练习2：电商数据库
+                            </h3>
+                            <p>设计并实现一个简单的电商系统数据库，包含商品、用户、订单等核心功能。</p>
+                            <div class="exercise-box__hint">
+                                <h4><i class="fas fa-lightbulb"></i> 提示：</h4>
+                                <ul>
+                                    <li>实现商品库存管理</li>
+                                    <li>处理订单状态流转</li>
+                                    <li>实现购物车功能</li>
+                                    <li>添加用户评价系统</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="exercise-box">
+                            <h3 class="exercise-box__title">
+                                <i class="fas fa-tasks"></i> 练习3：博客系统
+                            </h3>
+                            <p>使用ORM框架实现一个博客系统的数据层，支持文章、评论、标签等功能。</p>
+                            <div class="exercise-box__hint">
+                                <h4><i class="fas fa-lightbulb"></i> 提示：</h4>
+                                <ul>
+                                    <li>使用SQLAlchemy设计模型</li>
+                                    <li>实现文章分类和标签</li>
+                                    <li>添加用户评论功能</li>
+                                    <li>实现文章搜索</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="exercise-box">
+                            <h3 class="exercise-box__title">
+                                <i class="fas fa-tasks"></i> 练习4：数据迁移工具
+                            </h3>
+                            <p>开发一个数据迁移工具，支持不同数据库之间的数据转换和迁移。</p>
+                            <div class="exercise-box__hint">
+                                <h4><i class="fas fa-lightbulb"></i> 提示：</h4>
+                                <ul>
+                                    <li>支持多种数据库类型</li>
+                                    <li>处理数据类型转换</li>
+                                    <li>实现断点续传</li>
+                                    <li>添加数据验证</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="exercise-box">
+                            <h3 class="exercise-box__title">
+                                <i class="fas fa-tasks"></i> 练习5：缓存系统
+                            </h3>
+                            <p>实现一个数据库缓存系统，使用Redis作为缓存层，提高查询性能。</p>
+                            <div class="exercise-box__hint">
+                                <h4><i class="fas fa-lightbulb"></i> 提示：</h4>
+                                <ul>
+                                    <li>实现缓存策略</li>
+                                    <li>处理缓存失效</li>
+                                    <li>添加并发控制</li>
+                                    <li>监控缓存效果</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="info-box">
+                            <h3 class="info-box__title">
+                                <i class="fas fa-star"></i>
+                                <span>挑战任务</span>
+                            </h3>
+                            <p>完成基础练习后，你可以尝试以下挑战任务来提升你的数据库开发技能：</p>
+                            <ul>
+                                <li>实现一个简单的ORM框架</li>
+                                <li>开发数据库监控工具</li>
+                                <li>实现分布式数据库方案</li>
+                                <li>设计数据库分片策略</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer__content">
+            <div class="footer__section">
+                <h4 class="footer__title">关于我们</h4>
+                <p class="footer__text">致力于为初学者提供优质的Python编程学习资源</p>
+            </div>
+            <div class="footer__section">
+                <h4 class="footer__title">快速链接</h4>
+                <ul class="footer__links">
+                    <li><a href="../../index.html">返回首页</a></li>
+                    <li><a href="../../examples/index.html">示例代码</a></li>
+                    <li><a href="../../exercises/index.html">练习题</a></li>
+                </ul>
+            </div>
+            <div class="footer__section">
+                <h4 class="footer__title">学习资源</h4>
+                <ul class="footer__links">
+                    <li><a href="../basics/index.html">基础课程</a></li>
+                    <li><a href="../intermediate/index.html">进阶课程</a></li>
+                    <li><a href="index.html">高级课程</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            <p>&copy; 2024 Python学习网站. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="http://cdn.bytedance.com/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>
+        hljs.highlightAll();
+    </script>
+</body>
+</html> 

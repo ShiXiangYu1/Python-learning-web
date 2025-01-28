@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python变量基础 - Python学习</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/course.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/highlight.js/styles/github.min.css">
+</head>
+<body>
+    <header class="course-header">
+        <h1 class="course-header__title">
+            <i class="fas fa-cube"></i>
+            Python变量基础
+        </h1>
+        <p class="course-header__description">
+            本教程将介绍Python变量的基础知识，包括变量的定义、命名规则、数据类型、赋值方式等概念。通过本教程，你将学会如何在Python中正确使用变量。
+        </p>
+    </header>
+
+    <main class="course-container">
+        <!-- 导航菜单 -->
+        <nav class="course-nav">
+            <ul class="course-nav__list">
+                <li><a href="#intro" class="course-nav__link">变量简介</a></li>
+                <li><a href="#naming" class="course-nav__link">命名规则</a></li>
+                <li><a href="#types" class="course-nav__link">数据类型</a></li>
+                <li><a href="#assignment" class="course-nav__link">赋值方式</a></li>
+                <li><a href="#conversion" class="course-nav__link">类型转换</a></li>
+                <li><a href="#practice" class="course-nav__link">实践练习</a></li>
+            </ul>
+        </nav>
+
+        <div class="course-content">
+            <!-- 变量简介 -->
+            <section id="intro" class="course-section">
+                <h2 class="course-section__title">变量简介</h2>
+                <p>变量是用于存储数据的容器。在Python中，变量不需要声明类型，Python会根据赋值自动判断类型。</p>
+                
+                <div class="example-box">
+                    <h3>变量的基本使用</h3>
+                    <pre><code class="python">
+# 变量赋值
+name = "小明"      # 字符串类型
+age = 18          # 整数类型
+height = 1.75     # 浮点数类型
+is_student = True # 布尔类型
+
+# 使用变量
+print(f"姓名：{name}")
+print(f"年龄：{age}")
+print(f"身高：{height}米")
+print(f"是否是学生：{is_student}")
+
+# 变量的值可以改变
+age = 19
+print(f"新年龄：{age}")
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>变量的特点</h3>
+                    <ul class="feature-list">
+                        <li>变量名区分大小写</li>
+                        <li>变量可以重新赋值</li>
+                        <li>变量类型可以改变</li>
+                        <li>同一个值可以赋给多个变量</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 命名规则 -->
+            <section id="naming" class="course-section">
+                <h2 class="course-section__title">命名规则</h2>
+                <p>Python变量命名有一定的规则和约定，遵循这些规则可以让代码更加规范和易读。</p>
+
+                <div class="example-box">
+                    <h3>基本规则</h3>
+                    <ul class="feature-list">
+                        <li>只能包含字母、数字和下划线</li>
+                        <li>不能以数字开头</li>
+                        <li>不能使用Python关键字</li>
+                        <li>区分大小写</li>
+                    </ul>
+                    <pre><code class="python">
+# 正确的命名
+user_name = "小明"
+age1 = 18
+firstName = "张"
+_private = "私有变量"
+
+# 错误的命名
+1name = "错误"    # 不能以数字开头
+user-name = "错误" # 不能使用连字符
+class = "错误"    # 不能使用关键字
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>命名约定</h3>
+                    <pre><code class="python">
+# 变量名使用小写字母和下划线
+user_name = "小明"
+first_name = "张"
+
+# 常量名使用大写字母和下划线
+MAX_VALUE = 100
+PI = 3.14159
+
+# 类名使用驼峰命名法
+class UserAccount:
+    pass
+
+# 临时或无意义的变量名
+x = 10
+i = 0
+temp = "临时变量"
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 数据类型 -->
+            <section id="types" class="course-section">
+                <h2 class="course-section__title">数据类型</h2>
+                <p>Python有多种内置数据类型，每种类型都有其特定的用途和操作方法。</p>
+
+                <div class="example-box">
+                    <h3>基本数据类型</h3>
+                    <pre><code class="python">
+# 数字类型
+integer = 10          # 整数
+float_num = 3.14     # 浮点数
+complex_num = 1 + 2j # 复数
+
+# 字符串类型
+string = "Hello, World!"
+multi_line = """
+这是一个
+多行字符串
+"""
+
+# 布尔类型
+is_true = True
+is_false = False
+
+# 空值
+empty = None
+
+# 查看数据类型
+print(type(integer))     # <class 'int'>
+print(type(float_num))   # <class 'float'>
+print(type(string))      # <class 'str'>
+print(type(is_true))     # <class 'bool'>
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>容器类型</h3>
+                    <pre><code class="python">
+# 列表（可修改）
+fruits = ["苹果", "香蕉", "橙子"]
+numbers = [1, 2, 3, 4, 5]
+
+# 元组（不可修改）
+coordinates = (3, 4)
+rgb = (255, 128, 0)
+
+# 字典（键值对）
+person = {
+    "name": "小明",
+    "age": 18,
+    "city": "北京"
+}
+
+# 集合（唯一值）
+unique_numbers = {1, 2, 3, 4, 5}
+unique_letters = set(["a", "b", "c"])
+
+# 使用示例
+print(fruits[0])         # 访问列表元素
+print(coordinates[1])    # 访问元组元素
+print(person["name"])    # 访问字典值
+print(2 in unique_numbers)  # 检查集合成员
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 赋值方式 -->
+            <section id="assignment" class="course-section">
+                <h2 class="course-section__title">赋值方式</h2>
+                <p>Python提供了多种变量赋值方式，包括单个赋值、多重赋值和增强赋值。</p>
+
+                <div class="example-box">
+                    <h3>基本赋值</h3>
+                    <pre><code class="python">
+# 单个赋值
+x = 10
+name = "小明"
+
+# 多重赋值
+a = b = c = 0  # 多个变量赋相同的值
+
+# 序列解包
+x, y = 1, 2
+coordinates = (3, 4)
+x, y = coordinates
+
+# 交换变量值
+a, b = 1, 2
+a, b = b, a  # 交换a和b的值
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>增强赋值</h3>
+                    <pre><code class="python">
+# 数字运算
+number = 10
+number += 5   # 等同于 number = number + 5
+number -= 3   # 等同于 number = number - 3
+number *= 2   # 等同于 number = number * 2
+number /= 4   # 等同于 number = number / 4
+
+# 字符串操作
+greeting = "Hello"
+greeting += " World"  # 字符串拼接
+
+# 列表操作
+numbers = [1, 2, 3]
+numbers += [4, 5]    # 列表扩展
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 类型转换 -->
+            <section id="conversion" class="course-section">
+                <h2 class="course-section__title">类型转换</h2>
+                <p>Python提供了多种类型转换函数，可以将一种数据类型转换为另一种类型。</p>
+
+                <div class="example-box">
+                    <h3>基本类型转换</h3>
+                    <pre><code class="python">
+# 字符串转数字
+str_num = "123"
+integer = int(str_num)    # 转换为整数
+float_num = float(str_num)  # 转换为浮点数
+
+# 数字转字符串
+number = 123
+str_num = str(number)    # 转换为字符串
+
+# 布尔转换
+bool_value = bool(1)     # True
+bool_empty = bool("")    # False
+
+# 容器类型转换
+numbers = [1, 2, 3, 4, 5]
+number_tuple = tuple(numbers)  # 列表转元组
+number_set = set(numbers)      # 列表转集合
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>安全的类型转换</h3>
+                    <pre><code class="python">
+def safe_int_convert(value):
+    """安全地将值转换为整数"""
+    try:
+        return int(value)
+    except (ValueError, TypeError):
+        return None
+
+def safe_float_convert(value):
+    """安全地将值转换为浮点数"""
+    try:
+        return float(value)
+    except (ValueError, TypeError):
+        return None
+
+# 使用示例
+print(safe_int_convert("123"))    # 123
+print(safe_int_convert("abc"))    # None
+print(safe_float_convert("12.3")) # 12.3
+print(safe_float_convert("xyz"))  # None
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 实践练习 -->
+            <section id="practice" class="course-section">
+                <h2 class="course-section__title">实践练习</h2>
+                <p>通过以下练习来加深对变量的理解：</p>
+
+                <div class="example-box">
+                    <h3>练习1：个人信息管理</h3>
+                    <pre><code class="python">
+# 创建一个存储个人信息的程序
+name = "小明"
+age = 18
+height = 1.75
+hobbies = ["读书", "游泳", "编程"]
+contact = {
+    "email": "xiaoming@example.com",
+    "phone": "12345678901"
+}
+
+# 格式化输出信息
+print(f"""
+个人信息：
+姓名：{name}
+年龄：{age}
+身高：{height}米
+爱好：{', '.join(hobbies)}
+联系方式：
+  - 邮箱：{contact['email']}
+  - 电话：{contact['phone']}
+""")
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>练习2：温度转换</h3>
+                    <pre><code class="python">
+def convert_temperature():
+    """温度转换程序"""
+    celsius = float(input("请输入摄氏温度："))
+    
+    # 转换为华氏温度
+    fahrenheit = (celsius * 9/5) + 32
+    
+    # 转换为开尔文温度
+    kelvin = celsius + 273.15
+    
+    print(f"""
+温度转换结果：
+摄氏度：{celsius}°C
+华氏度：{fahrenheit}°F
+开尔文：{kelvin}K
+""")
+
+# 调用函数
+convert_temperature()
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>练习3：购物清单</h3>
+                    <pre><code class="python">
+# 创建购物清单程序
+shopping_list = []
+prices = {}
+
+def add_item(item, price):
+    """添加商品到购物清单"""
+    shopping_list.append(item)
+    prices[item] = price
+
+def calculate_total():
+    """计算总价"""
+    return sum(prices.values())
+
+# 添加商品
+add_item("苹果", 5.5)
+add_item("面包", 8.0)
+add_item("牛奶", 12.5)
+
+# 打印购物清单
+print("\n购物清单：")
+for item in shopping_list:
+    print(f"{item}: ￥{prices[item]}")
+print(f"\n总计：￥{calculate_total():.2f}")
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 返回链接 -->
+            <section class="course-section">
+                <div class="link-box">
+                    <a href="../basic/introduction.html" class="link-box__item">
+                        <i class="fas fa-arrow-left"></i>
+                        Python简介
+                    </a>
+                    <a href="../../examples/intermediate/variables.html" class="link-box__item">
+                        <i class="fas fa-code"></i>
+                        中级变量示例
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="https://cdn.bytedance.com/highlight.js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html> 

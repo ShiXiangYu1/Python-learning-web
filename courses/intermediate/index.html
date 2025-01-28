@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python进阶课程 - Python学习网站</title>
+    <link href="http://cdn.bytedance.com/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="css/course.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav__logo">
+                <a href="../../index.html" class="nav__logo-link">
+                    <svg class="nav__logo-icon" width="40" height="40" viewBox="0 0 40 40">
+                        <path d="M20 0C8.954 0 0 8.954 0 20s8.954 20 20 20 20-8.954 20-20S31.046 0 20 0zm0 36c-8.837 0-16-7.163-16-16S11.163 4 20 4s16 7.163 16 16-7.163 16-16 16z" fill="#306998"/>
+                        <path d="M20 8c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12S26.627 8 20 8zm0 22c-5.514 0-10-4.486-10-10S14.486 10 20 10s10 4.486 10 10-4.486 10-10 10z" fill="#FFD43B"/>
+                    </svg>
+                    <span class="nav__logo-text">Python学习</span>
+                </a>
+            </div>
+            <ul class="nav__menu">
+                <li><a href="../../index.html" class="nav__link">首页</a></li>
+                <li><a href="../basics/index.html" class="nav__link">基础课程</a></li>
+                <li><a href="index.html" class="nav__link nav__link--active">进阶课程</a></li>
+                <li><a href="../advanced/index.html" class="nav__link">高级课程</a></li>
+                <li><a href="../../examples/index.html" class="nav__link">示例代码</a></li>
+                <li><a href="../../exercises/index.html" class="nav__link">练习题</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main">
+        <div class="course-container">
+            <section class="course-content">
+                <div class="course-header">
+                    <h1 class="course-header__title">Python进阶课程</h1>
+                    <p class="course-header__description">
+                        欢迎来到Python进阶课程！在这个阶段，您将深入学习Python的高级特性和编程技巧，
+                        包括面向对象编程、文件操作、异常处理、模块和包的使用等内容。
+                        通过这些进阶知识的学习，您将能够编写更加复杂和专业的Python程序。
+                    </p>
+                </div>
+
+                <section class="course-overview">
+                    <h2 class="course-overview__title">课程概述</h2>
+                    <div class="course-overview__grid">
+                        <div class="overview-card">
+                            <i class="fas fa-clock overview-card__icon"></i>
+                            <div class="overview-card__content">
+                                <h3 class="overview-card__title">课程时长</h3>
+                                <p class="overview-card__text">约30-40小时</p>
+                            </div>
+                        </div>
+                        <div class="overview-card">
+                            <i class="fas fa-graduation-cap overview-card__icon"></i>
+                            <div class="overview-card__content">
+                                <h3 class="overview-card__title">难度等级</h3>
+                                <p class="overview-card__text">中级</p>
+                            </div>
+                        </div>
+                        <div class="overview-card">
+                            <i class="fas fa-tasks overview-card__icon"></i>
+                            <div class="overview-card__content">
+                                <h3 class="overview-card__title">练习项目</h3>
+                                <p class="overview-card__text">15+ 实践项目</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="course-modules">
+                    <h2 class="course-modules__title">课程内容</h2>
+                    <div class="module-cards">
+                        <div class="module-card">
+                            <div class="module-card__header">
+                                <i class="fas fa-cube module-card__icon"></i>
+                                <h3 class="module-card__title">面向对象编程</h3>
+                            </div>
+                            <div class="module-card__content">
+                                <ul class="module-card__list">
+                                    <li>类和对象的概念</li>
+                                    <li>属性和方法</li>
+                                    <li>继承和多态</li>
+                                    <li>封装和抽象</li>
+                                    <li>魔术方法</li>
+                                </ul>
+                                <a href="oop.html" class="module-card__button">开始学习</a>
+                            </div>
+                        </div>
+
+                        <div class="module-card">
+                            <div class="module-card__header">
+                                <i class="fas fa-file-alt module-card__icon"></i>
+                                <h3 class="module-card__title">文件操作</h3>
+                            </div>
+                            <div class="module-card__content">
+                                <ul class="module-card__list">
+                                    <li>文件的读写操作</li>
+                                    <li>文件和目录管理</li>
+                                    <li>CSV文件处理</li>
+                                    <li>JSON数据处理</li>
+                                    <li>二进制文件操作</li>
+                                </ul>
+                                <a href="file-handling.html" class="module-card__button">开始学习</a>
+                            </div>
+                        </div>
+
+                        <div class="module-card">
+                            <div class="module-card__header">
+                                <i class="fas fa-exclamation-triangle module-card__icon"></i>
+                                <h3 class="module-card__title">异常处理</h3>
+                            </div>
+                            <div class="module-card__content">
+                                <ul class="module-card__list">
+                                    <li>异常的基本概念</li>
+                                    <li>try-except语句</li>
+                                    <li>自定义异常</li>
+                                    <li>异常的传播</li>
+                                    <li>上下文管理器</li>
+                                </ul>
+                                <a href="exception-handling.html" class="module-card__button">开始学习</a>
+                            </div>
+                        </div>
+
+                        <div class="module-card">
+                            <div class="module-card__header">
+                                <i class="fas fa-boxes module-card__icon"></i>
+                                <h3 class="module-card__title">模块和包</h3>
+                            </div>
+                            <div class="module-card__content">
+                                <ul class="module-card__list">
+                                    <li>模块的创建和导入</li>
+                                    <li>包的组织结构</li>
+                                    <li>常用标准库</li>
+                                    <li>第三方包管理</li>
+                                    <li>虚拟环境</li>
+                                </ul>
+                                <a href="modules-packages.html" class="module-card__button">开始学习</a>
+                            </div>
+                        </div>
+
+                        <div class="module-card">
+                            <div class="module-card__header">
+                                <i class="fas fa-project-diagram module-card__icon"></i>
+                                <h3 class="module-card__title">迭代器和生成器</h3>
+                            </div>
+                            <div class="module-card__content">
+                                <ul class="module-card__list">
+                                    <li>迭代器协议</li>
+                                    <li>生成器函数</li>
+                                    <li>生成器表达式</li>
+                                    <li>yield语句</li>
+                                    <li>协程基础</li>
+                                </ul>
+                                <a href="iterators-generators.html" class="module-card__button">开始学习</a>
+                            </div>
+                        </div>
+
+                        <div class="module-card">
+                            <div class="module-card__header">
+                                <i class="fas fa-code-branch module-card__icon"></i>
+                                <h3 class="module-card__title">装饰器和闭包</h3>
+                            </div>
+                            <div class="module-card__content">
+                                <ul class="module-card__list">
+                                    <li>闭包的概念</li>
+                                    <li>装饰器基础</li>
+                                    <li>带参数的装饰器</li>
+                                    <li>类装饰器</li>
+                                    <li>实际应用案例</li>
+                                </ul>
+                                <a href="decorators-closures.html" class="module-card__button">开始学习</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="prerequisites">
+                    <h2 class="prerequisites__title">学习前提</h2>
+                    <div class="info-box">
+                        <h3 class="info-box__title">
+                            <i class="fas fa-info-circle"></i>
+                            课程要求
+                        </h3>
+                        <ul>
+                            <li>已完成Python基础课程的学习</li>
+                            <li>理解基本的编程概念和语法</li>
+                            <li>具备基本的问题解决能力</li>
+                            <li>熟悉Python的基本数据类型和控制结构</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section class="learning-path">
+                    <h2 class="learning-path__title">学习路径</h2>
+                    <div class="step-box">
+                        <ol class="step-box__list">
+                            <li>首先学习面向对象编程的概念和实践</li>
+                            <li>掌握文件操作和数据处理的技能</li>
+                            <li>学习异常处理确保代码的健壮性</li>
+                            <li>理解模块和包的组织方式</li>
+                            <li>深入学习迭代器和生成器的使用</li>
+                            <li>最后掌握装饰器和闭包的高级特性</li>
+                        </ol>
+                    </div>
+                </section>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer__content">
+            <div class="footer__section">
+                <h4 class="footer__title">关于我们</h4>
+                <p class="footer__text">致力于为初学者提供优质的Python编程学习资源</p>
+            </div>
+            <div class="footer__section">
+                <h4 class="footer__title">快速链接</h4>
+                <ul class="footer__links">
+                    <li><a href="../../index.html">返回首页</a></li>
+                    <li><a href="../../examples/index.html">示例代码</a></li>
+                    <li><a href="../../exercises/index.html">练习题</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            <p>&copy; 2024 Python学习网站. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../../assets/js/main.js"></script>
+    <script src="js/course.js"></script>
+</body>
+</html> 

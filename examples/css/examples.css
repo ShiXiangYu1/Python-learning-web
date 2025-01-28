@@ -1,0 +1,306 @@
+/* 示例代码页面样式 */
+.examples-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.examples-title {
+    font-size: 2.5rem;
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.examples-description {
+    text-align: center;
+    color: #666;
+    font-size: 1.1rem;
+    margin-bottom: 3rem;
+}
+
+.example-section {
+    margin-bottom: 4rem;
+}
+
+.example-section__title {
+    font-size: 1.8rem;
+    color: #2c3e50;
+    margin-bottom: 2rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #eee;
+}
+
+.example-section__title i {
+    margin-right: 0.5rem;
+    color: #3498db;
+}
+
+.example-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.example-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.example-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.example-card__icon {
+    width: 50px;
+    height: 50px;
+    background: #f8f9fa;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.example-card__icon i {
+    font-size: 1.5rem;
+    color: #3498db;
+}
+
+.example-card__title {
+    font-size: 1.2rem;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+.example-card__description {
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.4;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .examples-container {
+        padding: 1rem;
+    }
+
+    .examples-title {
+        font-size: 2rem;
+    }
+
+    .example-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+
+    .example-card {
+        padding: 1rem;
+    }
+}
+
+/* 暗色主题支持 */
+@media (prefers-color-scheme: dark) {
+    .example-card {
+        background: #2c3e50;
+    }
+
+    .example-card__icon {
+        background: #34495e;
+    }
+
+    .example-card__title {
+        color: #ecf0f1;
+    }
+
+    .example-card__description {
+        color: #bdc3c7;
+    }
+
+    .examples-title,
+    .example-section__title {
+        color: #ecf0f1;
+    }
+
+    .examples-description {
+        color: #bdc3c7;
+    }
+}
+
+/* 代码示例页面样式 */
+.example-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.example-header__title {
+    font-size: 2.5rem;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+}
+
+.example-header__title i {
+    margin-right: 0.5rem;
+    color: #3498db;
+}
+
+.example-header__description {
+    font-size: 1.1rem;
+    color: #666;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.code-section {
+    margin-bottom: 3rem;
+}
+
+.code-section__title {
+    font-size: 1.5rem;
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #eee;
+}
+
+.code-block {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.code-block pre {
+    margin: 0;
+}
+
+.code-block code {
+    font-family: 'Fira Code', 'Consolas', monospace;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.info-box {
+    background: #f8f9fa;
+    border-left: 4px solid #3498db;
+    padding: 1.5rem;
+    border-radius: 0 8px 8px 0;
+    margin-bottom: 1.5rem;
+}
+
+.info-box__title {
+    font-size: 1.2rem;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+}
+
+.info-box__title i {
+    margin-right: 0.5rem;
+    color: #3498db;
+}
+
+.info-box ul {
+    margin: 0;
+    padding-left: 1.5rem;
+}
+
+.info-box li {
+    margin-bottom: 0.5rem;
+    color: #666;
+}
+
+.link-box {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.link-box__item {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 1.2rem;
+    background: #f8f9fa;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #2c3e50;
+    transition: all 0.3s ease;
+}
+
+.link-box__item:hover {
+    background: #e9ecef;
+    transform: translateY(-2px);
+}
+
+.link-box__item i {
+    margin-right: 0.5rem;
+    color: #3498db;
+}
+
+/* 暗色主题支持 */
+@media (prefers-color-scheme: dark) {
+    .example-header__title,
+    .code-section__title {
+        color: #ecf0f1;
+    }
+
+    .example-header__description {
+        color: #bdc3c7;
+    }
+
+    .code-block {
+        background: #2c3e50;
+    }
+
+    .info-box {
+        background: #2c3e50;
+        border-left-color: #3498db;
+    }
+
+    .info-box__title {
+        color: #ecf0f1;
+    }
+
+    .info-box li {
+        color: #bdc3c7;
+    }
+
+    .link-box__item {
+        background: #2c3e50;
+        color: #ecf0f1;
+    }
+
+    .link-box__item:hover {
+        background: #34495e;
+    }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .example-header__title {
+        font-size: 2rem;
+    }
+
+    .code-block {
+        padding: 1rem;
+    }
+
+    .code-block code {
+        font-size: 0.8rem;
+    }
+
+    .link-box {
+        flex-direction: column;
+    }
+
+    .link-box__item {
+        width: 100%;
+        justify-content: center;
+    }
+} 

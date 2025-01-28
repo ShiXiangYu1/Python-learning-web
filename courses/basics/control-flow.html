@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python控制流程 - Python学习网站</title>
+    <link href="http://cdn.bytedance.com/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="css/course.css">
+    <!-- 代码高亮 -->
+    <link href="http://cdn.bytedance.com/highlight.js/11.7.0/styles/atom-one-dark.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav__logo">
+                <a href="../../index.html" class="nav__logo-link">
+                    <svg class="nav__logo-icon" width="40" height="40" viewBox="0 0 40 40">
+                        <path d="M20 0C8.954 0 0 8.954 0 20s8.954 20 20 20 20-8.954 20-20S31.046 0 20 0zm0 36c-8.837 0-16-7.163-16-16S11.163 4 20 4s16 7.163 16 16-7.163 16-16 16z" fill="#306998"/>
+                        <path d="M20 8c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12S26.627 8 20 8zm0 22c-5.514 0-10-4.486-10-10S14.486 10 20 10s10 4.486 10 10-4.486 10-10 10z" fill="#FFD43B"/>
+                    </svg>
+                    <span class="nav__logo-text">Python学习</span>
+                </a>
+            </div>
+            <ul class="nav__menu">
+                <li><a href="../../index.html" class="nav__link">首页</a></li>
+                <li><a href="index.html" class="nav__link nav__link--active">基础课程</a></li>
+                <li><a href="../intermediate/index.html" class="nav__link">进阶课程</a></li>
+                <li><a href="../advanced/index.html" class="nav__link">高级课程</a></li>
+                <li><a href="../../examples/index.html" class="nav__link">示例代码</a></li>
+                <li><a href="../../exercises/index.html" class="nav__link">练习题</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main">
+        <div class="course-container">
+            <aside class="course-sidebar">
+                <nav class="course-nav">
+                    <h3 class="course-nav__title">课程目录</h3>
+                    <ul class="course-nav__list">
+                        <li class="course-nav__item">
+                            <a href="environment.html" class="course-nav__link">
+                                <i class="fas fa-laptop-code course-nav__icon"></i>
+                                Python环境搭建
+                            </a>
+                        </li>
+                        <li class="course-nav__item">
+                            <a href="syntax.html" class="course-nav__link">
+                                <i class="fas fa-code course-nav__icon"></i>
+                                基本语法
+                            </a>
+                        </li>
+                        <li class="course-nav__item">
+                            <a href="data-types.html" class="course-nav__link">
+                                <i class="fas fa-database course-nav__icon"></i>
+                                数据类型
+                            </a>
+                        </li>
+                        <li class="course-nav__item">
+                            <a href="control-flow.html" class="course-nav__link course-nav__link--active">
+                                <i class="fas fa-random course-nav__icon"></i>
+                                控制流程
+                            </a>
+                        </li>
+                        <li class="course-nav__item">
+                            <a href="functions.html" class="course-nav__link">
+                                <i class="fas fa-cube course-nav__icon"></i>
+                                函数基础
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <section class="course-content">
+                <div class="course-header">
+                    <h1 class="course-header__title">Python控制流程</h1>
+                    <p class="course-header__description">
+                        在本章节中，您将学习Python的控制流程，包括条件语句（if-elif-else）、循环语句（for和while）以及控制语句（break、continue）等。
+                        掌握这些控制流程，可以让您的程序更加灵活，能够根据不同的条件执行不同的操作。
+                    </p>
+                </div>
+
+                <article class="lesson-content">
+                    <section class="lesson-section">
+                        <h2 class="lesson-section__title">
+                            <i class="fas fa-code-branch lesson-section__icon"></i>
+                            条件语句
+                        </h2>
+                        <div class="lesson-section__content">
+                            <div class="info-box">
+                                <h3 class="info-box__title">
+                                    <i class="fas fa-info-circle"></i>
+                                    条件语句的作用
+                                </h3>
+                                <p>条件语句允许程序根据不同的条件执行不同的代码块，是程序实现决策的基础。</p>
+                            </div>
+
+                            <h4>if语句</h4>
+                            <pre><code class="language-python"># 基本的if语句
+age = 18
+if age >= 18:
+    print("您已成年")
+
+# if-else语句
+score = 85
+if score >= 60:
+    print("及格")
+else:
+    print("不及格")
+
+# if-elif-else语句
+score = 85
+if score >= 90:
+    print("优秀")
+elif score >= 80:
+    print("良好")
+elif score >= 60:
+    print("及格")
+else:
+    print("不及格")
+
+# 嵌套的if语句
+age = 20
+has_ticket = True
+if age >= 18:
+    if has_ticket:
+        print("可以进入电影院")
+    else:
+        print("请先购票")
+else:
+    print("未成年不能观看")</code></pre>
+
+                            <div class="warning-box">
+                                <p><strong>注意：</strong>Python使用缩进来表示代码块，确保if语句下的代码块正确缩进（通常是4个空格）。</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="lesson-section">
+                        <h2 class="lesson-section__title">
+                            <i class="fas fa-sync lesson-section__icon"></i>
+                            循环语句
+                        </h2>
+                        <div class="lesson-section__content">
+                            <h4>for循环</h4>
+                            <pre><code class="language-python"># 遍历列表
+fruits = ['苹果', '香蕉', '橙子']
+for fruit in fruits:
+    print(fruit)
+
+# 使用range()
+for i in range(5):    # 0到4
+    print(i)
+
+# 带步长的range()
+for i in range(0, 10, 2):  # 0, 2, 4, 6, 8
+    print(i)
+
+# 遍历字典
+student = {'name': '小明', 'age': 18}
+for key in student:
+    print(f"{key}: {student[key]}")
+
+# 同时获取索引和值
+for index, value in enumerate(fruits):
+    print(f"第{index+1}个水果是：{value}")</code></pre>
+
+                            <h4>while循环</h4>
+                            <pre><code class="language-python"># 基本while循环
+count = 0
+while count < 5:
+    print(count)
+    count += 1
+
+# 带条件的while循环
+number = 1
+sum = 0
+while number <= 100:
+    sum += number
+    number += 1
+print(f"1到100的和是：{sum}")
+
+# 无限循环
+while True:
+    user_input = input("请输入'q'退出：")
+    if user_input == 'q':
+        break</code></pre>
+                        </div>
+                    </section>
+
+                    <section class="lesson-section">
+                        <h2 class="lesson-section__title">
+                            <i class="fas fa-stop-circle lesson-section__icon"></i>
+                            控制语句
+                        </h2>
+                        <div class="lesson-section__content">
+                            <div class="info-box">
+                                <h3 class="info-box__title">
+                                    <i class="fas fa-info-circle"></i>
+                                    控制语句的作用
+                                </h3>
+                                <p>控制语句可以改变循环的执行流程，包括提前结束循环或跳过当前迭代。</p>
+                            </div>
+
+                            <h4>break和continue</h4>
+                            <pre><code class="language-python"># break示例
+for i in range(1, 11):
+    if i == 5:
+        break  # 遇到5就结束循环
+    print(i)
+
+# continue示例
+for i in range(1, 6):
+    if i == 3:
+        continue  # 跳过3
+    print(i)
+
+# 实际应用示例
+while True:
+    password = input("请输入密码：")
+    if len(password) < 6:
+        print("密码太短，请重新输入")
+        continue
+    if password == "123456":
+        print("登录成功")
+        break
+    print("密码错误，请重试")</code></pre>
+
+                            <h4>else子句</h4>
+                            <pre><code class="language-python"># 循环的else子句
+for i in range(5):
+    if i == 10:
+        break
+else:
+    print("循环正常完成")  # 只有循环正常完成才会执行
+
+# 查找示例
+numbers = [1, 3, 5, 7, 9]
+search = 4
+for num in numbers:
+    if num == search:
+        print("找到了")
+        break
+else:
+    print("没有找到")</code></pre>
+                        </div>
+                    </section>
+
+                    <section class="lesson-section">
+                        <h2 class="lesson-section__title">
+                            <i class="fas fa-lightbulb lesson-section__icon"></i>
+                            练习与实践
+                        </h2>
+                        <div class="lesson-section__content">
+                            <div class="exercise-box">
+                                <h4>练习1：猜数字游戏</h4>
+                                <p>创建一个猜数字游戏，要求：</p>
+                                <ol>
+                                    <li>程序随机生成一个1-100的数字</li>
+                                    <li>用户有最多7次机会猜测</li>
+                                    <li>每次猜测后提示数字是偏大还是偏小</li>
+                                </ol>
+                                <div class="success-box">
+                                    <h4>参考代码：</h4>
+                                    <pre><code class="language-python">import random
+
+# 生成1-100的随机数
+target = random.randint(1, 100)
+max_tries = 7
+tries = 0
+
+while tries < max_tries:
+    guess = int(input(f"请猜一个1-100的数字（还有{max_tries-tries}次机会）："))
+    tries += 1
+    
+    if guess == target:
+        print(f"恭喜你，猜对了！用了{tries}次机会")
+        break
+    elif guess < target:
+        print("猜小了")
+    else:
+        print("猜大了")
+else:
+    print(f"游戏结束，正确答案是{target}")</code></pre>
+                                </div>
+                            </div>
+
+                            <div class="exercise-box">
+                                <h4>练习2：九九乘法表</h4>
+                                <p>使用嵌套循环打印九九乘法表：</p>
+                                <pre><code class="language-python"># 打印九九乘法表
+for i in range(1, 10):
+    for j in range(1, i + 1):
+        print(f"{j}×{i}={i*j}\t", end="")
+    print()  # 换行</code></pre>
+                            </div>
+                        </div>
+                    </section>
+
+                    <nav class="lesson-navigation">
+                        <a href="data-types.html" class="lesson-navigation__link lesson-navigation__link--prev">
+                            <i class="fas fa-arrow-left"></i>
+                            上一章：数据类型
+                        </a>
+                        <a href="functions.html" class="lesson-navigation__link lesson-navigation__link--next">
+                            下一章：函数基础
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </nav>
+                </article>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer__content">
+            <div class="footer__section">
+                <h4 class="footer__title">关于我们</h4>
+                <p class="footer__text">致力于为初学者提供优质的Python编程学习资源</p>
+            </div>
+            <div class="footer__section">
+                <h4 class="footer__title">快速链接</h4>
+                <ul class="footer__links">
+                    <li><a href="../../index.html">返回首页</a></li>
+                    <li><a href="../../examples/index.html">示例代码</a></li>
+                    <li><a href="../../exercises/index.html">练习题</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            <p>&copy; 2024 Python学习网站. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../../assets/js/main.js"></script>
+    <script src="js/course.js"></script>
+    <!-- 代码高亮 -->
+    <script src="http://cdn.bytedance.com/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html> 

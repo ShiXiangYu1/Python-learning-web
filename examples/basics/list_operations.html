@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>列表操作示例 - Python学习</title>
+    <link rel="stylesheet" href="../css/examples.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/highlight.js/styles/github.min.css">
+</head>
+<body>
+    <header class="example-header">
+        <h1 class="example-header__title">
+            <i class="fas fa-list"></i>Python列表操作示例
+        </h1>
+        <p class="example-header__description">
+            本页面展示了Python中常见的列表操作方法和实用示例，帮助你掌握列表这一重要的数据结构。
+        </p>
+    </header>
+
+    <main class="examples-container">
+        <!-- 基本操作 -->
+        <section class="code-section">
+            <h2 class="code-section__title">基本操作</h2>
+            <div class="code-block">
+                <pre><code class="python">
+# 列表创建
+numbers = [1, 2, 3, 4, 5]
+mixed = [1, "Python", 3.14, True]
+empty = []
+repeated = [0] * 5  # [0, 0, 0, 0, 0]
+
+# 列表访问
+first = numbers[0]      # 获取第一个元素
+last = numbers[-1]      # 获取最后一个元素
+sub_list = numbers[1:4] # 切片获取子列表 [2, 3, 4]
+
+# 列表修改
+numbers[0] = 10        # 修改单个元素
+numbers[1:4] = [20, 30, 40]  # 修改多个元素
+numbers.append(6)      # 添加元素到末尾
+numbers.insert(0, 0)   # 在指定位置插入元素
+                </code></pre>
+            </div>
+        </section>
+
+        <!-- 常用列表方法 -->
+        <section class="code-section">
+            <h2 class="code-section__title">常用列表方法</h2>
+            <div class="code-block">
+                <pre><code class="python">
+# 添加和删除元素
+fruits = ["苹果", "香蕉", "橙子"]
+fruits.append("葡萄")     # 添加到末尾
+fruits.insert(1, "梨")    # 在指定位置插入
+fruits.extend(["草莓", "樱桃"])  # 扩展列表
+
+removed = fruits.pop()    # 删除并返回最后一个元素
+fruits.pop(0)            # 删除并返回指定位置的元素
+fruits.remove("香蕉")     # 删除第一个匹配的元素
+
+# 查找和计数
+index = fruits.index("橙子")  # 查找元素位置
+count = fruits.count("苹果")  # 统计元素出现次数
+
+# 排序和反转
+numbers = [3, 1, 4, 1, 5, 9, 2, 6]
+numbers.sort()           # 升序排序
+numbers.sort(reverse=True)  # 降序排序
+numbers.reverse()        # 反转列表
+                </code></pre>
+            </div>
+        </section>
+
+        <!-- 列表推导式 -->
+        <section class="code-section">
+            <h2 class="code-section__title">列表推导式</h2>
+            <div class="code-block">
+                <pre><code class="python">
+# 基本列表推导式
+squares = [x**2 for x in range(10)]  # 生成平方数列表
+evens = [x for x in range(10) if x % 2 == 0]  # 生成偶数列表
+
+# 嵌套列表推导式
+matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+flattened = [x for row in matrix for x in row]  # 展平列表
+
+# 条件列表推导式
+numbers = [-4, -2, 0, 2, 4]
+abs_values = [abs(x) for x in numbers]  # 绝对值列表
+pos_neg = ["正" if x > 0 else "负" if x < 0 else "零" for x in numbers]
+
+# 字符处理示例
+words = ["hello", "world", "python"]
+upper_words = [word.upper() for word in words]  # 转换为大写
+lengths = [len(word) for word in words]         # 计算长度
+                </code></pre>
+            </div>
+        </section>
+
+        <!-- 实用示例 -->
+        <section class="code-section">
+            <h2 class="code-section__title">实用示例</h2>
+            <div class="code-block">
+                <pre><code class="python">
+# 列表去重
+def remove_duplicates(lst):
+    return list(dict.fromkeys(lst))
+
+# 列表分组
+def group_by_length(words):
+    groups = {}
+    for word in words:
+        length = len(word)
+        if length not in groups:
+            groups[length] = []
+        groups[length].append(word)
+    return groups
+
+# 列表过滤
+def filter_positive(numbers):
+    return [num for num in numbers if num > 0]
+
+# 列表交集和并集
+def list_operations(list1, list2):
+    intersection = list(set(list1) & set(list2))
+    union = list(set(list1) | set(list2))
+    return intersection, union
+
+# 移动零元素
+def move_zeros(lst):
+    non_zeros = [x for x in lst if x != 0]
+    zeros = [0] * (len(lst) - len(non_zeros))
+    return non_zeros + zeros
+                </code></pre>
+            </div>
+        </section>
+
+        <!-- 注意事项 -->
+        <section class="code-section">
+            <div class="info-box">
+                <h3 class="info-box__title">
+                    <i class="fas fa-exclamation-circle"></i>注意事项
+                </h3>
+                <ul>
+                    <li>列表是可变对象，修改操作会直接改变原列表</li>
+                    <li>列表切片会创建新的列表对象，注意内存使用</li>
+                    <li>使用列表推导式时要注意可读性，过于复杂的逻辑建议使用普通循环</li>
+                    <li>对大型列表进行频繁插入删除操作时，考虑使用collections.deque</li>
+                    <li>列表的extend()方法比多次append()更高效</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 相关链接 -->
+        <section class="code-section">
+            <h2 class="code-section__title">相关链接</h2>
+            <div class="link-box">
+                <a href="../index.html" class="link-box__item">
+                    <i class="fas fa-home"></i>返回示例首页
+                </a>
+                <a href="../../courses/basic/lists.html" class="link-box__item">
+                    <i class="fas fa-book"></i>列表基础教程
+                </a>
+                <a href="../../exercises/list_exercises.html" class="link-box__item">
+                    <i class="fas fa-tasks"></i>列表练习题
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <script src="https://cdn.bytedance.com/highlight.js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html> 

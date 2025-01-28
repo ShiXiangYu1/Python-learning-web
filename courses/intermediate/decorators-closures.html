@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python装饰器和闭包 - Python学习网站</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="css/course.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/highlight.js/11.7.0/styles/github.min.css">
+</head>
+<body>
+    <div class="course-container">
+        <!-- 侧边导航 -->
+        <nav class="sidebar-nav">
+            <ul>
+                <li class="sidebar-nav__item"><a href="../index.html"><i class="fas fa-home"></i> 首页</a></li>
+                <li class="sidebar-nav__item"><a href="index.html"><i class="fas fa-book"></i> 课程概述</a></li>
+                <li class="sidebar-nav__item"><a href="oop.html"><i class="fas fa-cube"></i> 面向对象编程</a></li>
+                <li class="sidebar-nav__item"><a href="file-handling.html"><i class="fas fa-file-alt"></i> 文件操作</a></li>
+                <li class="sidebar-nav__item"><a href="exception-handling.html"><i class="fas fa-exclamation-triangle"></i> 异常处理</a></li>
+                <li class="sidebar-nav__item"><a href="iterators-generators.html"><i class="fas fa-sync"></i> 迭代器和生成器</a></li>
+                <li class="sidebar-nav__item sidebar-nav__item--active">
+                    <a href="decorators-closures.html"><i class="fas fa-magic"></i> 装饰器和闭包</a>
+                    <ul>
+                        <li><a href="#closure-basics">闭包基础</a></li>
+                        <li><a href="#decorator-basics">装饰器基础</a></li>
+                        <li><a href="#decorator-params">装饰器参数</a></li>
+                        <li><a href="#class-decorators">类装饰器</a></li>
+                        <li><a href="#practical-examples">实际应用</a></li>
+                        <li><a href="#exercises">练习与实践</a></li>
+                    </ul>
+                </li>
+                <li class="sidebar-nav__item"><a href="modules-packages.html"><i class="fas fa-boxes"></i> 模块和包</a></li>
+            </ul>
+        </nav>
+
+        <!-- 主要内容区 -->
+        <main class="course-content">
+            <!-- 课程标题 -->
+            <header class="lesson-header">
+                <h1 class="lesson-header__title">Python装饰器和闭包</h1>
+                <div class="lesson-header__meta">
+                    <span><i class="fas fa-clock"></i> 学习时长：3小时</span>
+                    <span><i class="fas fa-layer-group"></i> 难度：中级</span>
+                    <span><i class="fas fa-tasks"></i> 练习：4个</span>
+                </div>
+            </header>
+
+            <!-- 闭包基础 -->
+            <section id="closure-basics" class="lesson-section">
+                <h2>闭包基础</h2>
+                <div class="info-box">
+                    <div class="info-box__title">
+                        <i class="fas fa-info-circle"></i>
+                        <span>什么是闭包？</span>
+                    </div>
+                    <p>闭包是一个函数对象，它可以访问其定义所在作用域中的变量，即使该作用域已经结束。闭包让你可以在一个内部函数中访问外部函数的作用域。</p>
+                </div>
+
+                <div class="example-box">
+                    <div class="example-box__title">
+                        <i class="fas fa-lightbulb"></i>
+                        <span>闭包示例</span>
+                    </div>
+                    <pre><code class="python">
+def make_counter(start=0):
+    """创建一个计数器闭包"""
+    count = [start]  # 使用列表存储状态
+    
+    def counter():
+        count[0] += 1
+        return count[0]
+    
+    return counter
+
+# 使用闭包
+counter1 = make_counter(5)
+print(counter1())  # 输出: 6
+print(counter1())  # 输出: 7
+
+counter2 = make_counter(10)
+print(counter2())  # 输出: 11
+print(counter1())  # 输出: 8
+                    </code></pre>
+                </div>
+
+                <div class="warning-box">
+                    <div class="warning-box__title">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>注意事项</span>
+                    </div>
+                    <p>Python3中的闭包可以使用nonlocal关键字修改外部函数的变量，但要谨慎使用，以免造成代码难以理解。</p>
+                </div>
+            </section>
+
+            <!-- 装饰器基础 -->
+            <section id="decorator-basics" class="lesson-section">
+                <h2>装饰器基础</h2>
+                <div class="info-box">
+                    <div class="info-box__title">
+                        <i class="fas fa-info-circle"></i>
+                        <span>什么是装饰器？</span>
+                    </div>
+                    <p>装饰器是一个可调用对象，它可以包装另一个函数或类，并且可以在不修改原始函数代码的情况下扩展其功能。</p>
+                </div>
+
+                <pre><code class="python">
+# 基本装饰器
+def log_calls(func):
+    def wrapper(*args, **kwargs):
+        print(f"调用函数: {func.__name__}")
+        result = func(*args, **kwargs)
+        print(f"函数 {func.__name__} 返回: {result}")
+        return result
+    return wrapper
+
+@log_calls
+def add(a, b):
+    return a + b
+
+# 使用装饰器
+result = add(3, 5)  # 自动打印日志
+                </code></pre>
+
+                <div class="info-box">
+                    <div class="info-box__title">
+                        <i class="fas fa-cogs"></i>
+                        <span>装饰器工作原理</span>
+                    </div>
+                    <p>使用@语法糖等同于：</p>
+                    <pre><code class="python">
+def add(a, b):
+    return a + b
+add = log_calls(add)  # 手动装饰
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 装饰器参数 -->
+            <section id="decorator-params" class="lesson-section">
+                <h2>装饰器参数</h2>
+                <div class="example-box">
+                    <div class="example-box__title">
+                        <i class="fas fa-code"></i>
+                        <span>带参数的装饰器</span>
+                    </div>
+                    <pre><code class="python">
+def repeat(times=1):
+    """创建一个可以指定重复次数的装饰器"""
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            for _ in range(times):
+                result = func(*args, **kwargs)
+            return result
+        return wrapper
+    return decorator
+
+@repeat(times=3)
+def greet(name):
+    print(f"你好, {name}!")
+
+# 调用函数
+greet("小明")  # 会打印三次问候
+                    </code></pre>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box__title">
+                        <i class="fas fa-wrench"></i>
+                        <span>保留函数元信息</span>
+                    </div>
+                    <pre><code class="python">
+from functools import wraps
+
+def log_calls(func):
+    @wraps(func)  # 保留原函数的元信息
+    def wrapper(*args, **kwargs):
+        print(f"调用函数: {func.__name__}")
+        return func(*args, **kwargs)
+    return wrapper
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 类装饰器 -->
+            <section id="class-decorators" class="lesson-section">
+                <h2>类装饰器</h2>
+                <div class="example-box">
+                    <div class="example-box__title">
+                        <i class="fas fa-cube"></i>
+                        <span>装饰类的方法</span>
+                    </div>
+                    <pre><code class="python">
+class Cache:
+    def __init__(self):
+        self._cache = {}
+    
+    def __call__(self, func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            key = str(args) + str(kwargs)
+            if key not in self._cache:
+                self._cache[key] = func(*args, **kwargs)
+            return self._cache[key]
+        return wrapper
+
+# 使用类装饰器
+@Cache()
+def fibonacci(n):
+    if n < 2:
+        return n
+    return fibonacci(n-1) + fibonacci(n-2)
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <div class="example-box__title">
+                        <i class="fas fa-code"></i>
+                        <span>装饰整个类</span>
+                    </div>
+                    <pre><code class="python">
+def singleton(cls):
+    """实现单例模式的装饰器"""
+    instances = {}
+    
+    def get_instance(*args, **kwargs):
+        if cls not in instances:
+            instances[cls] = cls(*args, **kwargs)
+        return instances[cls]
+    
+    return get_instance
+
+@singleton
+class Database:
+    def __init__(self):
+        print("初始化数据库连接...")
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 实际应用 -->
+            <section id="practical-examples" class="lesson-section">
+                <h2>实际应用</h2>
+                
+                <!-- 性能监控 -->
+                <div class="example-box">
+                    <div class="example-box__title">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>1. 性能监控装饰器</span>
+                    </div>
+                    <pre><code class="python">
+import time
+import functools
+
+def measure_time(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        start_time = time.time()
+        result = func(*args, **kwargs)
+        end_time = time.time()
+        print(f"{func.__name__} 执行时间: {end_time - start_time:.4f} 秒")
+        return result
+    return wrapper
+
+@measure_time
+def process_data(data):
+    time.sleep(1)  # 模拟耗时操作
+    return len(data)
+                    </code></pre>
+                </div>
+
+                <!-- 缓存装饰器 -->
+                <div class="example-box">
+                    <div class="example-box__title">
+                        <i class="fas fa-database"></i>
+                        <span>2. 缓存装饰器</span>
+                    </div>
+                    <pre><code class="python">
+def memoize(func):
+    cache = {}
+    
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        key = str(args) + str(kwargs)
+        if key not in cache:
+            cache[key] = func(*args, **kwargs)
+        return cache[key]
+    return wrapper
+
+@memoize
+def compute_expensive(n):
+    print(f"计算 {n}")
+    return sum(i * i for i in range(n))
+                    </code></pre>
+                </div>
+
+                <!-- 权限验证 -->
+                <div class="example-box">
+                    <div class="example-box__title">
+                        <i class="fas fa-lock"></i>
+                        <span>3. 权限验证装饰器</span>
+                    </div>
+                    <pre><code class="python">
+def require_permission(permission):
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(user, *args, **kwargs):
+            if permission in user.permissions:
+                return func(user, *args, **kwargs)
+            else:
+                raise PermissionError(f"用户没有{permission}权限")
+        return wrapper
+    return decorator
+
+@require_permission("admin")
+def delete_user(current_user, user_id):
+    print(f"删除用户 {user_id}")
+                    </code></pre>
+                </div>
+
+                <!-- 参数验证 -->
+                <div class="example-box">
+                    <div class="example-box__title">
+                        <i class="fas fa-check-circle"></i>
+                        <span>4. 参数验证装饰器</span>
+                    </div>
+                    <pre><code class="python">
+def validate_types(**expected_types):
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            # 检查参数类型
+            for arg_name, expected_type in expected_types.items():
+                if arg_name in kwargs:
+                    if not isinstance(kwargs[arg_name], expected_type):
+                        raise TypeError(f"{arg_name} 必须是 {expected_type}")
+            return func(*args, **kwargs)
+        return wrapper
+    return decorator
+
+@validate_types(age=int, name=str)
+def register_user(name, age):
+    print(f"注册用户: {name}, 年龄: {age}")
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 练习与实践 -->
+            <section id="exercises" class="lesson-section">
+                <h2>练习与实践</h2>
+                
+                <div class="exercise-box">
+                    <h3>练习1：重试装饰器</h3>
+                    <p>实现一个装饰器，在函数失败时自动重试指定次数。</p>
+                    <pre><code class="python">
+def retry(max_attempts=3, delay=1):
+    """
+    装饰器：在函数失败时自动重试
+    max_attempts: 最大重试次数
+    delay: 重试间隔（秒）
+    """
+    # 在此编写你的代码
+    pass
+                    </code></pre>
+                </div>
+
+                <div class="exercise-box">
+                    <h3>练习2：日志装饰器</h3>
+                    <p>创建一个装饰器，记录函数的调用信息到文件。</p>
+                    <pre><code class="python">
+def log_to_file(filename):
+    """
+    装饰器：记录函数调用到文件
+    filename: 日志文件名
+    """
+    # 在此编写你的代码
+    pass
+                    </code></pre>
+                </div>
+
+                <div class="exercise-box">
+                    <h3>练习3：缓存装饰器</h3>
+                    <p>实现一个带有过期时间的缓存装饰器。</p>
+                    <pre><code class="python">
+def cache_with_timeout(timeout_seconds):
+    """
+    装饰器：缓存函数结果，并在指定时间后过期
+    timeout_seconds: 缓存过期时间（秒）
+    """
+    # 在此编写你的代码
+    pass
+                    </code></pre>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="https://cdn.bytedance.com/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>
+        hljs.highlightAll();
+    </script>
+</body>
+</html> 

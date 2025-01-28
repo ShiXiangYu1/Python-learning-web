@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>面向对象编程 - Python进阶课程</title>
+    <link href="http://cdn.bytedance.com/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="css/course.css">
+    <link rel="stylesheet" href="http://cdn.bytedance.com/highlight.js/11.7.0/styles/github.min.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav__logo">
+                <a href="../../index.html" class="nav__logo-link">
+                    <svg class="nav__logo-icon" width="40" height="40" viewBox="0 0 40 40">
+                        <path d="M20 0C8.954 0 0 8.954 0 20s8.954 20 20 20 20-8.954 20-20S31.046 0 20 0zm0 36c-8.837 0-16-7.163-16-16S11.163 4 20 4s16 7.163 16 16-7.163 16-16 16z" fill="#306998"/>
+                        <path d="M20 8c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12S26.627 8 20 8zm0 22c-5.514 0-10-4.486-10-10S14.486 10 20 10s10 4.486 10 10-4.486 10-10 10z" fill="#FFD43B"/>
+                    </svg>
+                    <span class="nav__logo-text">Python学习</span>
+                </a>
+            </div>
+            <ul class="nav__menu">
+                <li><a href="../../index.html" class="nav__link">首页</a></li>
+                <li><a href="../basics/index.html" class="nav__link">基础课程</a></li>
+                <li><a href="index.html" class="nav__link nav__link--active">进阶课程</a></li>
+                <li><a href="../advanced/index.html" class="nav__link">高级课程</a></li>
+                <li><a href="../../examples/index.html" class="nav__link">示例代码</a></li>
+                <li><a href="../../exercises/index.html" class="nav__link">练习题</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main">
+        <div class="course-container">
+            <!-- 侧边导航 -->
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="sidebar-nav__item"><a href="../index.html"><i class="fas fa-home"></i> 首页</a></li>
+                    <li class="sidebar-nav__item"><a href="index.html"><i class="fas fa-book"></i> 课程概述</a></li>
+                    <li class="sidebar-nav__item sidebar-nav__item--active">
+                        <a href="oop.html"><i class="fas fa-cube"></i> 面向对象编程</a>
+                        <ul>
+                            <li><a href="#introduction">面向对象编程简介</a></li>
+                            <li><a href="#class-object">类与对象</a></li>
+                            <li><a href="#inheritance">继承</a></li>
+                            <li><a href="#polymorphism">多态</a></li>
+                            <li><a href="#encapsulation">封装</a></li>
+                            <li><a href="#exercises">练习与实践</a></li>
+                        </ul>
+                    </li>
+                    <li class="sidebar-nav__item"><a href="file-handling.html"><i class="fas fa-file-alt"></i> 文件操作</a></li>
+                    <li class="sidebar-nav__item"><a href="exception-handling.html"><i class="fas fa-exclamation-triangle"></i> 异常处理</a></li>
+                    <li class="sidebar-nav__item"><a href="iterators-generators.html"><i class="fas fa-sync"></i> 迭代器和生成器</a></li>
+                    <li class="sidebar-nav__item"><a href="decorators-closures.html"><i class="fas fa-magic"></i> 装饰器和闭包</a></li>
+                    <li class="sidebar-nav__item"><a href="modules-packages.html"><i class="fas fa-boxes"></i> 模块和包</a></li>
+                </ul>
+            </nav>
+
+            <section class="course-content">
+                <div class="lesson-header">
+                    <h1 class="lesson-header__title">面向对象编程</h1>
+                    <div class="lesson-header__meta">
+                        <span><i class="fas fa-clock"></i> 学习时长：120分钟</span>
+                        <span><i class="fas fa-tasks"></i> 练习题：5个</span>
+                    </div>
+                </div>
+
+                <section id="introduction" class="lesson-section">
+                    <h2 class="lesson-section__title">面向对象编程简介</h2>
+                    <div class="lesson-section__content">
+                        <p>面向对象编程（Object-Oriented Programming，简称OOP）是一种程序设计范式，它将程序中的数据和操作数据的方法组织成对象，通过对象之间的交互来完成程序功能。</p>
+                        
+                        <div class="info-box">
+                            <h3 class="info-box__title">
+                                <i class="fas fa-lightbulb"></i>
+                                为什么要学习面向对象编程？
+                            </h3>
+                            <ul>
+                                <li>更好的代码组织方式，提高代码的可维护性</li>
+                                <li>代码重用性强，减少重复代码</li>
+                                <li>更接近人类思维方式，易于理解和使用</li>
+                                <li>适合开发大型复杂的程序</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="class-object" class="lesson-section">
+                    <h2 class="lesson-section__title">类与对象</h2>
+                    
+                    <section id="class-definition" class="lesson-section">
+                        <h3 class="lesson-section__subtitle">类的定义</h3>
+                        <div class="lesson-section__content">
+                            <p>类是对象的模板，它定义了对象的属性和方法。在Python中使用class关键字定义类：</p>
+                            <pre><code class="python">class Student:
+    """学生类"""
+    
+    def __init__(self, name, age):
+        self.name = name  # 实例属性
+        self.age = age
+        
+    def introduce(self):  # 实例方法
+        return f"我叫{self.name}，今年{self.age}岁"</code></pre>
+                        </div>
+                    </section>
+
+                    <section id="object-creation" class="lesson-section">
+                        <h3 class="lesson-section__subtitle">对象的创建</h3>
+                        <div class="lesson-section__content">
+                            <p>对象是类的实例，通过类名后跟括号的方式创建：</p>
+                            <pre><code class="python"># 创建Student类的实例
+student1 = Student("张三", 18)
+student2 = Student("李四", 19)
+
+# 调用对象的方法
+print(student1.introduce())  # 输出：我叫张三，今年18岁
+print(student2.introduce())  # 输出：我叫李四，今年19岁</code></pre>
+                        </div>
+                    </section>
+                </section>
+
+                <section id="attributes-methods" class="lesson-section">
+                    <h2 class="lesson-section__title">属性与方法</h2>
+                    
+                    <section id="instance-attributes" class="lesson-section">
+                        <h3 class="lesson-section__subtitle">实例属性</h3>
+                        <div class="lesson-section__content">
+                            <p>实例属性是属于对象的变量，每个对象都有自己的一份独立的实例属性：</p>
+                            <pre><code class="python">class Dog:
+    def __init__(self, name):
+        self.name = name    # 实例属性
+        self.tricks = []    # 另一个实例属性
+
+    def add_trick(self, trick):
+        self.tricks.append(trick)
+
+# 创建两个Dog实例
+dog1 = Dog("旺财")
+dog2 = Dog("来福")
+
+# 给狗狗教不同的技能
+dog1.add_trick("握手")
+dog2.add_trick("打滚")
+
+print(dog1.tricks)  # ['握手']
+print(dog2.tricks)  # ['打滚']</code></pre>
+                        </div>
+                    </section>
+
+                    <section id="class-attributes" class="lesson-section">
+                        <h3 class="lesson-section__subtitle">类属性</h3>
+                        <div class="lesson-section__content">
+                            <p>类属性是属于类的变量，该类的所有实例共享同一个类属性：</p>
+                            <pre><code class="python">class Student:
+    school = "Python学习网"  # 类属性
+    
+    def __init__(self, name):
+        self.name = name    # 实例属性
+
+# 创建实例
+student1 = Student("张三")
+student2 = Student("李四")
+
+# 访问类属性
+print(Student.school)      # Python学习网
+print(student1.school)     # Python学习网
+print(student2.school)     # Python学习网
+
+# 修改类属性
+Student.school = "新Python学习网"
+print(student1.school)     # 新Python学习网
+print(student2.school)     # 新Python学习网</code></pre>
+                        </div>
+                    </section>
+                </section>
+
+                <section id="inheritance" class="lesson-section">
+                    <h2 class="lesson-section__title">继承与多态</h2>
+                    
+                    <section id="inheritance-basics" class="lesson-section">
+                        <h3 class="lesson-section__subtitle">继承基础</h3>
+                        <div class="lesson-section__content">
+                            <p>继承允许我们基于一个类创建新类，新类继承了原有类的属性和方法：</p>
+                            <pre><code class="python">class Animal:
+    def __init__(self, name):
+        self.name = name
+    
+    def speak(self):
+        pass
+
+class Dog(Animal):
+    def speak(self):
+        return f"{self.name}说：汪汪！"
+
+class Cat(Animal):
+    def speak(self):
+        return f"{self.name}说：喵喵！"
+
+# 创建实例
+dog = Dog("旺财")
+cat = Cat("咪咪")
+
+print(dog.speak())  # 旺财说：汪汪！
+print(cat.speak())  # 咪咪说：喵喵！</code></pre>
+                        </div>
+                    </section>
+
+                    <section id="method-override" class="lesson-section">
+                        <h3 class="lesson-section__subtitle">方法重写</h3>
+                        <div class="lesson-section__content">
+                            <p>子类可以重写（覆盖）父类的方法，以实现自己的特定行为。如果需要调用父类的方法，可以使用super()函数：</p>
+                            <pre><code class="python">class Vehicle:
+    def __init__(self, brand, model):
+        self.brand = brand
+        self.model = model
+    
+    def start_engine(self):
+        return f"{self.brand} {self.model}的发动机启动了"
+    
+    def show_info(self):
+        return f"这是一辆{self.brand} {self.model}"
+
+class ElectricCar(Vehicle):
+    def __init__(self, brand, model, battery_capacity):
+        # 调用父类的__init__方法
+        super().__init__(brand, model)
+        self.battery_capacity = battery_capacity
+    
+    def start_engine(self):
+        # 完全重写父类的方法
+        return f"{self.brand} {self.model}的电机启动了，电池容量{self.battery_capacity}kWh"
+    
+    def show_info(self):
+        # 在父类方法基础上添加新功能
+        basic_info = super().show_info()
+        return f"{basic_info}，使用电力驱动"
+
+# 创建实例
+car = Vehicle("丰田", "凯美瑞")
+tesla = ElectricCar("特斯拉", "Model 3", 75)
+
+# 调用方法
+print(car.start_engine())    # 丰田 凯美瑞的发动机启动了
+print(tesla.start_engine())  # 特斯拉 Model 3的电机启动了，电池容量75kWh
+print(tesla.show_info())     # 这是一辆特斯拉 Model 3，使用电力驱动</code></pre>
+
+                            <div class="info-box">
+                                <h3 class="info-box__title">
+                                    <i class="fas fa-info-circle"></i>
+                                    方法重写的三种常见方式
+                                </h3>
+                                <ul>
+                                    <li>完全重写：子类完全覆盖父类的方法实现</li>
+                                    <li>部分重写：调用父类方法，并添加新功能</li>
+                                    <li>选择性重写：根据条件决定是否调用父类方法</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="polymorphism" class="lesson-section">
+                        <h3 class="lesson-section__subtitle">多态性</h3>
+                        <div class="lesson-section__content">
+                            <p>多态性允许我们以统一的方式处理不同类型的对象，只要这些对象都是某个共同基类的子类：</p>
+                            <pre><code class="python">class Shape:
+    def area(self):
+        pass
+    
+    def describe(self):
+        return f"这是一个{self.__class__.__name__}"
+
+class Circle(Shape):
+    def __init__(self, radius):
+        self.radius = radius
+    
+    def area(self):
+        return 3.14 * self.radius ** 2
+
+class Rectangle(Shape):
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+    
+    def area(self):
+        return self.width * self.height
+
+def print_shape_info(shape):
+    """多态函数：接受任何Shape类型的对象"""
+    print(shape.describe())
+    print(f"面积是: {shape.area()}")
+
+# 创建不同的形状
+shapes = [
+    Circle(5),
+    Rectangle(4, 6),
+    Circle(3)
+]
+
+# 统一处理不同类型的对象
+for shape in shapes:
+    print_shape_info(shape)
+    print("---")</code></pre>
+
+                            <div class="info-box">
+                                <h3 class="info-box__title">
+                                    <i class="fas fa-lightbulb"></i>
+                                    Python的鸭子类型
+                                </h3>
+                                <p>Python支持"鸭子类型"：如果一个对象实现了某个方法，我们就可以使用它，
+                                   而不需要关心它的具体类型。这提供了更灵活的多态性：</p>
+                                <pre><code class="python">class Duck:
+    def speak(self):
+        return "嘎嘎！"
+
+class Cat:
+    def speak(self):
+        return "喵喵！"
+
+class Person:
+    def speak(self):
+        return "你好！"
+
+def make_speak(thing):
+    # 不关心对象类型，只要有speak方法就可以调用
+    print(thing.speak())
+
+# 使用鸭子类型
+things = [Duck(), Cat(), Person()]
+for thing in things:
+    make_speak(thing)</code></pre>
+                            </div>
+
+                            <div class="warning-box">
+                                <h3 class="warning-box__title">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    注意事项
+                                </h3>
+                                <ul>
+                                    <li>确保子类方法的参数与父类方法兼容</li>
+                                    <li>重写方法时保持接口的一致性</li>
+                                    <li>适当使用抽象基类来强制接口规范</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+                </section>
+
+                <section id="encapsulation" class="lesson-section">
+                    <h2 class="lesson-section__title">封装与抽象</h2>
+                    
+                    <section id="private-attributes" class="lesson-section">
+                        <h3 class="lesson-section__subtitle">私有属性</h3>
+                        <div class="lesson-section__content">
+                            <p>在Python中，通过在属性名前加双下划线__来创建私有属性，这样的属性只能在类的内部访问：</p>
+                            <pre><code class="python">class BankAccount:
+    def __init__(self, owner, balance):
+        self.owner = owner          # 公有属性
+        self.__balance = balance    # 私有属性
+    
+    def deposit(self, amount):
+        if amount > 0:
+            self.__balance += amount
+            return True
+        return False
+    
+    def get_balance(self):
+        return self.__balance
+
+# 创建账户
+account = BankAccount("张三", 1000)
+
+# 正确的访问方式
+print(account.owner)           # 可以直接访问公有属性
+account.deposit(500)          # 通过方法访问私有属性
+print(account.get_balance())  # 输出：1500
+
+# 错误的访问方式
+# print(account.__balance)    # 这会引发AttributeError错误</code></pre>
+                            
+                            <div class="info-box">
+                                <h3 class="info-box__title">
+                                    <i class="fas fa-info-circle"></i>
+                                    名称改写
+                                </h3>
+                                <p>Python中的私有属性实际上是通过名称改写（name mangling）实现的。
+                                   双下划线开头的属性会被改写为_类名__属性名的形式。这不是真正的私有，
+                                   但这种约定俗成的方式可以有效防止属性被意外访问或修改。</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="property-decorator" class="lesson-section">
+                        <h3 class="lesson-section__subtitle">属性装饰器</h3>
+                        <div class="lesson-section__content">
+                            <p>使用@property装饰器可以将方法转换为属性，实现更优雅的属性访问和控制：</p>
+                            <pre><code class="python">class Temperature:
+    def __init__(self, celsius):
+        self.__celsius = celsius
+    
+    @property
+    def celsius(self):
+        """获取摄氏温度"""
+        return self.__celsius
+    
+    @celsius.setter
+    def celsius(self, value):
+        """设置摄氏温度"""
+        if value < -273.15:  # 验证温度不低于绝对零度
+            raise ValueError("温度不能低于绝对零度")
+        self.__celsius = value
+    
+    @property
+    def fahrenheit(self):
+        """获取华氏温度"""
+        return self.__celsius * 9/5 + 32
+    
+    @fahrenheit.setter
+    def fahrenheit(self, value):
+        """设置华氏温度"""
+        self.celsius = (value - 32) * 5/9
+
+# 使用示例
+temp = Temperature(25)
+print(temp.celsius)     # 25
+print(temp.fahrenheit)  # 77.0
+
+temp.celsius = 30       # 使用setter设置温度
+print(temp.fahrenheit)  # 86.0
+
+# temp.celsius = -300   # 这会引发ValueError</code></pre>
+                        </div>
+                    </section>
+
+                    <section id="abstract-base-class" class="lesson-section">
+                        <h3 class="lesson-section__subtitle">抽象基类（ABC）</h3>
+                        <div class="lesson-section__content">
+                            <p>抽象基类用于定义接口规范，它可以强制子类实现特定的方法。Python通过abc模块提供抽象基类支持：</p>
+                            <pre><code class="python">from abc import ABC, abstractmethod
+
+class Shape(ABC):
+    @abstractmethod
+    def area(self):
+        """计算面积的抽象方法"""
+        pass
+    
+    @abstractmethod
+    def perimeter(self):
+        """计算周长的抽象方法"""
+        pass
+    
+    def describe(self):
+        """普通方法（非抽象方法）"""
+        return f"这是一个{self.__class__.__name__}，面积为{self.area()}"
+
+# 尝试实例化抽象类会引发错误
+# shape = Shape()  # TypeError: Can't instantiate abstract class Shape
+
+class Circle(Shape):
+    def __init__(self, radius):
+        self.radius = radius
+    
+    def area(self):  # 必须实现area方法
+        return 3.14 * self.radius ** 2
+    
+    def perimeter(self):  # 必须实现perimeter方法
+        return 2 * 3.14 * self.radius
+
+# 正确使用示例
+circle = Circle(5)
+print(circle.area())       # 78.5
+print(circle.describe())   # 这是一个Circle，面积为78.5</code></pre>
+
+                            <div class="info-box">
+                                <h3 class="info-box__title">
+                                    <i class="fas fa-lightbulb"></i>
+                                    抽象基类的作用
+                                </h3>
+                                <ul>
+                                    <li>定义接口规范，确保子类实现必要的方法</li>
+                                    <li>提供代码复用的基础架构</li>
+                                    <li>支持类型检查和验证</li>
+                                </ul>
+                            </div>
+
+                            <p>抽象基类还可以包含抽象属性和具体实现：</p>
+                            <pre><code class="python">from abc import ABC, abstractmethod, abstractproperty
+
+class Vehicle(ABC):
+    @abstractmethod
+    def start_engine(self):
+        """启动引擎"""
+        pass
+    
+    @abstractproperty
+    def fuel_type(self):
+        """燃料类型"""
+        pass
+    
+    def stop_engine(self):
+        """关闭引擎（具体实现）"""
+        return "引擎已关闭"
+
+class ElectricCar(Vehicle):
+    @property
+    def fuel_type(self):
+        return "电力"
+    
+    def start_engine(self):
+        return "电机启动"
+
+class GasCar(Vehicle):
+    @property
+    def fuel_type(self):
+        return "汽油"
+    
+    def start_engine(self):
+        return "汽油发动机启动"
+
+# 使用示例
+tesla = ElectricCar()
+toyota = GasCar()
+
+print(tesla.fuel_type)    # 电力
+print(toyota.fuel_type)   # 汽油
+print(tesla.start_engine())  # 电机启动
+print(toyota.stop_engine())  # 引擎已关闭</code></pre>
+
+                            <div class="warning-box">
+                                <h3 class="warning-box__title">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    注意事项
+                                </h3>
+                                <ul>
+                                    <li>抽象方法必须被子类实现，否则子类也会变成抽象类</li>
+                                    <li>抽象基类可以包含具体方法的实现</li>
+                                    <li>使用@abstractmethod而不是@abstractproperty（已弃用）</li>
+                                </ul>
+                            </div>
+
+                            <div class="example-box">
+                                <h3 class="example-box__title">实际应用示例：数据库接口</h3>
+                                <pre><code class="python">from abc import ABC, abstractmethod
+
+class Database(ABC):
+    @abstractmethod
+    def connect(self):
+        """连接数据库"""
+        pass
+    
+    @abstractmethod
+    def disconnect(self):
+        """断开连接"""
+        pass
+    
+    @abstractmethod
+    def execute(self, query):
+        """执行查询"""
+        pass
+    
+    def transaction(self, queries):
+        """事务处理（具体实现）"""
+        try:
+            for query in queries:
+                self.execute(query)
+            return True
+        except Exception as e:
+            print(f"事务失败: {e}")
+            return False
+
+class MySQLDatabase(Database):
+    def connect(self):
+        return "连接到MySQL数据库"
+    
+    def disconnect(self):
+        return "断开MySQL连接"
+    
+    def execute(self, query):
+        return f"在MySQL中执行: {query}"
+
+class PostgreSQLDatabase(Database):
+    def connect(self):
+        return "连接到PostgreSQL数据库"
+    
+    def disconnect(self):
+        return "断开PostgreSQL连接"
+    
+    def execute(self, query):
+        return f"在PostgreSQL中执行: {query}"
+
+# 使用示例
+def process_data(database: Database):
+    database.connect()
+    database.execute("SELECT * FROM users")
+    database.disconnect()
+
+# 可以使用任何Database的子类
+mysql_db = MySQLDatabase()
+postgres_db = PostgreSQLDatabase()
+
+process_data(mysql_db)
+process_data(postgres_db)</code></pre>
+                            </div>
+                        </div>
+                    </section>
+                </section>
+
+                <section id="magic-methods" class="lesson-section">
+                    <h2 class="lesson-section__title">魔术方法</h2>
+                    
+                    <section id="init-method" class="lesson-section">
+                        <h3 class="lesson-section__subtitle">__init__方法</h3>
+                        <div class="lesson-section__content">
+                            <p>__init__是最常用的魔术方法，用于初始化对象：</p>
+                            <pre><code class="python">class Point:
+    def __init__(self, x=0, y=0):
+        """初始化方法，创建点的坐标"""
+        self.x = x
+        self.y = y
+
+# 创建点对象
+p1 = Point()        # 使用默认值 (0, 0)
+p2 = Point(3, 4)    # 指定坐标 (3, 4)</code></pre>
+                        </div>
+                    </section>
+
+                    <section id="str-repr" class="lesson-section">
+                        <h3 class="lesson-section__subtitle">__str__和__repr__</h3>
+                        <div class="lesson-section__content">
+                            <p>这两个方法用于对象的字符串表示：</p>
+                            <pre><code class="python">class Point:
+    def __init__(self, x=0, y=0):
+        self.x = x
+        self.y = y
+    
+    def __str__(self):
+        """返回对象的字符串表示，面向用户"""
+        return f"点({self.x}, {self.y})"
+    
+    def __repr__(self):
+        """返回对象的详细字符串表示，面向开发者"""
+        return f"Point(x={self.x}, y={self.y})"
+
+p = Point(3, 4)
+print(str(p))   # 输出：点(3, 4)
+print(repr(p))  # 输出：Point(x=3, y=4)</code></pre>
+                        </div>
+                    </section>
+
+                    <section id="other-magic" class="lesson-section">
+                        <h3 class="lesson-section__subtitle">其他魔术方法</h3>
+                        <div class="lesson-section__content">
+                            <p>Python提供了许多其他魔术方法来自定义对象的行为：</p>
+                            <pre><code class="python">class Vector:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    
+    def __add__(self, other):
+        """实现向量加法：+运算符"""
+        return Vector(self.x + other.x, self.y + other.y)
+    
+    def __sub__(self, other):
+        """实现向量减法：-运算符"""
+        return Vector(self.x - other.x, self.y - other.y)
+    
+    def __len__(self):
+        """实现len()函数"""
+        return int((self.x**2 + self.y**2)**0.5)
+    
+    def __str__(self):
+        return f"Vector({self.x}, {self.y})"
+
+# 使用示例
+v1 = Vector(2, 3)
+v2 = Vector(3, 4)
+v3 = v1 + v2       # 使用+运算符
+print(v3)          # Vector(5, 7)
+print(len(v1))     # 3 (向量长度的整数部分)</code></pre>
+
+                            <div class="info-box">
+                                <h3 class="info-box__title">
+                                    <i class="fas fa-star"></i>
+                                    常用魔术方法
+                                </h3>
+                                <ul>
+                                    <li>__eq__(self, other): 定义==运算符</li>
+                                    <li>__lt__(self, other): 定义<运算符</li>
+                                    <li>__getitem__(self, key): 定义索引访问</li>
+                                    <li>__call__(self, *args): 使对象可调用</li>
+                                    <li>__enter__和__exit__: 上下文管理器</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+                </section>
+
+                <section id="exercises" class="lesson-section">
+                    <h2 class="lesson-section__title">练习与实践</h2>
+                    <div class="lesson-section__content">
+                        <div class="difficulty-guide">
+                            <h3 class="difficulty-guide__title">难度说明</h3>
+                            <ul class="difficulty-guide__list">
+                                <li><i class="fas fa-star"></i> 基础练习：巩固基本概念</li>
+                                <li><i class="fas fa-star"></i><i class="fas fa-star"></i> 进阶练习：综合应用多个概念</li>
+                                <li><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> 挑战练习：需要深入思考和创新</li>
+                            </ul>
+                        </div>
+
+                        <div class="exercise-box">
+                            <h3 class="exercise-box__title">
+                                <i class="fas fa-star"></i>
+                                练习1：创建图书类
+                            </h3>
+                            <p>创建一个Book类，包含以下要求：</p>
+                            <ul>
+                                <li>属性：书名、作者、价格、库存量</li>
+                                <li>方法：
+                                    <ul>
+                                        <li>显示图书信息</li>
+                                        <li>更新库存量</li>
+                                        <li>计算打折后的价格</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <div class="exercise-box__hint">
+                                <p>提示：使用property装饰器处理价格的获取和设置，确保价格不能为负数</p>
+                            </div>
+                            <div class="exercise-box__template">
+                                <p>参考代码结构：</p>
+                                <pre><code class="python">class Book:
+    def __init__(self, title, author, price, stock):
+        self.title = title
+        self.author = author
+        self._price = price  # 使用下划线表示protected属性
+        self.stock = stock
+    
+    @property
+    def price(self):
+        # 在这里实现价格的getter方法
+        pass
+    
+    @price.setter
+    def price(self, value):
+        # 在这里实现价格的setter方法
+        pass</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="exercise-box">
+                            <h3 class="exercise-box__title">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                练习2：银行账户系统
+                            </h3>
+                            <p>设计一个简单的银行账户系统，包含以下类：</p>
+                            <ul>
+                                <li>Account（基类）：基本账户操作</li>
+                                <li>SavingAccount（储蓄账户）：包含利息计算</li>
+                                <li>CheckingAccount（支票账户）：包含透支额度</li>
+                            </ul>
+                            <div class="exercise-box__hint">
+                                <p>提示：使用继承实现不同类型的账户，确保账户余额不会出现非法操作</p>
+                            </div>
+                            <div class="exercise-box__test">
+                                <p>测试用例：</p>
+                                <pre><code class="python"># 创建账户
+savings = SavingAccount("张三", 1000, 0.05)  # 年利率5%
+checking = CheckingAccount("李四", 2000, 500)  # 透支额度500
+
+# 测试存款和取款
+savings.deposit(500)
+assert savings.balance == 1500
+checking.withdraw(2300)  # 允许透支</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="exercise-box">
+                            <h3 class="exercise-box__title">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                练习3：商品库存管理
+                            </h3>
+                            <p>实现一个商品库存管理系统，要求：</p>
+                            <ul>
+                                <li>创建Product基类和不同类型的商品子类（如Electronics、Clothing等）</li>
+                                <li>实现库存管理功能（入库、出库、库存查询）</li>
+                                <li>使用property装饰器管理商品属性</li>
+                                <li>实现商品搜索和分类功能</li>
+                            </ul>
+                            <div class="exercise-box__hint">
+                                <p>提示：考虑使用类方法和静态方法来实现一些通用功能</p>
+                            </div>
+                            <div class="exercise-box__example">
+                                <p>示例实现：</p>
+                                <pre><code class="python">class Product:
+    _all_products = []  # 类属性，存储所有商品
+    
+    def __init__(self, name, price, stock):
+        self.name = name
+        self._price = price
+        self._stock = stock
+        Product._all_products.append(self)
+    
+    @classmethod
+    def search(cls, keyword):
+        """搜索商品"""
+        return [p for p in cls._all_products if keyword in p.name]
+    
+    @staticmethod
+    def validate_price(price):
+        """验证价格是否合法"""
+        return price > 0</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="exercise-box">
+                            <h3 class="exercise-box__title">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                练习4：游戏角色系统
+                            </h3>
+                            <p>设计一个游戏角色系统，包含以下功能：</p>
+                            <ul>
+                                <li>创建Character基类和不同职业的子类（如Warrior、Mage、Archer）</li>
+                                <li>实现角色属性（生命值、魔法值、攻击力等）</li>
+                                <li>设计技能系统（每个职业有特殊技能）</li>
+                                <li>实现角色交互（攻击、防御、使用技能等）</li>
+                                <li>添加状态效果系统（如中毒、眩晕等）</li>
+                            </ul>
+                            <div class="exercise-box__hint">
+                                <p>提示：使用多重继承或混入类（Mixin）来实现状态效果系统</p>
+                            </div>
+                            <div class="exercise-box__example">
+                                <p>示例代码结构：</p>
+                                <pre><code class="python">class Character:
+    def __init__(self, name, health, mana, attack):
+        self.name = name
+        self._health = health
+        self._mana = mana
+        self._attack = attack
+        self._effects = []  # 状态效果列表
+    
+    def use_skill(self, skill, target):
+        if self._mana >= skill.mana_cost:
+            self._mana -= skill.mana_cost
+            return skill.execute(self, target)
+        return "魔法值不足！"
+
+class Warrior(Character):
+    def __init__(self, name):
+        super().__init__(name, health=100, mana=50, attack=15)
+        self.skills = [
+            Skill("冲锋", 10, self._charge),
+            Skill("旋风斩", 20, self._whirlwind)
+        ]
+    
+    def _charge(self, target):
+        # 实现冲锋技能
+        pass</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="exercise-box">
+                            <h3 class="exercise-box__title">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                练习5：自定义集合类
+                            </h3>
+                            <p>实现一个自定义的集合类，要求：</p>
+                            <ul>
+                                <li>支持基本的集合操作（添加、删除、查找等）</li>
+                                <li>实现迭代器协议（__iter__和__next__）</li>
+                                <li>支持运算符重载（并集+、交集&、差集-）</li>
+                                <li>实现长度计算和成员检测</li>
+                                <li>支持切片操作</li>
+                            </ul>
+                            <div class="exercise-box__hint">
+                                <p>提示：需要实现多个魔术方法来支持这些功能</p>
+                            </div>
+                            <div class="exercise-box__test">
+                                <p>测试代码：</p>
+                                <pre><code class="python"># 创建自定义集合
+s1 = MySet([1, 2, 3, 4])
+s2 = MySet([3, 4, 5, 6])
+
+# 测试运算符重载
+s3 = s1 + s2  # 并集
+s4 = s1 & s2  # 交集
+s5 = s1 - s2  # 差集
+
+# 测试迭代和切片
+for item in s1:
+    print(item)
+print(s1[1:3])  # 切片访问</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer__content">
+            <div class="footer__section">
+                <h4 class="footer__title">关于我们</h4>
+                <p class="footer__text">致力于为初学者提供优质的Python编程学习资源</p>
+            </div>
+            <div class="footer__section">
+                <h4 class="footer__title">快速链接</h4>
+                <ul class="footer__links">
+                    <li><a href="../../index.html">返回首页</a></li>
+                    <li><a href="../../examples/index.html">示例代码</a></li>
+                    <li><a href="../../exercises/index.html">练习题</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            <p>&copy; 2024 Python学习网站. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../../assets/js/main.js"></script>
+    <script src="js/course.js"></script>
+    <script src="http://cdn.bytedance.com/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html> 

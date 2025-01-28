@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python异常处理 - Python学习网站</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="css/course.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/highlight.js/11.7.0/styles/github.min.css">
+</head>
+<body>
+    <div class="course-container">
+        <!-- 侧边导航 -->
+        <nav class="sidebar-nav">
+            <ul>
+                <li class="sidebar-nav__item"><a href="../index.html"><i class="fas fa-home"></i> 首页</a></li>
+                <li class="sidebar-nav__item"><a href="index.html"><i class="fas fa-book"></i> 课程概述</a></li>
+                <li class="sidebar-nav__item"><a href="oop.html"><i class="fas fa-cube"></i> 面向对象编程</a></li>
+                <li class="sidebar-nav__item"><a href="file-handling.html"><i class="fas fa-file-alt"></i> 文件操作</a></li>
+                <li class="sidebar-nav__item sidebar-nav__item--active">
+                    <a href="exception-handling.html"><i class="fas fa-exclamation-triangle"></i> 异常处理</a>
+                    <ul>
+                        <li><a href="#exception-basics">异常处理基础</a></li>
+                        <li><a href="#try-except">try-except语句</a></li>
+                        <li><a href="#exception-types">常见异常类型</a></li>
+                        <li><a href="#custom-exceptions">自定义异常</a></li>
+                        <li><a href="#best-practices">最佳实践</a></li>
+                        <li><a href="#exercises">练习与实践</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- 主要内容区 -->
+        <main class="course-content">
+            <!-- 课程标题 -->
+            <header class="lesson-header">
+                <h1 class="lesson-header__title">Python异常处理</h1>
+                <div class="lesson-header__meta">
+                    <span><i class="fas fa-clock"></i> 学习时长：2小时</span>
+                    <span><i class="fas fa-layer-group"></i> 难度：中级</span>
+                    <span><i class="fas fa-tasks"></i> 练习：4个</span>
+                </div>
+            </header>
+
+            <!-- 异常处理基础 -->
+            <section id="exception-basics" class="lesson-section">
+                <h2>异常处理基础</h2>
+                <div class="info-box">
+                    <div class="info-box__title">
+                        <i class="fas fa-info-circle"></i>
+                        <span>什么是异常？</span>
+                    </div>
+                    <p>异常是程序运行时发生的错误。Python使用异常对象来表示这些错误，并提供了完整的异常处理机制来优雅地处理这些错误。</p>
+                </div>
+
+                <h3>异常的产生</h3>
+                <pre><code class="python">
+# 常见的异常情况
+print(10 / 0)  # ZeroDivisionError
+print(undefined_variable)  # NameError
+print(int('abc'))  # ValueError
+                </code></pre>
+            </section>
+
+            <!-- try-except语句 -->
+            <section id="try-except" class="lesson-section">
+                <h2>try-except语句</h2>
+                <div class="example-box">
+                    <div class="example-box__title">
+                        <i class="fas fa-lightbulb"></i>
+                        <span>基本语法</span>
+                    </div>
+                    <pre><code class="python">
+try:
+    # 可能产生异常的代码
+    result = 10 / 0
+except ZeroDivisionError as e:
+    # 处理特定类型的异常
+    print(f"发生除零错误：{e}")
+except Exception as e:
+    # 处理其他类型的异常
+    print(f"发生其他错误：{e}")
+else:
+    # 没有异常时执行
+    print("计算成功")
+finally:
+    # 无论是否发生异常都会执行
+    print("清理工作")
+                    </code></pre>
+                </div>
+
+                <div class="warning-box">
+                    <div class="warning-box__title">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>注意事项</span>
+                    </div>
+                    <p>不要使用空的except语句捕获所有异常，这可能会掩盖程序中的严重问题。始终指定要捕获的具体异常类型。</p>
+                </div>
+            </section>
+
+            <!-- 常见异常类型 -->
+            <section id="exception-types" class="lesson-section">
+                <h2>常见异常类型</h2>
+                <div class="info-box">
+                    <div class="info-box__title">
+                        <i class="fas fa-list"></i>
+                        <span>Python内置异常</span>
+                    </div>
+                    <ul>
+                        <li><strong>SyntaxError</strong>：语法错误</li>
+                        <li><strong>NameError</strong>：使用未定义的变量</li>
+                        <li><strong>TypeError</strong>：类型错误</li>
+                        <li><strong>ValueError</strong>：值错误</li>
+                        <li><strong>IndexError</strong>：索引超出范围</li>
+                        <li><strong>KeyError</strong>：字典中不存在的键</li>
+                        <li><strong>FileNotFoundError</strong>：文件不存在</li>
+                        <li><strong>ImportError</strong>：导入模块失败</li>
+                    </ul>
+                </div>
+
+                <h3>异常层级</h3>
+                <pre><code class="python">
+try:
+    # 尝试打开文件
+    with open('不存在的文件.txt') as f:
+        content = f.read()
+except FileNotFoundError:
+    print("文件不存在")
+except IOError:
+    print("IO错误")
+except Exception:
+    print("其他错误")
+                </code></pre>
+            </section>
+
+            <!-- 自定义异常 -->
+            <section id="custom-exceptions" class="lesson-section">
+                <h2>自定义异常</h2>
+                <p>当内置异常无法满足需求时，我们可以创建自定义异常类：</p>
+                <pre><code class="python">
+class InvalidAgeError(Exception):
+    """当年龄值无效时抛出的异常"""
+    def __init__(self, age, message="年龄必须在0-150之间"):
+        self.age = age
+        self.message = message
+        super().__init__(self.message)
+
+def verify_age(age):
+    if not 0 <= age <= 150:
+        raise InvalidAgeError(age)
+    return True
+
+# 使用自定义异常
+try:
+    verify_age(200)
+except InvalidAgeError as e:
+    print(f"错误：{e}")
+                </code></pre>
+            </section>
+
+            <!-- 最佳实践 -->
+            <section id="best-practices" class="lesson-section">
+                <h2>异常处理最佳实践</h2>
+                
+                <div class="info-box">
+                    <div class="info-box__title">
+                        <i class="fas fa-check-circle"></i>
+                        <span>推荐做法</span>
+                    </div>
+                    <ul>
+                        <li>只捕获预期的特定异常</li>
+                        <li>在适当的抽象层次处理异常</li>
+                        <li>保持异常处理代码的简洁</li>
+                        <li>利用finally子句进行清理</li>
+                        <li>提供有意义的错误信息</li>
+                    </ul>
+                </div>
+
+                <h3>示例：分层异常处理</h3>
+                <pre><code class="python">
+def read_user_data(filename):
+    try:
+        with open(filename) as f:
+            return json.load(f)
+    except FileNotFoundError:
+        raise UserDataError(f"用户数据文件 {filename} 不存在")
+    except json.JSONDecodeError:
+        raise UserDataError("用户数据格式无效")
+
+def process_user(filename):
+    try:
+        user_data = read_user_data(filename)
+        # 处理用户数据
+    except UserDataError as e:
+        logger.error(f"处理用户数据失败: {e}")
+        # 进行适当的错误处理
+                </code></pre>
+            </section>
+
+            <!-- 练习部分 -->
+            <section id="exercises" class="lesson-section">
+                <h2>练习与实践</h2>
+                
+                <div class="exercise-box">
+                    <h3 class="exercise-box__title">
+                        <i class="fas fa-tasks"></i> 练习1：安全的数值转换器
+                    </h3>
+                    <p>创建一个函数，可以安全地将字符串转换为整数，处理各种可能的错误情况。</p>
+                    <div class="exercise-box__hint">
+                        提示：考虑处理ValueError和TypeError异常，对于无效输入返回默认值。
+                    </div>
+                    <pre><code class="python">
+def safe_int_convert(value, default=None):
+    """
+    安全地将输入值转换为整数
+    如果转换失败，返回默认值
+    """
+    # 在此编写你的代码
+    pass
+                    </code></pre>
+                </div>
+
+                <div class="exercise-box">
+                    <h3 class="exercise-box__title">
+                        <i class="fas fa-tasks"></i> 练习2：银行账户管理器
+                    </h3>
+                    <p>实现一个简单的银行账户类，包含存款和取款方法，使用自定义异常处理各种错误情况。</p>
+                    <div class="exercise-box__hint">
+                        提示：创建InsufficientFundsError和InvalidAmountError异常类。
+                    </div>
+                    <pre><code class="python">
+class BankAccount:
+    def __init__(self, balance=0):
+        self.balance = balance
+
+    def deposit(self, amount):
+        """存款方法，金额必须为正数"""
+        # 在此编写你的代码
+        pass
+
+    def withdraw(self, amount):
+        """取款方法，金额必须为正数且不能超过余额"""
+        # 在此编写你的代码
+        pass
+                    </code></pre>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="https://cdn.bytedance.com/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>
+        hljs.highlightAll();
+    </script>
+</body>
+</html> 

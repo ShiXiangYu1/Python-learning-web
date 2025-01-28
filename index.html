@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python学习网站 - 系统学习Python编程</title>
+    <!-- 使用字节跳动CDN -->
+    <link href="http://cdn.bytedance.com/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav__logo">
+                <svg class="nav__logo-icon" width="40" height="40" viewBox="0 0 40 40">
+                    <path d="M20 0C8.954 0 0 8.954 0 20s8.954 20 20 20 20-8.954 20-20S31.046 0 20 0zm0 36c-8.837 0-16-7.163-16-16S11.163 4 20 4s16 7.163 16 16-7.163 16-16 16z" fill="#306998"/>
+                    <path d="M20 8c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12S26.627 8 20 8zm0 22c-5.514 0-10-4.486-10-10S14.486 10 20 10s10 4.486 10 10-4.486 10-10 10z" fill="#FFD43B"/>
+                </svg>
+                <span class="nav__logo-text">Python学习</span>
+            </div>
+            <ul class="nav__menu">
+                <li><a href="#" class="nav__link">首页</a></li>
+                <li><a href="courses/basics/index.html" class="nav__link">基础课程</a></li>
+                <li><a href="courses/intermediate/index.html" class="nav__link">进阶课程</a></li>
+                <li><a href="courses/advanced/index.html" class="nav__link">高级课程</a></li>
+                <li><a href="examples/index.html" class="nav__link">示例代码</a></li>
+                <li><a href="exercises/index.html" class="nav__link">练习题</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main">
+        <section class="hero">
+            <div class="hero__content">
+                <h1 class="hero__title">开启您的Python学习之旅</h1>
+                <p class="hero__subtitle">系统化的学习路径，丰富的实例代码，交互式练习，助您快速掌握Python编程</p>
+                <a href="courses/basics/index.html" class="hero__cta-button">立即开始学习</a>
+            </div>
+        </section>
+
+        <section class="features">
+            <h2 class="features__title">为什么选择我们的课程</h2>
+            <div class="features__grid">
+                <div class="feature-card">
+                    <i class="fas fa-road feature-card__icon"></i>
+                    <h3 class="feature-card__title">系统化学习路径</h3>
+                    <p class="feature-card__text">从基础到高级，循序渐进的学习计划</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-code feature-card__icon"></i>
+                    <h3 class="feature-card__title">丰富的示例代码</h3>
+                    <p class="feature-card__text">大量实用的代码示例，帮助理解概念</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-laptop-code feature-card__icon"></i>
+                    <h3 class="feature-card__title">交互式练习</h3>
+                    <p class="feature-card__text">在线编程练习，即学即练</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-users feature-card__icon"></i>
+                    <h3 class="feature-card__title">适合初学者</h3>
+                    <p class="feature-card__text">零基础也能轻松入门</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="course-preview">
+            <h2 class="course-preview__title">课程概览</h2>
+            <div class="course-preview__grid">
+                <div class="course-card">
+                    <div class="course-card__header course-card__header--basic">
+                        <h3 class="course-card__title">Python基础</h3>
+                    </div>
+                    <ul class="course-card__list">
+                        <li>Python环境搭建</li>
+                        <li>基本语法</li>
+                        <li>数据类型</li>
+                        <li>控制流程</li>
+                        <li>函数基础</li>
+                    </ul>
+                    <a href="courses/basics/index.html" class="course-card__button">开始学习</a>
+                </div>
+                <div class="course-card">
+                    <div class="course-card__header course-card__header--intermediate">
+                        <h3 class="course-card__title">Python进阶</h3>
+                    </div>
+                    <ul class="course-card__list">
+                        <li>面向对象编程</li>
+                        <li>文件操作</li>
+                        <li>异常处理</li>
+                        <li>模块和包</li>
+                        <li>常用标准库</li>
+                    </ul>
+                    <a href="courses/intermediate/index.html" class="course-card__button">开始学习</a>
+                </div>
+                <div class="course-card">
+                    <div class="course-card__header course-card__header--advanced">
+                        <h3 class="course-card__title">Python高级</h3>
+                    </div>
+                    <ul class="course-card__list">
+                        <li>多线程编程</li>
+                        <li>网络编程</li>
+                        <li>数据库操作</li>
+                        <li>Web开发基础</li>
+                        <li>项目实战</li>
+                    </ul>
+                    <a href="courses/advanced/index.html" class="course-card__button">开始学习</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer__content">
+            <div class="footer__section">
+                <h4 class="footer__title">关于我们</h4>
+                <p class="footer__text">致力于为初学者提供优质的Python编程学习资源</p>
+            </div>
+            <div class="footer__section">
+                <h4 class="footer__title">快速链接</h4>
+                <ul class="footer__links">
+                    <li><a href="courses/basics/index.html">基础课程</a></li>
+                    <li><a href="examples/index.html">示例代码</a></li>
+                    <li><a href="exercises/index.html">练习题</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            <p>&copy; 2024 Python学习网站. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html> 

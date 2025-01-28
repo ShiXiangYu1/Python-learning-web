@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python错误处理示例 - Python学习</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/course.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/highlight.js/styles/github.min.css">
+</head>
+<body>
+    <header class="course-header">
+        <h1 class="course-header__title">
+            <i class="fas fa-exclamation-triangle"></i>
+            Python错误处理示例
+        </h1>
+        <p class="course-header__description">
+            本页面展示了Python错误处理的中级应用示例，包括自定义异常、错误重试机制、日志记录等实用模式。这些示例将帮助你更好地处理程序中的异常情况。
+        </p>
+    </header>
+
+    <main class="course-container">
+        <!-- 导航菜单 -->
+        <nav class="course-nav">
+            <ul class="course-nav__list">
+                <li><a href="#custom" class="course-nav__link">自定义异常</a></li>
+                <li><a href="#retry" class="course-nav__link">错误重试</a></li>
+                <li><a href="#context" class="course-nav__link">上下文管理</a></li>
+                <li><a href="#logging" class="course-nav__link">日志记录</a></li>
+                <li><a href="#validation" class="course-nav__link">数据验证</a></li>
+                <li><a href="#chain" class="course-nav__link">异常链</a></li>
+            </ul>
+        </nav>
+
+        <div class="course-content">
+            <!-- 自定义异常 -->
+            <section id="custom" class="course-section">
+                <h2 class="course-section__title">自定义异常</h2>
+                
+                <div class="example-box">
+                    <h3>业务异常层次结构</h3>
+                    <pre><code class="python">
+class BusinessError(Exception):
+    """业务错误基类"""
+    def __init__(self, message, error_code=None):
+        super().__init__(message)
+        self.error_code = error_code
+
+class ValidationError(BusinessError):
+    """数据验证错误"""
+    def __init__(self, field, message):
+        super().__init__(f"{field}: {message}", "VALIDATION_ERROR")
+        self.field = field
+
+class ResourceNotFoundError(BusinessError):
+    """资源未找到错误"""
+    def __init__(self, resource_type, resource_id):
+        super().__init__(
+            f"{resource_type} with id {resource_id} not found",
+            "RESOURCE_NOT_FOUND"
+        )
+        self.resource_type = resource_type
+        self.resource_id = resource_id
+
+class PermissionError(BusinessError):
+    """权限错误"""
+    def __init__(self, user_id, required_permission):
+        super().__init__(
+            f"User {user_id} lacks permission: {required_permission}",
+            "PERMISSION_DENIED"
+        )
+        self.user_id = user_id
+        self.required_permission = required_permission
+
+# 使用示例
+def process_user_data(user_id, data):
+    """处理用户数据"""
+    try:
+        if not data.get('name'):
+            raise ValidationError('name', '用户名不能为空')
+        
+        user = find_user(user_id)
+        if not user:
+            raise ResourceNotFoundError('User', user_id)
+        
+        if not user.has_permission('edit_data'):
+            raise PermissionError(user_id, 'edit_data')
+        
+        # 处理数据...
+        
+    except BusinessError as e:
+        # 统一处理业务错误
+        handle_business_error(e)
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>异常处理工具</h3>
+                    <pre><code class="python">
+from functools import wraps
+import logging
+
+def handle_exceptions(*exception_classes):
+    """异常处理装饰器"""
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            try:
+                return func(*args, **kwargs)
+            except exception_classes as e:
+                logging.error(f"Error in {func.__name__}: {str(e)}")
+                # 可以添加自定义错误处理逻辑
+                raise BusinessError(str(e))
+            except Exception as e:
+                logging.error(f"Unexpected error in {func.__name__}: {str(e)}")
+                raise
+        return wrapper
+    return decorator
+
+# 使用示例
+@handle_exceptions(ValueError, TypeError)
+def parse_user_input(data):
+    """解析用户输入"""
+    user_id = int(data['id'])
+    name = str(data['name'])
+    age = int(data['age'])
+    return {'user_id': user_id, 'name': name, 'age': age}
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 错误重试 -->
+            <section id="retry" class="course-section">
+                <h2 class="course-section__title">错误重试</h2>
+
+                <div class="example-box">
+                    <h3>重试装饰器</h3>
+                    <pre><code class="python">
+import time
+from functools import wraps
+
+class RetryError(Exception):
+    """重试失败错误"""
+    def __init__(self, attempts, last_error):
+        super().__init__(f"Failed after {attempts} attempts. Last error: {str(last_error)}")
+        self.attempts = attempts
+        self.last_error = last_error
+
+def retry(max_attempts=3, delay=1, backoff=2, exceptions=(Exception,)):
+    """重试装饰器
+    
+    参数:
+        max_attempts: 最大重试次数
+        delay: 初始延迟时间（秒）
+        backoff: 延迟时间的增长因子
+        exceptions: 需要重试的异常类型
+    """
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            current_delay = delay
+            last_error = None
+            
+            for attempt in range(max_attempts):
+                try:
+                    return func(*args, **kwargs)
+                except exceptions as e:
+                    last_error = e
+                    if attempt < max_attempts - 1:
+                        time.sleep(current_delay)
+                        current_delay *= backoff
+                    else:
+                        raise RetryError(max_attempts, last_error)
+            
+        return wrapper
+    return decorator
+
+# 使用示例
+@retry(max_attempts=3, delay=1, exceptions=(ConnectionError, TimeoutError))
+def fetch_data_from_api(url):
+    """从API获取数据"""
+    response = make_request(url)
+    if response.status_code != 200:
+        raise ConnectionError(f"API返回错误状态码: {response.status_code}")
+    return response.json()
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>高级重试策略</h3>
+                    <pre><code class="python">
+class RetryStrategy:
+    """重试策略基类"""
+    def should_retry(self, attempt, exception):
+        raise NotImplementedError
+    
+    def get_delay(self, attempt):
+        raise NotImplementedError
+
+class ExponentialBackoff(RetryStrategy):
+    """指数退避策略"""
+    def __init__(self, base_delay=1, max_delay=60, max_attempts=3):
+        self.base_delay = base_delay
+        self.max_delay = max_delay
+        self.max_attempts = max_attempts
+    
+    def should_retry(self, attempt, exception):
+        return attempt < self.max_attempts
+    
+    def get_delay(self, attempt):
+        delay = self.base_delay * (2 ** attempt)
+        return min(delay, self.max_delay)
+
+class ConditionalRetry(RetryStrategy):
+    """条件重试策略"""
+    def __init__(self, condition_func, max_attempts=3):
+        self.condition_func = condition_func
+        self.max_attempts = max_attempts
+    
+    def should_retry(self, attempt, exception):
+        return (attempt < self.max_attempts and 
+                self.condition_func(exception))
+    
+    def get_delay(self, attempt):
+        return 1  # 固定延迟
+
+def with_retry(strategy):
+    """使用指定策略的重试装饰器"""
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            attempt = 0
+            while True:
+                try:
+                    return func(*args, **kwargs)
+                except Exception as e:
+                    if not strategy.should_retry(attempt, e):
+                        raise
+                    time.sleep(strategy.get_delay(attempt))
+                    attempt += 1
+        return wrapper
+    return decorator
+
+# 使用示例
+def is_retriable_error(error):
+    """判断是否是可重试的错误"""
+    return isinstance(error, (ConnectionError, TimeoutError))
+
+@with_retry(ConditionalRetry(is_retriable_error))
+def process_data():
+    """处理数据"""
+    # 可能抛出异常的操作
+    pass
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 上下文管理 -->
+            <section id="context" class="course-section">
+                <h2 class="course-section__title">上下文管理</h2>
+
+                <div class="example-box">
+                    <h3>资源管理器</h3>
+                    <pre><code class="python">
+from contextlib import contextmanager
+import threading
+
+class ResourceManager:
+    """资源管理器"""
+    def __init__(self):
+        self._lock = threading.Lock()
+        self._resources = {}
+    
+    @contextmanager
+    def acquire(self, resource_id):
+        """获取资源"""
+        try:
+            resource = self._acquire_resource(resource_id)
+            yield resource
+        except Exception as e:
+            # 记录错误
+            logging.error(f"使用资源 {resource_id} 时发生错误: {e}")
+            raise
+        finally:
+            # 确保资源被释放
+            self._release_resource(resource_id)
+    
+    def _acquire_resource(self, resource_id):
+        with self._lock:
+            if resource_id in self._resources:
+                raise ResourceError(f"资源 {resource_id} 已被占用")
+            resource = Resource(resource_id)
+            self._resources[resource_id] = resource
+            return resource
+    
+    def _release_resource(self, resource_id):
+        with self._lock:
+            if resource_id in self._resources:
+                del self._resources[resource_id]
+
+# 使用示例
+resource_manager = ResourceManager()
+
+def process_with_resource(resource_id, data):
+    """使用资源处理数据"""
+    with resource_manager.acquire(resource_id) as resource:
+        return resource.process(data)
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>错误恢复</h3>
+                    <pre><code class="python">
+class ErrorRecovery:
+    """错误恢复上下文管理器"""
+    def __init__(self, cleanup_func=None):
+        self.cleanup_func = cleanup_func
+        self.errors = []
+    
+    def __enter__(self):
+        return self
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if exc_type is not None:
+            # 记录错误
+            self.errors.append((exc_type, exc_val))
+            # 执行清理
+            if self.cleanup_func:
+                try:
+                    self.cleanup_func()
+                except Exception as e:
+                    logging.error(f"清理过程中发生错误: {e}")
+            # 返回True表示已处理异常
+            return True
+
+# 使用示例
+def process_file_safely(file_path):
+    """安全地处理文件"""
+    temp_files = []
+    
+    def cleanup():
+        """清理临时文件"""
+        for temp_file in temp_files:
+            try:
+                os.remove(temp_file)
+            except OSError:
+                pass
+    
+    with ErrorRecovery(cleanup):
+        # 处理文件
+        temp_file = create_temp_file()
+        temp_files.append(temp_file)
+        process_temp_file(temp_file)
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 日志记录 -->
+            <section id="logging" class="course-section">
+                <h2 class="course-section__title">日志记录</h2>
+
+                <div class="example-box">
+                    <h3>异常日志记录器</h3>
+                    <pre><code class="python">
+import logging
+import traceback
+from datetime import datetime
+
+class ExceptionLogger:
+    """异常日志记录器"""
+    def __init__(self, logger_name='error_logger'):
+        self.logger = logging.getLogger(logger_name)
+        self._setup_logger()
+    
+    def _setup_logger(self):
+        """配置日志记录器"""
+        formatter = logging.Formatter(
+            '%(asctime)s - %(levelname)s - %(message)s'
+        )
+        
+        # 文件处理器
+        file_handler = logging.FileHandler('errors.log')
+        file_handler.setFormatter(formatter)
+        self.logger.addHandler(file_handler)
+        
+        # 控制台处理器
+        console_handler = logging.StreamHandler()
+        console_handler.setFormatter(formatter)
+        self.logger.addHandler(console_handler)
+        
+        self.logger.setLevel(logging.ERROR)
+    
+    def log_exception(self, exc_info=None):
+        """记录异常信息"""
+        if exc_info is None:
+            exc_info = sys.exc_info()
+        
+        exc_type, exc_value, exc_traceback = exc_info
+        
+        # 获取详细的错误信息
+        error_details = {
+            'timestamp': datetime.now().isoformat(),
+            'type': exc_type.__name__,
+            'message': str(exc_value),
+            'traceback': ''.join(traceback.format_tb(exc_traceback))
+        }
+        
+        # 记录错误
+        self.logger.error(
+            "Exception occurred:\n"
+            "Type: %(type)s\n"
+            "Message: %(message)s\n"
+            "Traceback:\n%(traceback)s",
+            error_details
+        )
+        
+        return error_details
+
+# 使用示例
+exception_logger = ExceptionLogger()
+
+def safe_operation():
+    """安全的操作函数"""
+    try:
+        # 可能抛出异常的代码
+        result = perform_risky_operation()
+        return result
+    except Exception:
+        exception_logger.log_exception()
+        raise
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>错误追踪</h3>
+                    <pre><code class="python">
+class ErrorTracker:
+    """错误追踪器"""
+    def __init__(self):
+        self.error_counts = {}
+        self.error_details = {}
+    
+    def track(self, error, context=None):
+        """追踪错误"""
+        error_type = type(error).__name__
+        
+        # 更新错误计数
+        if error_type not in self.error_counts:
+            self.error_counts[error_type] = 0
+        self.error_counts[error_type] += 1
+        
+        # 记录错误详情
+        if error_type not in self.error_details:
+            self.error_details[error_type] = []
+        
+        error_info = {
+            'timestamp': datetime.now().isoformat(),
+            'message': str(error),
+            'context': context or {},
+            'traceback': traceback.format_exc()
+        }
+        
+        self.error_details[error_type].append(error_info)
+    
+    def get_summary(self):
+        """获取错误摘要"""
+        return {
+            'total_errors': sum(self.error_counts.values()),
+            'error_counts': self.error_counts,
+            'most_common': max(
+                self.error_counts.items(),
+                key=lambda x: x[1],
+                default=(None, 0)
+            )
+        }
+
+# 使用示例
+error_tracker = ErrorTracker()
+
+def process_items(items):
+    """处理多个项目"""
+    results = []
+    for item in items:
+        try:
+            result = process_single_item(item)
+            results.append(result)
+        except Exception as e:
+            error_tracker.track(e, {'item': item})
+    
+    # 打印错误摘要
+    print("错误统计:", error_tracker.get_summary())
+    return results
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 数据验证 -->
+            <section id="validation" class="course-section">
+                <h2 class="course-section__title">数据验证</h2>
+
+                <div class="example-box">
+                    <h3>数据验证器</h3>
+                    <pre><code class="python">
+class Validator:
+    """数据验证器"""
+    def __init__(self, rules):
+        self.rules = rules
+    
+    def validate(self, data):
+        """验证数据"""
+        errors = []
+        for field, rules in self.rules.items():
+            value = data.get(field)
+            for rule in rules:
+                try:
+                    rule.validate(field, value)
+                except ValidationError as e:
+                    errors.append(str(e))
+        
+        if errors:
+            raise ValidationError(
+                "数据验证失败",
+                {'errors': errors}
+            )
+        
+        return True
+
+class ValidationRule:
+    """验证规则基类"""
+    def validate(self, field, value):
+        raise NotImplementedError
+
+class RequiredRule(ValidationRule):
+    """必填规则"""
+    def validate(self, field, value):
+        if value is None or value == '':
+            raise ValidationError(field, "此字段不能为空")
+
+class TypeRule(ValidationRule):
+    """类型规则"""
+    def __init__(self, type_):
+        self.type = type_
+    
+    def validate(self, field, value):
+        if value is not None and not isinstance(value, self.type):
+            raise ValidationError(
+                field,
+                f"类型必须是 {self.type.__name__}"
+            )
+
+class RangeRule(ValidationRule):
+    """范围规则"""
+    def __init__(self, min_=None, max_=None):
+        self.min = min_
+        self.max = max_
+    
+    def validate(self, field, value):
+        if value is not None:
+            if self.min is not None and value < self.min:
+                raise ValidationError(
+                    field,
+                    f"值必须大于等于 {self.min}"
+                )
+            if self.max is not None and value > self.max:
+                raise ValidationError(
+                    field,
+                    f"值必须小于等于 {self.max}"
+                )
+
+# 使用示例
+user_rules = {
+    'name': [RequiredRule(), TypeRule(str)],
+    'age': [RequiredRule(), TypeRule(int), RangeRule(0, 150)],
+    'email': [RequiredRule(), TypeRule(str)]
+}
+
+validator = Validator(user_rules)
+
+def create_user(user_data):
+    """创建用户"""
+    try:
+        validator.validate(user_data)
+        # 验证通过，继续处理
+        return save_user(user_data)
+    except ValidationError as e:
+        # 处理验证错误
+        handle_validation_error(e)
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 异常链 -->
+            <section id="chain" class="course-section">
+                <h2 class="course-section__title">异常链</h2>
+
+                <div class="example-box">
+                    <h3>异常转换</h3>
+                    <pre><code class="python">
+def convert_exception(from_exception, to_exception):
+    """异常转换装饰器"""
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            try:
+                return func(*args, **kwargs)
+            except from_exception as e:
+                raise to_exception(str(e)) from e
+        return wrapper
+    return decorator
+
+class DatabaseError(Exception):
+    """数据库错误"""
+    pass
+
+class APIError(Exception):
+    """API错误"""
+    pass
+
+@convert_exception(DatabaseError, APIError)
+def get_user_data(user_id):
+    """获取用户数据"""
+    try:
+        return database.query(f"SELECT * FROM users WHERE id = {user_id}")
+    except Exception as e:
+        raise DatabaseError(f"查询用户数据失败: {e}")
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>异常包装器</h3>
+                    <pre><code class="python">
+class ExceptionWrapper:
+    """异常包装器"""
+    def __init__(self, message):
+        self.message = message
+    
+    def __enter__(self):
+        return self
+    
+    def __exit__(self, exc_type, exc_value, traceback):
+        if exc_type is not None:
+            raise type(exc_value)(
+                f"{self.message}: {str(exc_value)}"
+            ) from exc_value
+
+# 使用示例
+def process_user_request(request):
+    """处理用户请求"""
+    with ExceptionWrapper("处理用户请求时出错"):
+        with ExceptionWrapper("验证用户数据时出错"):
+            validate_user_data(request.data)
+        
+        with ExceptionWrapper("保存用户数据时出错"):
+            save_user_data(request.data)
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 返回链接 -->
+            <section class="course-section">
+                <div class="link-box">
+                    <a href="../../courses/basic/exceptions.html" class="link-box__item">
+                        <i class="fas fa-book"></i>
+                        返回异常处理教程
+                    </a>
+                    <a href="../advanced/error_handling.html" class="link-box__item">
+                        <i class="fas fa-code"></i>
+                        高级错误处理示例
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="https://cdn.bytedance.com/highlight.js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html> 

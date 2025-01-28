@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python装饰器详解 - Python学习</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/course.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/highlight.js/styles/github.min.css">
+</head>
+<body>
+    <header class="course-header">
+        <h1 class="course-header__title">
+            <i class="fas fa-magic"></i>
+            Python装饰器详解
+        </h1>
+        <p class="course-header__description">
+            装饰器是Python中一种强大的代码复用机制，它能够优雅地修改或增强函数和类的行为。本教程将帮助你掌握装饰器的原理和应用技巧。
+        </p>
+    </header>
+
+    <main class="course-container">
+        <!-- 导航菜单 -->
+        <nav class="course-nav">
+            <ul class="course-nav__list">
+                <li><a href="#intro" class="course-nav__link">装饰器简介</a></li>
+                <li><a href="#basic" class="course-nav__link">基础装饰器</a></li>
+                <li><a href="#params" class="course-nav__link">带参数装饰器</a></li>
+                <li><a href="#class" class="course-nav__link">类装饰器</a></li>
+                <li><a href="#applications" class="course-nav__link">实际应用</a></li>
+                <li><a href="#best-practices" class="course-nav__link">最佳实践</a></li>
+            </ul>
+        </nav>
+
+        <div class="course-content">
+            <!-- 装饰器简介 -->
+            <section id="intro" class="course-section">
+                <h2 class="course-section__title">装饰器简介</h2>
+                
+                <div class="concept-box">
+                    <h3>什么是装饰器？</h3>
+                    <p>装饰器是一个可调用对象，它可以包装另一个函数或类，并且可以在不直接修改源代码的情况下扩展其功能。装饰器具有以下特点：</p>
+                    <ul>
+                        <li>函数式编程：基于函数式编程的概念</li>
+                        <li>代码复用：避免重复编写相似的代码</li>
+                        <li>关注点分离：将通用功能与业务逻辑分开</li>
+                        <li>可组合性：多个装饰器可以组合使用</li>
+                    </ul>
+                </div>
+
+                <div class="tip-box">
+                    <h3>装饰器的优势</h3>
+                    <ul>
+                        <li>代码简洁：减少样板代码</li>
+                        <li>功能分离：提高代码可维护性</li>
+                        <li>灵活扩展：不修改原函数即可添加功能</li>
+                        <li>可重用性：装饰器可以应用于多个函数</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 基础装饰器 -->
+            <section id="basic" class="course-section">
+                <h2 class="course-section__title">基础装饰器</h2>
+
+                <div class="example-box">
+                    <h3>简单装饰器</h3>
+                    <pre><code class="python">
+def log_function(func):
+    def wrapper(*args, **kwargs):
+        print(f"调用函数: {func.__name__}")
+        result = func(*args, **kwargs)
+        print(f"函数返回: {result}")
+        return result
+    return wrapper
+
+# 使用装饰器
+@log_function
+def add(a, b):
+    return a + b
+
+# 调用函数
+print(add(3, 5))  # 将打印调用信息并返回8
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>保留函数元信息</h3>
+                    <pre><code class="python">
+from functools import wraps
+
+def log_function(func):
+    @wraps(func)  # 保留原函数的元信息
+    def wrapper(*args, **kwargs):
+        print(f"调用函数: {func.__name__}")
+        result = func(*args, **kwargs)
+        print(f"函数返回: {result}")
+        return result
+    return wrapper
+
+@log_function
+def greet(name):
+    """打招呼函数"""
+    return f"Hello, {name}!"
+
+# 现在可以正确访问函数的文档字符串和名称
+print(greet.__doc__)  # 输出: 打招呼函数
+print(greet.__name__)  # 输出: greet
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 带参数装饰器 -->
+            <section id="params" class="course-section">
+                <h2 class="course-section__title">带参数装饰器</h2>
+
+                <div class="example-box">
+                    <h3>装饰器工厂</h3>
+                    <pre><code class="python">
+def repeat(times):
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            for _ in range(times):
+                result = func(*args, **kwargs)
+            return result
+        return wrapper
+    return decorator
+
+# 使用带参数的装饰器
+@repeat(times=3)
+def greet(name):
+    print(f"Hello, {name}!")
+    return "Done"
+
+# 调用函数将打印三次问候
+greet("Alice")
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>多层装饰器</h3>
+                    <pre><code class="python">
+def bold(func):
+    @wraps(func)
+    def wrapper():
+        return f"<b>{func()}</b>"
+    return wrapper
+
+def italic(func):
+    @wraps(func)
+    def wrapper():
+        return f"<i>{func()}</i>"
+    return wrapper
+
+@bold
+@italic
+def hello():
+    return "Hello, World!"
+
+print(hello())  # 输出: <b><i>Hello, World!</i></b>
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 类装饰器 -->
+            <section id="class" class="course-section">
+                <h2 class="course-section__title">类装饰器</h2>
+
+                <div class="example-box">
+                    <h3>装饰类的装饰器</h3>
+                    <pre><code class="python">
+def singleton(cls):
+    """实现单例模式的装饰器"""
+    instances = {}
+    
+    @wraps(cls)
+    def get_instance(*args, **kwargs):
+        if cls not in instances:
+            instances[cls] = cls(*args, **kwargs)
+        return instances[cls]
+    
+    return get_instance
+
+@singleton
+class Database:
+    def __init__(self):
+        print("初始化数据库连接...")
+
+# 测试单例模式
+db1 = Database()
+db2 = Database()
+print(db1 is db2)  # True，说明是同一个实例
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>类作为装饰器</h3>
+                    <pre><code class="python">
+class Timer:
+    def __init__(self, prefix=""):
+        self.prefix = prefix
+
+    def __call__(self, func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            import time
+            start = time.time()
+            result = func(*args, **kwargs)
+            end = time.time()
+            print(f"{self.prefix}函数执行时间: {end - start:.2f}秒")
+            return result
+        return wrapper
+
+@Timer(prefix="[DEBUG]")
+def slow_function():
+    import time
+    time.sleep(1)
+    return "完成"
+
+slow_function()  # 输出执行时间
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 实际应用 -->
+            <section id="applications" class="course-section">
+                <h2 class="course-section__title">实际应用</h2>
+
+                <div class="example-box">
+                    <h3>缓存装饰器</h3>
+                    <pre><code class="python">
+def memoize(func):
+    """实现函数结果缓存的装饰器"""
+    cache = {}
+    
+    @wraps(func)
+    def wrapper(*args):
+        if args not in cache:
+            cache[args] = func(*args)
+        return cache[args]
+    return wrapper
+
+@memoize
+def fibonacci(n):
+    if n < 2:
+        return n
+    return fibonacci(n-1) + fibonacci(n-2)
+
+# 测试缓存效果
+print(fibonacci(100))  # 第二次调用会非常快
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>权限验证装饰器</h3>
+                    <pre><code class="python">
+def require_auth(role):
+    """检查用户角色的装饰器"""
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            # 模拟获取当前用户角色
+            current_role = get_current_user_role()
+            if current_role != role:
+                raise PermissionError(
+                    f"需要 {role} 权限，但当前用户是 {current_role}"
+                )
+            return func(*args, **kwargs)
+        return wrapper
+    return decorator
+
+@require_auth(role="admin")
+def delete_user(user_id):
+    print(f"删除用户: {user_id}")
+
+# 使用示例
+try:
+    delete_user(123)
+except PermissionError as e:
+    print(e)
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 最佳实践 -->
+            <section id="best-practices" class="course-section">
+                <h2 class="course-section__title">最佳实践</h2>
+
+                <div class="tip-box">
+                    <h3>设计建议</h3>
+                    <ul>
+                        <li>保持简单：装饰器应该只做一件事</li>
+                        <li>使用functools.wraps：保留原函数的元信息</li>
+                        <li>考虑副作用：避免修改函数的预期行为</li>
+                        <li>异常处理：妥善处理装饰器中的异常</li>
+                    </ul>
+                </div>
+
+                <div class="example-box">
+                    <h3>错误处理示例</h3>
+                    <pre><code class="python">
+def safe_division(func):
+    """处理除零异常的装饰器"""
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except ZeroDivisionError:
+            print("错误：除数不能为零")
+            return None
+    return wrapper
+
+@safe_division
+def divide(a, b):
+    return a / b
+
+# 测试异常处理
+print(divide(10, 2))   # 正常输出：5.0
+print(divide(10, 0))   # 输出错误信息并返回None
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 返回链接 -->
+            <section class="course-section">
+                <div class="link-box">
+                    <a href="generators.html" class="link-box__item">
+                        <i class="fas fa-arrow-left"></i>
+                        返回生成器教程
+                    </a>
+                    <a href="context_managers.html" class="link-box__item">
+                        <i class="fas fa-arrow-right"></i>
+                        下一步：上下文管理器
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="https://cdn.bytedance.com/highlight.js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html> 

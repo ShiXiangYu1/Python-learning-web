@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python高级面向对象编程示例 - Python学习</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/course.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/highlight.js/styles/github.min.css">
+</head>
+<body>
+    <header class="course-header">
+        <h1 class="course-header__title">
+            <i class="fas fa-cube"></i>
+            Python高级面向对象编程示例
+        </h1>
+        <p class="course-header__description">
+            本页面提供了Python高级面向对象编程的示例，包括元类、描述符、上下文管理器、高级设计模式等内容。这些示例将帮助你掌握Python面向对象编程的高级特性。
+        </p>
+    </header>
+
+    <main class="course-container">
+        <!-- 导航菜单 -->
+        <nav class="course-nav">
+            <ul class="course-nav__list">
+                <li><a href="#metaclass" class="course-nav__link">元类编程</a></li>
+                <li><a href="#descriptor" class="course-nav__link">描述符协议</a></li>
+                <li><a href="#context" class="course-nav__link">上下文管理</a></li>
+                <li><a href="#patterns" class="course-nav__link">高级设计模式</a></li>
+                <li><a href="#optimization" class="course-nav__link">性能优化</a></li>
+                <li><a href="#applications" class="course-nav__link">实际应用</a></li>
+            </ul>
+        </nav>
+
+        <div class="course-content">
+            <!-- 元类编程 -->
+            <section id="metaclass" class="course-section">
+                <h2 class="course-section__title">元类编程</h2>
+
+                <div class="example-box">
+                    <h3>自定义元类</h3>
+                    <pre><code class="python">
+class ValidationMeta(type):
+    """验证元类"""
+    
+    def __new__(cls, name, bases, attrs):
+        # 验证所有方法都有文档字符串
+        for key, value in attrs.items():
+            if callable(value) and not key.startswith('__'):
+                if not value.__doc__:
+                    raise TypeError(f"{key} 方法缺少文档字符串")
+        return super().__new__(cls, name, bases, attrs)
+
+class MyClass(metaclass=ValidationMeta):
+    def my_method(self):
+        """这是一个有文档字符串的方法"""
+        pass
+    
+    # 下面的方法会导致错误，因为没有文档字符串
+    # def another_method(self):
+    #     pass
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>属性注册元类</h3>
+                    <pre><code class="python">
+class RegisterMeta(type):
+    """注册元类"""
+    
+    _registry = {}
+    
+    def __new__(cls, name, bases, attrs):
+        new_cls = super().__new__(cls, name, bases, attrs)
+        cls._registry[name] = new_cls
+        return new_cls
+    
+    @classmethod
+    def get_registry(cls):
+        return dict(cls._registry)
+
+class Base(metaclass=RegisterMeta):
+    pass
+
+class MyClass1(Base):
+    pass
+
+class MyClass2(Base):
+    pass
+
+# 获取所有注册的类
+print(RegisterMeta.get_registry())
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 描述符协议 -->
+            <section id="descriptor" class="course-section">
+                <h2 class="course-section__title">描述符协议</h2>
+
+                <div class="example-box">
+                    <h3>数据验证描述符</h3>
+                    <pre><code class="python">
+class ValidString:
+    """字符串验证描述符"""
+    
+    def __init__(self, minlen=0, maxlen=None):
+        self.minlen = minlen
+        self.maxlen = maxlen
+    
+    def __get__(self, instance, owner):
+        if instance is None:
+            return self
+        return instance.__dict__.get(self.name)
+    
+    def __set__(self, instance, value):
+        if not isinstance(value, str):
+            raise TypeError("值必须是字符串类型")
+        if len(value) < self.minlen:
+            raise ValueError(f"字符串长度不能小于{self.minlen}")
+        if self.maxlen and len(value) > self.maxlen:
+            raise ValueError(f"字符串长度不能大于{self.maxlen}")
+        instance.__dict__[self.name] = value
+    
+    def __set_name__(self, owner, name):
+        self.name = name
+
+class User:
+    name = ValidString(minlen=2, maxlen=20)
+    email = ValidString(minlen=5, maxlen=50)
+    
+    def __init__(self, name, email):
+        self.name = name
+        self.email = email
+
+# 使用示例
+user = User("张三", "zhangsan@example.com")
+# user.name = "A"  # 会引发ValueError
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>延迟计算描述符</h3>
+                    <pre><code class="python">
+class LazyProperty:
+    """延迟计算属性描述符"""
+    
+    def __init__(self, func):
+        self.func = func
+        self.name = func.__name__
+    
+    def __get__(self, instance, owner):
+        if instance is None:
+            return self
+        
+        # 计算值并缓存
+        value = self.func(instance)
+        setattr(instance, self.name, value)
+        return value
+
+class Circle:
+    def __init__(self, radius):
+        self.radius = radius
+    
+    @LazyProperty
+    def area(self):
+        print("计算面积...")
+        import math
+        return math.pi * self.radius ** 2
+    
+    @LazyProperty
+    def perimeter(self):
+        print("计算周长...")
+        import math
+        return 2 * math.pi * self.radius
+
+# 使用示例
+circle = Circle(5)
+print(circle.area)    # 第一次调用会计算
+print(circle.area)    # 第二次调用直接返回缓存值
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 上下文管理 -->
+            <section id="context" class="course-section">
+                <h2 class="course-section__title">上下文管理</h2>
+
+                <div class="example-box">
+                    <h3>自定义上下文管理器</h3>
+                    <pre><code class="python">
+class Timer:
+    """计时器上下文管理器"""
+    
+    def __init__(self, name="Timer"):
+        self.name = name
+    
+    def __enter__(self):
+        import time
+        self.start_time = time.time()
+        return self
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        import time
+        self.end_time = time.time()
+        self.duration = self.end_time - self.start_time
+        print(f"{self.name} 耗时: {self.duration:.2f}秒")
+
+# 使用示例
+def process_data():
+    import time
+    time.sleep(1)  # 模拟耗时操作
+
+with Timer("数据处理"):
+    process_data()
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>数据库连接管理器</h3>
+                    <pre><code class="python">
+class DatabaseConnection:
+    """数据库连接管理器"""
+    
+    def __init__(self, host, port, database):
+        self.host = host
+        self.port = port
+        self.database = database
+        self.connection = None
+    
+    def __enter__(self):
+        print(f"连接到数据库 {self.host}:{self.port}/{self.database}")
+        self.connection = self._connect()
+        return self.connection
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if self.connection:
+            print("关闭数据库连接")
+            self.connection.close()
+        if exc_type:
+            print(f"发生错误: {exc_val}")
+            return False  # 重新抛出异常
+    
+    def _connect(self):
+        # 模拟数据库连接
+        class Connection:
+            def execute(self, sql):
+                print(f"执行SQL: {sql}")
+            def close(self):
+                pass
+        return Connection()
+
+# 使用示例
+with DatabaseConnection("localhost", 5432, "mydb") as conn:
+    conn.execute("SELECT * FROM users")
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 高级设计模式 -->
+            <section id="patterns" class="course-section">
+                <h2 class="course-section__title">高级设计模式</h2>
+
+                <div class="example-box">
+                    <h3>工厂方法模式</h3>
+                    <pre><code class="python">
+from abc import ABC, abstractmethod
+
+class Document(ABC):
+    """文档抽象类"""
+    
+    @abstractmethod
+    def create(self):
+        pass
+
+class PDFDocument(Document):
+    def create(self):
+        return "创建PDF文档"
+
+class WordDocument(Document):
+    def create(self):
+        return "创建Word文档"
+
+class DocumentFactory:
+    """文档工厂"""
+    
+    _creators = {}
+    
+    @classmethod
+    def register_format(cls, format_type, creator):
+        """注册文档创建器"""
+        cls._creators[format_type.lower()] = creator
+    
+    @classmethod
+    def create_document(cls, format_type):
+        """创建文档"""
+        creator = cls._creators.get(format_type.lower())
+        if not creator:
+            raise ValueError(f"不支持的文档格式: {format_type}")
+        return creator()
+
+# 注册文档类型
+DocumentFactory.register_format("PDF", PDFDocument)
+DocumentFactory.register_format("WORD", WordDocument)
+
+# 使用示例
+doc = DocumentFactory.create_document("PDF")
+print(doc.create())
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>状态模式</h3>
+                    <pre><code class="python">
+from abc import ABC, abstractmethod
+
+class State(ABC):
+    """状态抽象类"""
+    
+    @abstractmethod
+    def handle(self, context):
+        pass
+
+class Context:
+    """上下文类"""
+    
+    def __init__(self, state):
+        self._state = state
+    
+    def set_state(self, state):
+        self._state = state
+    
+    def request(self):
+        self._state.handle(self)
+
+class ConcreteStateA(State):
+    def handle(self, context):
+        print("处理状态A的请求")
+        context.set_state(ConcreteStateB())
+
+class ConcreteStateB(State):
+    def handle(self, context):
+        print("处理状态B的请求")
+        context.set_state(ConcreteStateA())
+
+# 使用示例
+context = Context(ConcreteStateA())
+context.request()  # 输出：处理状态A的请求
+context.request()  # 输出：处理状态B的请求
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 性能优化 -->
+            <section id="optimization" class="course-section">
+                <h2 class="course-section__title">性能优化</h2>
+
+                <div class="example-box">
+                    <h3>__slots__优化</h3>
+                    <pre><code class="python">
+class OptimizedClass:
+    """使用__slots__优化内存使用"""
+    
+    __slots__ = ['name', 'age']
+    
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+class NormalClass:
+    """普通类"""
+    
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+# 内存使用对比
+import sys
+optimized = OptimizedClass("张三", 25)
+normal = NormalClass("张三", 25)
+
+print(f"优化类实例大小: {sys.getsizeof(optimized)}")
+print(f"普通类实例大小: {sys.getsizeof(normal)}")
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>缓存装饰器</h3>
+                    <pre><code class="python">
+from functools import lru_cache
+import time
+
+class DataProcessor:
+    """数据处理类"""
+    
+    @lru_cache(maxsize=128)
+    def process_data(self, data):
+        """处理数据（使用缓存）"""
+        time.sleep(1)  # 模拟耗时操作
+        return f"处理结果: {data}"
+    
+    def process_data_nocache(self, data):
+        """处理数据（不使用缓存）"""
+        time.sleep(1)  # 模拟耗时操作
+        return f"处理结果: {data}"
+
+# 性能对比
+processor = DataProcessor()
+
+# 使用缓存
+start = time.time()
+for _ in range(3):
+    result = processor.process_data("test")
+print(f"使用缓存耗时: {time.time() - start:.2f}秒")
+
+# 不使用缓存
+start = time.time()
+for _ in range(3):
+    result = processor.process_data_nocache("test")
+print(f"不使用缓存耗时: {time.time() - start:.2f}秒")
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 实际应用 -->
+            <section id="applications" class="course-section">
+                <h2 class="course-section__title">实际应用</h2>
+
+                <div class="example-box">
+                    <h3>配置管理系统</h3>
+                    <pre><code class="python">
+class Config:
+    """配置管理类"""
+    
+    _instance = None
+    _initialized = False
+    
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+        return cls._instance
+    
+    def __init__(self):
+        if not self._initialized:
+            self._config = {}
+            self._load_config()
+            self._initialized = True
+    
+    def _load_config(self):
+        """加载配置"""
+        # 模拟从文件加载配置
+        self._config = {
+            'debug': True,
+            'database': {
+                'host': 'localhost',
+                'port': 5432
+            }
+        }
+    
+    def get(self, key, default=None):
+        """获取配置"""
+        return self._config.get(key, default)
+    
+    def set(self, key, value):
+        """设置配置"""
+        self._config[key] = value
+        self._save_config()
+    
+    def _save_config(self):
+        """保存配置"""
+        print("保存配置到文件")
+
+# 使用示例
+config = Config()
+print(config.get('database'))
+
+config2 = Config()  # 返回同一个实例
+print(config is config2)  # 输出：True
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>事件系统</h3>
+                    <pre><code class="python">
+class Event:
+    """事件类"""
+    
+    def __init__(self, event_type, data=None):
+        self.type = event_type
+        self.data = data
+        self.timestamp = time.time()
+
+class EventDispatcher:
+    """事件调度器"""
+    
+    def __init__(self):
+        self._handlers = {}
+    
+    def register_handler(self, event_type, handler):
+        """注册事件处理器"""
+        if event_type not in self._handlers:
+            self._handlers[event_type] = []
+        self._handlers[event_type].append(handler)
+    
+    def dispatch_event(self, event):
+        """分发事件"""
+        if event.type in self._handlers:
+            for handler in self._handlers[event.type]:
+                handler(event)
+
+class Application:
+    """应用程序类"""
+    
+    def __init__(self):
+        self.dispatcher = EventDispatcher()
+        self._setup_handlers()
+    
+    def _setup_handlers(self):
+        """设置事件处理器"""
+        self.dispatcher.register_handler(
+            "user_login",
+            self._handle_user_login
+        )
+        self.dispatcher.register_handler(
+            "user_logout",
+            self._handle_user_logout
+        )
+    
+    def _handle_user_login(self, event):
+        print(f"用户登录: {event.data}")
+    
+    def _handle_user_logout(self, event):
+        print(f"用户登出: {event.data}")
+    
+    def login(self, username):
+        """用户登录"""
+        event = Event("user_login", username)
+        self.dispatcher.dispatch_event(event)
+    
+    def logout(self, username):
+        """用户登出"""
+        event = Event("user_logout", username)
+        self.dispatcher.dispatch_event(event)
+
+# 使用示例
+app = Application()
+app.login("张三")
+app.logout("张三")
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 返回链接 -->
+            <section class="course-section">
+                <div class="link-box">
+                    <a href="../../courses/basic/oop.html" class="link-box__item">
+                        <i class="fas fa-book"></i>
+                        返回面向对象编程教程
+                    </a>
+                    <a href="../../examples/intermediate/oop_examples.html" class="link-box__item">
+                        <i class="fas fa-code"></i>
+                        中级面向对象示例
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="https://cdn.bytedance.com/highlight.js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html> 

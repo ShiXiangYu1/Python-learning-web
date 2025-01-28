@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python装饰器示例 - Python学习</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/course.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/highlight.js/styles/github.min.css">
+</head>
+<body>
+    <header class="course-header">
+        <h1 class="course-header__title">
+            <i class="fas fa-code"></i>
+            Python装饰器示例
+        </h1>
+        <p class="course-header__description">
+            本页面提供了一系列实用的Python装饰器示例，展示了装饰器在实际开发中的常见应用场景。这些示例涵盖了性能监控、缓存、权限控制等多个方面。
+        </p>
+    </header>
+
+    <main class="course-container">
+        <!-- 导航菜单 -->
+        <nav class="course-nav">
+            <ul class="course-nav__list">
+                <li><a href="#timing" class="course-nav__link">性能计时</a></li>
+                <li><a href="#cache" class="course-nav__link">结果缓存</a></li>
+                <li><a href="#retry" class="course-nav__link">自动重试</a></li>
+                <li><a href="#validation" class="course-nav__link">参数验证</a></li>
+                <li><a href="#auth" class="course-nav__link">权限控制</a></li>
+                <li><a href="#logging" class="course-nav__link">日志记录</a></li>
+            </ul>
+        </nav>
+
+        <div class="course-content">
+            <!-- 性能计时装饰器 -->
+            <section id="timing" class="course-section">
+                <h2 class="course-section__title">性能计时装饰器</h2>
+                
+                <div class="example-box">
+                    <h3>函数执行时间统计</h3>
+                    <pre><code class="python">
+import time
+import functools
+
+def timer(func):
+    """测量函数执行时间的装饰器"""
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        start_time = time.time()
+        result = func(*args, **kwargs)
+        end_time = time.time()
+        print(f"{func.__name__} 执行时间: {end_time - start_time:.4f}秒")
+        return result
+    return wrapper
+
+# 使用示例
+@timer
+def process_data(size):
+    """模拟数据处理"""
+    time.sleep(1)  # 模拟耗时操作
+    return [i ** 2 for i in range(size)]
+
+# 测试函数
+result = process_data(1000)
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>性能分析装饰器</h3>
+                    <pre><code class="python">
+import cProfile
+import functools
+
+def profile(func):
+    """使用cProfile进行性能分析的装饰器"""
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        profile = cProfile.Profile()
+        try:
+            return profile.runcall(func, *args, **kwargs)
+        finally:
+            profile.print_stats()
+    return wrapper
+
+@profile
+def complex_calculation(n):
+    """复杂计算示例"""
+    return sum(i * i for i in range(n))
+
+# 测试函数
+result = complex_calculation(10000)
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 结果缓存装饰器 -->
+            <section id="cache" class="course-section">
+                <h2 class="course-section__title">结果缓存装饰器</h2>
+
+                <div class="example-box">
+                    <h3>简单缓存装饰器</h3>
+                    <pre><code class="python">
+def memoize(func):
+    """简单的内存缓存装饰器"""
+    cache = {}
+    
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        # 创建缓存键
+        key = str(args) + str(kwargs)
+        if key not in cache:
+            cache[key] = func(*args, **kwargs)
+        return cache[key]
+    return wrapper
+
+@memoize
+def fibonacci(n):
+    """计算斐波那契数列第n项"""
+    if n < 2:
+        return n
+    return fibonacci(n-1) + fibonacci(n-2)
+
+# 测试函数
+print(fibonacci(10))  # 第一次计算
+print(fibonacci(10))  # 使用缓存结果
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>带过期时间的缓存装饰器</h3>
+                    <pre><code class="python">
+import time
+
+def cache_with_timeout(timeout=60):
+    """带过期时间的缓存装饰器"""
+    def decorator(func):
+        cache = {}
+        
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            key = str(args) + str(kwargs)
+            
+            # 检查缓存是否存在且未过期
+            if key in cache:
+                result, timestamp = cache[key]
+                if time.time() - timestamp < timeout:
+                    return result
+            
+            # 计算新结果并缓存
+            result = func(*args, **kwargs)
+            cache[key] = (result, time.time())
+            return result
+        return wrapper
+    return decorator
+
+@cache_with_timeout(timeout=5)
+def get_weather(city):
+    """模拟获取天气信息"""
+    time.sleep(2)  # 模拟API调用
+    return f"{city}的天气：晴天"
+
+# 测试函数
+print(get_weather("北京"))  # 第一次调用
+print(get_weather("北京"))  # 使用缓存
+time.sleep(6)  # 等待缓存过期
+print(get_weather("北京"))  # 重新调用
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 自动重试装饰器 -->
+            <section id="retry" class="course-section">
+                <h2 class="course-section__title">自动重试装饰器</h2>
+
+                <div class="example-box">
+                    <h3>网络请求重试装饰器</h3>
+                    <pre><code class="python">
+import time
+from functools import wraps
+
+def retry(max_attempts=3, delay=1):
+    """自动重试装饰器"""
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            attempts = 0
+            while attempts < max_attempts:
+                try:
+                    return func(*args, **kwargs)
+                except Exception as e:
+                    attempts += 1
+                    if attempts == max_attempts:
+                        raise e
+                    print(f"尝试失败 ({attempts}/{max_attempts}), {delay}秒后重试...")
+                    time.sleep(delay)
+            return None
+        return wrapper
+    return decorator
+
+@retry(max_attempts=3, delay=2)
+def unstable_network_call():
+    """模拟不稳定的网络请求"""
+    import random
+    if random.random() < 0.7:  # 70%的概率失败
+        raise ConnectionError("网络连接失败")
+    return "请求成功"
+
+# 测试函数
+try:
+    result = unstable_network_call()
+    print(result)
+except ConnectionError as e:
+    print("最终失败:", str(e))
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 参数验证装饰器 -->
+            <section id="validation" class="course-section">
+                <h2 class="course-section__title">参数验证装饰器</h2>
+
+                <div class="example-box">
+                    <h3>类型检查装饰器</h3>
+                    <pre><code class="python">
+def type_check(**expected_types):
+    """参数类型检查装饰器"""
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            # 获取函数参数名
+            import inspect
+            sig = inspect.signature(func)
+            bound_args = sig.bind(*args, **kwargs)
+            
+            # 检查参数类型
+            for name, value in bound_args.arguments.items():
+                if name in expected_types:
+                    if not isinstance(value, expected_types[name]):
+                        raise TypeError(
+                            f"参数 {name} 必须是 {expected_types[name].__name__} 类型"
+                        )
+            return func(*args, **kwargs)
+        return wrapper
+    return decorator
+
+@type_check(name=str, age=int)
+def create_user(name, age):
+    return f"创建用户: {name}, {age}岁"
+
+# 测试函数
+try:
+    print(create_user("张三", 20))  # 正确
+    print(create_user("李四", "25"))  # 类型错误
+except TypeError as e:
+    print(f"错误: {e}")
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>参数范围验证装饰器</h3>
+                    <pre><code class="python">
+def validate_range(**ranges):
+    """参数范围验证装饰器"""
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            # 获取函数参数
+            sig = inspect.signature(func)
+            bound_args = sig.bind(*args, **kwargs)
+            
+            # 验证参数范围
+            for name, value in bound_args.arguments.items():
+                if name in ranges:
+                    min_val, max_val = ranges[name]
+                    if not (min_val <= value <= max_val):
+                        raise ValueError(
+                            f"参数 {name} 必须在范围 [{min_val}, {max_val}] 内"
+                        )
+            return func(*args, **kwargs)
+        return wrapper
+    return decorator
+
+@validate_range(age=(0, 120), score=(0, 100))
+def update_student(name, age, score):
+    return f"更新学生信息: {name}, {age}岁, 分数{score}"
+
+# 测试函数
+try:
+    print(update_student("张三", 18, 85))  # 正确
+    print(update_student("李四", 150, 95))  # 范围错误
+except ValueError as e:
+    print(f"错误: {e}")
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 权限控制装饰器 -->
+            <section id="auth" class="course-section">
+                <h2 class="course-section__title">权限控制装饰器</h2>
+
+                <div class="example-box">
+                    <h3>用户权限检查装饰器</h3>
+                    <pre><code class="python">
+def require_permission(permission):
+    """权限检查装饰器"""
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            # 模拟当前用户权限检查
+            current_user_permissions = ["read", "write"]  # 实际应从用户系统获取
+            
+            if permission not in current_user_permissions:
+                raise PermissionError(
+                    f"当前用户没有 {permission} 权限"
+                )
+            return func(*args, **kwargs)
+        return wrapper
+    return decorator
+
+@require_permission("admin")
+def delete_user(user_id):
+    return f"删除用户 {user_id}"
+
+# 测试函数
+try:
+    result = delete_user(123)
+    print(result)
+except PermissionError as e:
+    print(f"错误: {e}")
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 日志记录装饰器 -->
+            <section id="logging" class="course-section">
+                <h2 class="course-section__title">日志记录装饰器</h2>
+
+                <div class="example-box">
+                    <h3>函数调用日志装饰器</h3>
+                    <pre><code class="python">
+import logging
+import functools
+import time
+
+logging.basicConfig(level=logging.INFO)
+
+def log_call(func):
+    """记录函数调用的装饰器"""
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        start_time = time.time()
+        try:
+            result = func(*args, **kwargs)
+            end_time = time.time()
+            logging.info(
+                f"函数 {func.__name__} 调用成功:\n"
+                f"参数: args={args}, kwargs={kwargs}\n"
+                f"返回值: {result}\n"
+                f"耗时: {end_time - start_time:.4f}秒"
+            )
+            return result
+        except Exception as e:
+            end_time = time.time()
+            logging.error(
+                f"函数 {func.__name__} 调用失败:\n"
+                f"参数: args={args}, kwargs={kwargs}\n"
+                f"错误: {str(e)}\n"
+                f"耗时: {end_time - start_time:.4f}秒"
+            )
+            raise
+    return wrapper
+
+@log_call
+def divide(a, b):
+    return a / b
+
+# 测试函数
+try:
+    result = divide(10, 2)  # 正常调用
+    result = divide(10, 0)  # 异常调用
+except ZeroDivisionError:
+    pass
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>异常追踪装饰器</h3>
+                    <pre><code class="python">
+import traceback
+import logging
+
+def trace_exceptions(func):
+    """异常追踪装饰器"""
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception as e:
+            logging.error(
+                f"函数 {func.__name__} 发生异常:\n"
+                f"异常类型: {type(e).__name__}\n"
+                f"异常信息: {str(e)}\n"
+                f"调用栈:\n{traceback.format_exc()}"
+            )
+            raise
+    return wrapper
+
+@trace_exceptions
+def process_data(data):
+    return data["key"]["subkey"]  # 可能引发KeyError
+
+# 测试函数
+try:
+    process_data({})  # 将引发KeyError
+except KeyError:
+    pass
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 返回链接 -->
+            <section class="course-section">
+                <div class="link-box">
+                    <a href="../../courses/advanced/decorators.html" class="link-box__item">
+                        <i class="fas fa-book"></i>
+                        返回装饰器教程
+                    </a>
+                    <a href="../advanced/decorator_advanced.html" class="link-box__item">
+                        <i class="fas fa-code"></i>
+                        高级装饰器示例
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="https://cdn.bytedance.com/highlight.js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html> 

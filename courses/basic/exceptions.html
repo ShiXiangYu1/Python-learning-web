@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python异常处理基础 - Python学习</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/course.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/highlight.js/styles/github.min.css">
+</head>
+<body>
+    <header class="course-header">
+        <h1 class="course-header__title">
+            <i class="fas fa-exclamation-circle"></i>
+            Python异常处理基础
+        </h1>
+        <p class="course-header__description">
+            本教程将介绍Python异常处理的基础知识，包括异常的概念、常见异常类型、try-except语句的使用等。通过本教程，你将学会如何优雅地处理程序中可能出现的错误。
+        </p>
+    </header>
+
+    <main class="course-container">
+        <!-- 导航菜单 -->
+        <nav class="course-nav">
+            <ul class="course-nav__list">
+                <li><a href="#intro" class="course-nav__link">异常简介</a></li>
+                <li><a href="#types" class="course-nav__link">异常类型</a></li>
+                <li><a href="#try-except" class="course-nav__link">try-except语句</a></li>
+                <li><a href="#finally" class="course-nav__link">finally子句</a></li>
+                <li><a href="#raise" class="course-nav__link">抛出异常</a></li>
+                <li><a href="#practice" class="course-nav__link">实践练习</a></li>
+            </ul>
+        </nav>
+
+        <div class="course-content">
+            <!-- 异常简介 -->
+            <section id="intro" class="course-section">
+                <h2 class="course-section__title">异常简介</h2>
+                <p>异常是程序运行时出现的错误。在Python中，当出现错误时，程序会创建一个异常对象。如果异常没有被处理，程序将会终止并显示一个错误信息。</p>
+                
+                <div class="example-box">
+                    <h3>异常示例</h3>
+                    <pre><code class="python">
+# 常见的异常情况
+print(10 / 0)  # ZeroDivisionError: division by zero
+
+name = "Python"
+print(name[10])  # IndexError: string index out of range
+
+number = int("abc")  # ValueError: invalid literal for int() with base 10: 'abc'
+
+import nonexistent_module  # ModuleNotFoundError: No module named 'nonexistent_module'
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 异常类型 -->
+            <section id="types" class="course-section">
+                <h2 class="course-section__title">常见异常类型</h2>
+                <p>Python内置了许多异常类型，以下是一些常见的异常：</p>
+
+                <div class="example-box">
+                    <h3>内置异常</h3>
+                    <ul class="feature-list">
+                        <li><code>SyntaxError</code>: 语法错误</li>
+                        <li><code>NameError</code>: 使用未定义的变量</li>
+                        <li><code>TypeError</code>: 类型错误</li>
+                        <li><code>ValueError</code>: 值错误</li>
+                        <li><code>IndexError</code>: 索引超出范围</li>
+                        <li><code>KeyError</code>: 字典中不存在的键</li>
+                        <li><code>FileNotFoundError</code>: 文件不存在</li>
+                        <li><code>ZeroDivisionError</code>: 除以零</li>
+                        <li><code>AttributeError</code>: 访问不存在的属性</li>
+                        <li><code>ImportError</code>: 导入模块失败</li>
+                    </ul>
+                </div>
+
+                <div class="example-box">
+                    <h3>异常层次结构</h3>
+                    <pre><code class="python">
+BaseException
+ ├── SystemExit
+ ├── KeyboardInterrupt
+ ├── GeneratorExit
+ └── Exception
+      ├── StopIteration
+      ├── ArithmeticError
+      │    ├── FloatingPointError
+      │    ├── OverflowError
+      │    └── ZeroDivisionError
+      ├── AssertionError
+      ├── AttributeError
+      ├── BufferError
+      ├── EOFError
+      ├── ImportError
+      │    └── ModuleNotFoundError
+      ├── LookupError
+      │    ├── IndexError
+      │    └── KeyError
+      ├── MemoryError
+      ├── NameError
+      ├── OSError
+      │    ├── FileNotFoundError
+      │    ├── PermissionError
+      │    └── TimeoutError
+      ├── RuntimeError
+      ├── SyntaxError
+      ├── TypeError
+      └── ValueError
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- try-except语句 -->
+            <section id="try-except" class="course-section">
+                <h2 class="course-section__title">try-except语句</h2>
+                <p>try-except语句用于捕获和处理异常。try块中放置可能产生异常的代码，except块中放置处理异常的代码。</p>
+
+                <div class="example-box">
+                    <h3>基本语法</h3>
+                    <pre><code class="python">
+# 基本的try-except结构
+try:
+    # 可能产生异常的代码
+    number = int(input("请输入一个数字："))
+    result = 100 / number
+    print(f"100除以{number}等于{result}")
+except ValueError:
+    print("输入无效，请输入一个数字")
+except ZeroDivisionError:
+    print("除数不能为零")
+except:  # 捕获所有其他异常
+    print("发生了其他错误")
+
+# 使用as关键字获取异常对象
+try:
+    with open("nonexistent.txt") as f:
+        content = f.read()
+except FileNotFoundError as e:
+    print(f"错误信息：{e}")
+    print(f"错误类型：{type(e).__name__}")
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>多个异常处理</h3>
+                    <pre><code class="python">
+def safe_convert_to_number(value):
+    """安全地将输入转换为数字"""
+    try:
+        # 尝试转换为整数
+        return int(value)
+    except ValueError:
+        try:
+            # 如果转换整数失败，尝试转换为浮点数
+            return float(value)
+        except ValueError:
+            # 如果都失败了，返回None
+            return None
+
+# 使用示例
+inputs = ["123", "45.67", "abc", "0", "12.0"]
+for value in inputs:
+    result = safe_convert_to_number(value)
+    if result is None:
+        print(f"无法将 '{value}' 转换为数字")
+    else:
+        print(f"转换结果：{result}")
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- finally子句 -->
+            <section id="finally" class="course-section">
+                <h2 class="course-section__title">finally子句</h2>
+                <p>finally子句中的代码无论是否发生异常都会执行，通常用于清理资源。</p>
+
+                <div class="example-box">
+                    <h3>使用finally</h3>
+                    <pre><code class="python">
+def read_file_safely(filename):
+    """安全地读取文件内容"""
+    f = None
+    try:
+        f = open(filename, 'r', encoding='utf-8')
+        return f.read()
+    except FileNotFoundError:
+        print(f"文件 {filename} 不存在")
+        return None
+    except Exception as e:
+        print(f"读取文件时发生错误：{e}")
+        return None
+    finally:
+        if f is not None:
+            f.close()
+            print("文件已关闭")
+
+# 使用with语句（推荐）
+def read_file_with_with(filename):
+    """使用with语句读取文件"""
+    try:
+        with open(filename, 'r', encoding='utf-8') as f:
+            return f.read()
+    except FileNotFoundError:
+        print(f"文件 {filename} 不存在")
+        return None
+    except Exception as e:
+        print(f"读取文件时发生错误：{e}")
+        return None
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 抛出异常 -->
+            <section id="raise" class="course-section">
+                <h2 class="course-section__title">抛出异常</h2>
+                <p>使用raise语句可以主动抛出异常。当程序出现不符合要求的情况时，可以抛出异常来提醒调用者。</p>
+
+                <div class="example-box">
+                    <h3>使用raise</h3>
+                    <pre><code class="python">
+def divide(a, b):
+    """除法函数"""
+    if not isinstance(a, (int, float)) or not isinstance(b, (int, float)):
+        raise TypeError("参数必须是数字")
+    if b == 0:
+        raise ValueError("除数不能为零")
+    return a / b
+
+def calculate_square_root(number):
+    """计算平方根"""
+    if number < 0:
+        raise ValueError("不能计算负数的平方根")
+    return number ** 0.5
+
+# 使用示例
+try:
+    result = divide(10, "2")
+except TypeError as e:
+    print(f"类型错误：{e}")
+
+try:
+    result = calculate_square_root(-4)
+except ValueError as e:
+    print(f"值错误：{e}")
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 实践练习 -->
+            <section id="practice" class="course-section">
+                <h2 class="course-section__title">实践练习</h2>
+                <p>以下是一些练习题，帮助你更好地理解异常处理：</p>
+
+                <div class="example-box">
+                    <h3>练习1：安全的列表访问</h3>
+                    <pre><code class="python">
+def safe_get_element(lst, index, default=None):
+    """安全地获取列表元素"""
+    try:
+        return lst[index]
+    except IndexError:
+        return default
+
+# 测试代码
+numbers = [1, 2, 3, 4, 5]
+print(safe_get_element(numbers, 1))    # 输出: 2
+print(safe_get_element(numbers, 10))   # 输出: None
+print(safe_get_element(numbers, -1))   # 输出: 5
+print(safe_get_element(numbers, 3, 0)) # 输出: 4
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>练习2：用户输入验证</h3>
+                    <pre><code class="python">
+def get_valid_age():
+    """获取有效的年龄输入"""
+    while True:
+        try:
+            age = int(input("请输入你的年龄："))
+            if age < 0 or age > 150:
+                raise ValueError("年龄必须在0到150之间")
+            return age
+        except ValueError as e:
+            if str(e).startswith("年龄必须在"):
+                print(e)
+            else:
+                print("请输入有效的数字")
+        except KeyboardInterrupt:
+            print("\n程序已取消")
+            return None
+
+# 使用示例
+age = get_valid_age()
+if age is not None:
+    print(f"你的年龄是：{age}")
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>练习3：文件处理</h3>
+                    <pre><code class="python">
+def process_file(filename):
+    """处理文件内容"""
+    try:
+        with open(filename, 'r', encoding='utf-8') as f:
+            lines = f.readlines()
+            
+        # 处理每一行
+        numbers = []
+        for i, line in enumerate(lines, 1):
+            try:
+                number = float(line.strip())
+                numbers.append(number)
+            except ValueError:
+                print(f"第{i}行不是有效的数字：{line.strip()}")
+        
+        # 计算统计信息
+        if numbers:
+            average = sum(numbers) / len(numbers)
+            maximum = max(numbers)
+            minimum = min(numbers)
+            return {
+                'count': len(numbers),
+                'average': average,
+                'max': maximum,
+                'min': minimum
+            }
+        return None
+        
+    except FileNotFoundError:
+        print(f"文件 {filename} 不存在")
+    except Exception as e:
+        print(f"处理文件时发生错误：{e}")
+    
+    return None
+
+# 使用示例
+result = process_file('numbers.txt')
+if result:
+    print("文件统计信息：")
+    print(f"数字个数：{result['count']}")
+    print(f"平均值：{result['average']:.2f}")
+    print(f"最大值：{result['max']}")
+    print(f"最小值：{result['min']}")
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 返回链接 -->
+            <section class="course-section">
+                <div class="link-box">
+                    <a href="../basic/functions.html" class="link-box__item">
+                        <i class="fas fa-arrow-left"></i>
+                        函数基础
+                    </a>
+                    <a href="../../examples/intermediate/error_handling.html" class="link-box__item">
+                        <i class="fas fa-code"></i>
+                        中级错误处理示例
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="https://cdn.bytedance.com/highlight.js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html> 

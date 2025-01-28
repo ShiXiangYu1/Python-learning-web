@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python基本语法 - Python学习网站</title>
+    <link href="http://cdn.bytedance.com/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="css/course.css">
+    <!-- 代码高亮 -->
+    <link href="http://cdn.bytedance.com/highlight.js/11.7.0/styles/atom-one-dark.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav__logo">
+                <a href="../../index.html" class="nav__logo-link">
+                    <svg class="nav__logo-icon" width="40" height="40" viewBox="0 0 40 40">
+                        <path d="M20 0C8.954 0 0 8.954 0 20s8.954 20 20 20 20-8.954 20-20S31.046 0 20 0zm0 36c-8.837 0-16-7.163-16-16S11.163 4 20 4s16 7.163 16 16-7.163 16-16 16z" fill="#306998"/>
+                        <path d="M20 8c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12S26.627 8 20 8zm0 22c-5.514 0-10-4.486-10-10S14.486 10 20 10s10 4.486 10 10-4.486 10-10 10z" fill="#FFD43B"/>
+                    </svg>
+                    <span class="nav__logo-text">Python学习</span>
+                </a>
+            </div>
+            <ul class="nav__menu">
+                <li><a href="../../index.html" class="nav__link">首页</a></li>
+                <li><a href="index.html" class="nav__link nav__link--active">基础课程</a></li>
+                <li><a href="../intermediate/index.html" class="nav__link">进阶课程</a></li>
+                <li><a href="../advanced/index.html" class="nav__link">高级课程</a></li>
+                <li><a href="../../examples/index.html" class="nav__link">示例代码</a></li>
+                <li><a href="../../exercises/index.html" class="nav__link">练习题</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main">
+        <div class="course-container">
+            <aside class="course-sidebar">
+                <nav class="course-nav">
+                    <h3 class="course-nav__title">课程目录</h3>
+                    <ul class="course-nav__list">
+                        <li class="course-nav__item">
+                            <a href="environment.html" class="course-nav__link">
+                                <i class="fas fa-laptop-code course-nav__icon"></i>
+                                Python环境搭建
+                            </a>
+                        </li>
+                        <li class="course-nav__item">
+                            <a href="syntax.html" class="course-nav__link course-nav__link--active">
+                                <i class="fas fa-code course-nav__icon"></i>
+                                基本语法
+                            </a>
+                        </li>
+                        <li class="course-nav__item">
+                            <a href="data-types.html" class="course-nav__link">
+                                <i class="fas fa-database course-nav__icon"></i>
+                                数据类型
+                            </a>
+                        </li>
+                        <li class="course-nav__item">
+                            <a href="control-flow.html" class="course-nav__link">
+                                <i class="fas fa-random course-nav__icon"></i>
+                                控制流程
+                            </a>
+                        </li>
+                        <li class="course-nav__item">
+                            <a href="functions.html" class="course-nav__link">
+                                <i class="fas fa-cube course-nav__icon"></i>
+                                函数基础
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <section class="course-content">
+                <div class="course-header">
+                    <h1 class="course-header__title">Python基本语法</h1>
+                    <p class="course-header__description">
+                        在本章节中，您将学习Python的基本语法规则，包括代码结构、变量的使用、注释的编写以及基本运算符的应用。
+                        这些是Python编程的基础知识，掌握它们将帮助您更好地理解和编写Python程序。
+                    </p>
+                </div>
+
+                <article class="lesson-content">
+                    <section class="lesson-section">
+                        <h2 class="lesson-section__title">
+                            <i class="fas fa-file-code lesson-section__icon"></i>
+                            代码结构
+                        </h2>
+                        <div class="lesson-section__content">
+                            <div class="info-box">
+                                <h3 class="info-box__title">
+                                    <i class="fas fa-info-circle"></i>
+                                    Python的特点
+                                </h3>
+                                <p>Python使用缩进来表示代码块，而不是其他语言常用的花括号{}。这使得Python代码更加清晰易读。</p>
+                            </div>
+
+                            <h4>缩进规则</h4>
+                            <pre><code class="language-python"># 正确的缩进
+if True:
+    print("这是缩进的代码块")
+    print("使用4个空格缩进")
+
+# 错误的缩进
+if True:
+print("这样会报错")  # 缺少缩进
+    print("缩进不一致也会报错")   # 缩进不一致</code></pre>
+
+                            <div class="warning-box">
+                                <p><strong>注意：</strong>Python中推荐使用4个空格作为缩进，避免使用Tab键（除非您的编辑器自动将Tab转换为4个空格）。</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="lesson-section">
+                        <h2 class="lesson-section__title">
+                            <i class="fas fa-pencil-alt lesson-section__icon"></i>
+                            注释的使用
+                        </h2>
+                        <div class="lesson-section__content">
+                            <p>Python支持单行注释和多行注释：</p>
+
+                            <pre><code class="language-python"># 这是单行注释
+
+# 这也是
+# 多行
+# 注释
+
+'''
+这是多行注释
+使用三个单引号
+可以写多行
+'''
+
+"""
+也可以使用
+三个双引号
+作为多行注释
+"""</code></pre>
+
+                            <div class="info-box">
+                                <h3 class="info-box__title">
+                                    <i class="fas fa-lightbulb"></i>
+                                    编写注释的建议
+                                </h3>
+                                <ul>
+                                    <li>注释要简洁明了，说明代码的用途</li>
+                                    <li>避免写显而易见的注释</li>
+                                    <li>及时更新注释，确保与代码保持一致</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="lesson-section">
+                        <h2 class="lesson-section__title">
+                            <i class="fas fa-box lesson-section__icon"></i>
+                            变量和赋值
+                        </h2>
+                        <div class="lesson-section__content">
+                            <p>Python中的变量不需要声明类型，可以直接赋值使用：</p>
+
+                            <pre><code class="language-python"># 变量赋值
+name = "小明"      # 字符串
+age = 18          # 整数
+height = 1.75     # 浮点数
+is_student = True # 布尔值
+
+# 多个变量赋值
+a, b, c = 1, 2, 3
+
+# 变量命名规则示例
+student_name = "张三"     # 推荐使用下划线
+className = "一年级"      # 驼峰命名也可以
+_private = "私有变量"     # 下划线开头
+PI = 3.14159            # 常量通常全大写</code></pre>
+
+                            <div class="warning-box">
+                                <p><strong>变量命名规则：</strong></p>
+                                <ul>
+                                    <li>只能包含字母、数字和下划线</li>
+                                    <li>不能以数字开头</li>
+                                    <li>区分大小写</li>
+                                    <li>不能使用Python关键字</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="lesson-section">
+                        <h2 class="lesson-section__title">
+                            <i class="fas fa-calculator lesson-section__icon"></i>
+                            基本运算符
+                        </h2>
+                        <div class="lesson-section__content">
+                            <div class="info-box">
+                                <h3 class="info-box__title">
+                                    <i class="fas fa-info-circle"></i>
+                                    Python支持多种运算符
+                                </h3>
+                            </div>
+
+                            <h4>算术运算符</h4>
+                            <pre><code class="language-python"># 基本运算
+a = 10
+b = 3
+
+print(a + b)    # 加法：13
+print(a - b)    # 减法：7
+print(a * b)    # 乘法：30
+print(a / b)    # 除法：3.3333...
+print(a // b)   # 整除：3
+print(a % b)    # 取余：1
+print(a ** b)   # 幂运算：1000</code></pre>
+
+                            <h4>比较运算符</h4>
+                            <pre><code class="language-python"># 比较运算
+x = 5
+y = 10
+
+print(x == y)    # 等于：False
+print(x != y)    # 不等于：True
+print(x < y)     # 小于：True
+print(x > y)     # 大于：False
+print(x <= y)    # 小于等于：True
+print(x >= y)    # 大于等于：False</code></pre>
+
+                            <h4>逻辑运算符</h4>
+                            <pre><code class="language-python"># 逻辑运算
+p = True
+q = False
+
+print(p and q)   # 与：False
+print(p or q)    # 或：True
+print(not p)     # 非：False</code></pre>
+                        </div>
+                    </section>
+
+                    <section class="lesson-section">
+                        <h2 class="lesson-section__title">
+                            <i class="fas fa-lightbulb lesson-section__icon"></i>
+                            练习与实践
+                        </h2>
+                        <div class="lesson-section__content">
+                            <div class="exercise-box">
+                                <h4>练习1：变量使用</h4>
+                                <p>创建一个程序，完成以下任务：</p>
+                                <ol>
+                                    <li>定义变量存储您的个人信息（姓名、年龄、身高等）</li>
+                                    <li>使用print输出这些信息</li>
+                                    <li>尝试不同的变量命名方式</li>
+                                </ol>
+                            </div>
+
+                            <div class="exercise-box">
+                                <h4>练习2：运算符练习</h4>
+                                <p>编写程序计算以下内容：</p>
+                                <ol>
+                                    <li>计算圆的面积（使用半径变量）</li>
+                                    <li>计算两个数的和、差、积、商</li>
+                                    <li>使用比较运算符比较两个数的大小</li>
+                                </ol>
+                                <div class="success-box">
+                                    <h4>参考代码：</h4>
+                                    <pre><code class="language-python"># 圆的面积计算
+import math
+radius = 5
+area = math.pi * radius ** 2
+print(f"圆的面积是：{area:.2f}")</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <nav class="lesson-navigation">
+                        <a href="environment.html" class="lesson-navigation__link lesson-navigation__link--prev">
+                            <i class="fas fa-arrow-left"></i>
+                            上一章：Python环境搭建
+                        </a>
+                        <a href="data-types.html" class="lesson-navigation__link lesson-navigation__link--next">
+                            下一章：数据类型
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </nav>
+                </article>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer__content">
+            <div class="footer__section">
+                <h4 class="footer__title">关于我们</h4>
+                <p class="footer__text">致力于为初学者提供优质的Python编程学习资源</p>
+            </div>
+            <div class="footer__section">
+                <h4 class="footer__title">快速链接</h4>
+                <ul class="footer__links">
+                    <li><a href="../../index.html">返回首页</a></li>
+                    <li><a href="../../examples/index.html">示例代码</a></li>
+                    <li><a href="../../exercises/index.html">练习题</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            <p>&copy; 2024 Python学习网站. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../../assets/js/main.js"></script>
+    <script src="js/course.js"></script>
+    <!-- 代码高亮 -->
+    <script src="http://cdn.bytedance.com/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html> 

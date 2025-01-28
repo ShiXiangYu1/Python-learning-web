@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python文件操作示例 - Python学习</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/course.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/highlight.js/styles/github.min.css">
+</head>
+<body>
+    <header class="course-header">
+        <h1 class="course-header__title">
+            <i class="fas fa-file-code"></i>
+            Python文件操作示例
+        </h1>
+        <p class="course-header__description">
+            本页面提供了Python文件操作的常见示例，包括文件的读写、目录操作、文件路径处理等实用代码示例。这些示例涵盖了日常开发中最常见的文件处理场景。
+        </p>
+    </header>
+
+    <main class="course-container">
+        <!-- 导航菜单 -->
+        <nav class="course-nav">
+            <ul class="course-nav__list">
+                <li><a href="#basic" class="course-nav__link">基本操作</a></li>
+                <li><a href="#text" class="course-nav__link">文本文件</a></li>
+                <li><a href="#binary" class="course-nav__link">二进制文件</a></li>
+                <li><a href="#directory" class="course-nav__link">目录操作</a></li>
+                <li><a href="#path" class="course-nav__link">路径处理</a></li>
+                <li><a href="#advanced" class="course-nav__link">高级应用</a></li>
+            </ul>
+        </nav>
+
+        <div class="course-content">
+            <!-- 基本操作 -->
+            <section id="basic" class="course-section">
+                <h2 class="course-section__title">基本操作</h2>
+
+                <div class="example-box">
+                    <h3>文件打开与关闭</h3>
+                    <pre><code class="python">
+# 使用with语句（推荐）
+with open('example.txt', 'r', encoding='utf-8') as f:
+    content = f.read()
+    print(content)
+# 文件会自动关闭
+
+# 传统方式
+f = open('example.txt', 'r', encoding='utf-8')
+try:
+    content = f.read()
+    print(content)
+finally:
+    f.close()
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>文件模式</h3>
+                    <pre><code class="python">
+# 读取模式 'r'
+with open('file.txt', 'r') as f:
+    content = f.read()
+
+# 写入模式 'w'（会覆盖原文件）
+with open('file.txt', 'w') as f:
+    f.write('Hello, World!')
+
+# 追加模式 'a'
+with open('file.txt', 'a') as f:
+    f.write('\nNew line')
+
+# 读写模式 'r+'
+with open('file.txt', 'r+') as f:
+    content = f.read()
+    f.write('Additional content')
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 文本文件操作 -->
+            <section id="text" class="course-section">
+                <h2 class="course-section__title">文本文件操作</h2>
+
+                <div class="example-box">
+                    <h3>读取文本文件</h3>
+                    <pre><code class="python">
+# 读取整个文件
+with open('text.txt', 'r', encoding='utf-8') as f:
+    content = f.read()
+    print(content)
+
+# 逐行读取
+with open('text.txt', 'r', encoding='utf-8') as f:
+    for line in f:
+        print(line.strip())
+
+# 读取所有行到列表
+with open('text.txt', 'r', encoding='utf-8') as f:
+    lines = f.readlines()
+    print(lines)
+
+# 读取指定字节数
+with open('text.txt', 'r', encoding='utf-8') as f:
+    chunk = f.read(100)  # 读取前100个字符
+    print(chunk)
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>写入文本文件</h3>
+                    <pre><code class="python">
+# 写入字符串
+with open('output.txt', 'w', encoding='utf-8') as f:
+    f.write('Hello, World!\n')
+    f.write('Another line\n')
+
+# 写入多行
+lines = ['Line 1\n', 'Line 2\n', 'Line 3\n']
+with open('output.txt', 'w', encoding='utf-8') as f:
+    f.writelines(lines)
+
+# CSV文件操作
+import csv
+
+# 写入CSV
+data = [
+    ['Name', 'Age', 'City'],
+    ['Alice', '25', 'Beijing'],
+    ['Bob', '30', 'Shanghai']
+]
+with open('data.csv', 'w', newline='', encoding='utf-8') as f:
+    writer = csv.writer(f)
+    writer.writerows(data)
+
+# 读取CSV
+with open('data.csv', 'r', encoding='utf-8') as f:
+    reader = csv.reader(f)
+    for row in reader:
+        print(row)
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 二进制文件操作 -->
+            <section id="binary" class="course-section">
+                <h2 class="course-section__title">二进制文件操作</h2>
+
+                <div class="example-box">
+                    <h3>读写二进制文件</h3>
+                    <pre><code class="python">
+# 写入二进制数据
+data = bytes([0x48, 0x65, 0x6C, 0x6C, 0x6F])
+with open('binary.bin', 'wb') as f:
+    f.write(data)
+
+# 读取二进制数据
+with open('binary.bin', 'rb') as f:
+    content = f.read()
+    print(content)  # b'Hello'
+
+# 图片文件复制
+def copy_image(src, dst):
+    with open(src, 'rb') as source:
+        with open(dst, 'wb') as dest:
+            dest.write(source.read())
+
+# 分块读取大文件
+def read_in_chunks(file_path, chunk_size=8192):
+    with open(file_path, 'rb') as f:
+        while True:
+            chunk = f.read(chunk_size)
+            if not chunk:
+                break
+            yield chunk
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 目录操作 -->
+            <section id="directory" class="course-section">
+                <h2 class="course-section__title">目录操作</h2>
+
+                <div class="example-box">
+                    <h3>目录和文件管理</h3>
+                    <pre><code class="python">
+import os
+import shutil
+
+# 创建目录
+os.mkdir('new_directory')
+os.makedirs('path/to/nested/directory')  # 创建多级目录
+
+# 删除文件和目录
+os.remove('file.txt')  # 删除文件
+os.rmdir('empty_directory')  # 删除空目录
+shutil.rmtree('directory')  # 删除目录及其内容
+
+# 复制文件和目录
+shutil.copy('source.txt', 'dest.txt')  # 复制文件
+shutil.copytree('src_dir', 'dst_dir')  # 复制目录
+
+# 移动文件和目录
+shutil.move('source.txt', 'dest/source.txt')
+
+# 列出目录内容
+print(os.listdir('.'))  # 列出当前目录内容
+for entry in os.scandir('.'):  # 更详细的信息
+    print(entry.name, entry.is_file())
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>文件查找和过滤</h3>
+                    <pre><code class="python">
+import glob
+import fnmatch
+
+# 使用glob模块
+python_files = glob.glob('*.py')  # 查找所有Python文件
+txt_files = glob.glob('**/*.txt', recursive=True)  # 递归查找
+
+# 使用fnmatch模块
+def find_files(directory, pattern):
+    for root, dirs, files in os.walk(directory):
+        for basename in files:
+            if fnmatch.fnmatch(basename, pattern):
+                filename = os.path.join(root, basename)
+                yield filename
+
+# 使用示例
+for file in find_files('.', '*.py'):
+    print(file)
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 路径处理 -->
+            <section id="path" class="course-section">
+                <h2 class="course-section__title">路径处理</h2>
+
+                <div class="example-box">
+                    <h3>路径操作</h3>
+                    <pre><code class="python">
+from pathlib import Path
+import os.path
+
+# 使用pathlib（推荐）
+path = Path('folder/subfolder/file.txt')
+print(path.parent)  # 父目录
+print(path.name)    # 文件名
+print(path.suffix)  # 扩展名
+print(path.stem)    # 不带扩展名的文件名
+
+# 路径拼接
+new_path = path.parent / 'another_file.txt'
+print(new_path)
+
+# 使用os.path
+file_path = 'folder/subfolder/file.txt'
+print(os.path.dirname(file_path))   # 目录名
+print(os.path.basename(file_path))  # 文件名
+print(os.path.splitext(file_path))  # 分离扩展名
+
+# 路径判断
+print(os.path.exists(file_path))    # 是否存在
+print(os.path.isfile(file_path))    # 是否是文件
+print(os.path.isdir(file_path))     # 是否是目录
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 高级应用 -->
+            <section id="advanced" class="course-section">
+                <h2 class="course-section__title">高级应用</h2>
+
+                <div class="example-box">
+                    <h3>文件监控</h3>
+                    <pre><code class="python">
+import time
+from watchdog.observers import Observer
+from watchdog.events import FileSystemEventHandler
+
+class MyHandler(FileSystemEventHandler):
+    def on_modified(self, event):
+        if not event.is_directory:
+            print(f"文件被修改: {event.src_path}")
+
+    def on_created(self, event):
+        if not event.is_directory:
+            print(f"新文件创建: {event.src_path}")
+
+# 监控目录
+path = "."
+event_handler = MyHandler()
+observer = Observer()
+observer.schedule(event_handler, path, recursive=False)
+observer.start()
+
+try:
+    while True:
+        time.sleep(1)
+except KeyboardInterrupt:
+    observer.stop()
+observer.join()
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>临时文件操作</h3>
+                    <pre><code class="python">
+import tempfile
+import os
+
+# 创建临时文件
+with tempfile.NamedTemporaryFile(delete=False) as tmp:
+    tmp.write(b'Hello World!')
+    temp_path = tmp.name
+
+# 使用临时文件
+with open(temp_path, 'rb') as f:
+    content = f.read()
+    print(content)
+
+# 删除临时文件
+os.unlink(temp_path)
+
+# 临时目录
+with tempfile.TemporaryDirectory() as tmpdirname:
+    print('创建临时目录:', tmpdirname)
+    # 目录会在退出with语句后自动删除
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 返回链接 -->
+            <section class="course-section">
+                <div class="link-box">
+                    <a href="../../courses/basic/files.html" class="link-box__item">
+                        <i class="fas fa-book"></i>
+                        返回文件操作教程
+                    </a>
+                    <a href="../advanced/file_advanced.html" class="link-box__item">
+                        <i class="fas fa-graduation-cap"></i>
+                        高级文件操作示例
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="https://cdn.bytedance.com/highlight.js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html> 

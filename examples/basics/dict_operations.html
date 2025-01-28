@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>字典操作示例 - Python学习</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/course.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/highlight.js/styles/github.min.css">
+</head>
+<body>
+    <header class="course-header">
+        <h1 class="course-header__title">
+            <i class="fas fa-book"></i>
+            字典操作示例
+        </h1>
+        <p class="course-header__description">
+            通过实际的代码示例，展示Python字典的常用操作方法和实际应用场景。每个示例都包含详细的代码和运行结果。
+        </p>
+    </header>
+
+    <main class="course-container">
+        <!-- 导航菜单 -->
+        <nav class="course-nav">
+            <ul class="course-nav__list">
+                <li><a href="#basic" class="course-nav__link">基本操作</a></li>
+                <li><a href="#methods" class="course-nav__link">常用方法</a></li>
+                <li><a href="#nested" class="course-nav__link">嵌套字典</a></li>
+                <li><a href="#practical" class="course-nav__link">实际应用</a></li>
+            </ul>
+        </nav>
+
+        <div class="course-content">
+            <!-- 基本操作 -->
+            <section id="basic" class="course-section">
+                <h2 class="course-section__title">基本操作</h2>
+                <div class="example-box">
+                    <h3><i class="fas fa-code"></i> 创建和访问字典</h3>
+                    <div class="code-block">
+                        <pre><code class="python">
+# 创建字典的多种方式
+# 1. 使用花括号
+student = {
+    'name': '张三',
+    'age': 18,
+    'score': 95
+}
+
+# 2. 使用dict()构造函数
+person = dict(name='李四', age=20, city='北京')
+
+# 3. 使用zip()创建字典
+keys = ['a', 'b', 'c']
+values = [1, 2, 3]
+letter_dict = dict(zip(keys, values))
+
+# 访问字典元素
+print(student['name'])      # 输出: 张三
+print(person.get('age'))    # 输出: 20
+print(person.get('phone', '未设置'))  # 使用默认值，输出: 未设置
+                        </code></pre>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <h3><i class="fas fa-code"></i> 修改和删除</h3>
+                    <div class="code-block">
+                        <pre><code class="python">
+student = {'name': '张三', 'age': 18, 'score': 95}
+
+# 修改值
+student['age'] = 19
+student['score'] = 98
+
+# 添加新键值对
+student['class'] = '三年二班'
+
+# 删除键值对
+del student['score']
+removed_age = student.pop('age')
+last_item = student.popitem()  # 删除并返回最后一个键值对
+
+print(student)  # 输出: {'name': '张三'}
+print(f"移除的年龄: {removed_age}")  # 输出: 移除的年龄: 19
+print(f"最后移除的项: {last_item}")  # 输出: 最后移除的项: ('class', '三年二班')
+                        </code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 常用方法 -->
+            <section id="methods" class="course-section">
+                <h2 class="course-section__title">常用方法</h2>
+                <div class="example-box">
+                    <h3><i class="fas fa-code"></i> 字典方法示例</h3>
+                    <div class="code-block">
+                        <pre><code class="python">
+student = {'name': '张三', 'age': 18, 'score': 95}
+
+# 获取所有键
+keys = student.keys()
+print("所有键:", list(keys))  # ['name', 'age', 'score']
+
+# 获取所有值
+values = student.values()
+print("所有值:", list(values))  # ['张三', 18, 95]
+
+# 获取所有键值对
+items = student.items()
+print("所有键值对:", list(items))  # [('name', '张三'), ('age', 18), ('score', 95)]
+
+# 更新字典
+new_info = {'phone': '123456', 'email': 'zhangsan@example.com'}
+student.update(new_info)
+print("更新后:", student)
+
+# 清空字典
+student.clear()
+print("清空后:", student)  # {}
+                        </code></pre>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <h3><i class="fas fa-code"></i> 字典推导式</h3>
+                    <div class="code-block">
+                        <pre><code class="python">
+# 创建平方数字典
+squares = {x: x**2 for x in range(5)}
+print(squares)  # {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}
+
+# 过滤字典
+scores = {'张三': 85, '李四': 92, '王五': 78, '赵六': 95}
+high_scores = {name: score for name, score in scores.items() if score >= 90}
+print(high_scores)  # {'李四': 92, '赵六': 95}
+
+# 键值互换
+original = {'a': 1, 'b': 2, 'c': 3}
+inverted = {value: key for key, value in original.items()}
+print(inverted)  # {1: 'a', 2: 'b', 3: 'c'}
+                        </code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 嵌套字典 -->
+            <section id="nested" class="course-section">
+                <h2 class="course-section__title">嵌套字典</h2>
+                <div class="example-box">
+                    <h3><i class="fas fa-code"></i> 嵌套字典操作</h3>
+                    <div class="code-block">
+                        <pre><code class="python">
+# 创建嵌套字典
+school = {
+    'class_1': {
+        '张三': {'age': 18, 'score': 95},
+        '李四': {'age': 17, 'score': 89}
+    },
+    'class_2': {
+        '王五': {'age': 18, 'score': 92},
+        '赵六': {'age': 17, 'score': 88}
+    }
+}
+
+# 访问嵌套值
+print(school['class_1']['张三']['score'])  # 95
+
+# 修改嵌套值
+school['class_2']['王五']['score'] = 95
+
+# 添加新的嵌套数据
+school['class_1']['陈七'] = {'age': 18, 'score': 91}
+
+# 遍历嵌套字典
+for class_name, students in school.items():
+    print(f"\n{class_name}的学生信息：")
+    for student, info in students.items():
+        print(f"{student}: 年龄{info['age']}, 分数{info['score']}")
+                        </code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 实际应用 -->
+            <section id="practical" class="course-section">
+                <h2 class="course-section__title">实际应用</h2>
+                <div class="example-box">
+                    <h3><i class="fas fa-code"></i> 购物车系统</h3>
+                    <div class="code-block">
+                        <pre><code class="python">
+class ShoppingCart:
+    def __init__(self):
+        self.cart = {}  # {商品名: {'price': 价格, 'quantity': 数量}}
+    
+    def add_item(self, name, price, quantity=1):
+        if name in self.cart:
+            self.cart[name]['quantity'] += quantity
+        else:
+            self.cart[name] = {'price': price, 'quantity': quantity}
+    
+    def remove_item(self, name):
+        if name in self.cart:
+            del self.cart[name]
+    
+    def update_quantity(self, name, quantity):
+        if name in self.cart:
+            self.cart[name]['quantity'] = quantity
+    
+    def get_total(self):
+        return sum(item['price'] * item['quantity'] 
+                  for item in self.cart.values())
+    
+    def view_cart(self):
+        for name, info in self.cart.items():
+            print(f"{name}: ¥{info['price']} x {info['quantity']} = "
+                  f"¥{info['price'] * info['quantity']}")
+        print(f"总计: ¥{self.get_total()}")
+
+# 使用示例
+cart = ShoppingCart()
+cart.add_item("苹果", 5.0, 3)
+cart.add_item("香蕉", 3.5, 2)
+cart.add_item("橙子", 4.0, 4)
+cart.view_cart()
+                        </code></pre>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <h3><i class="fas fa-code"></i> 成绩统计系统</h3>
+                    <div class="code-block">
+                        <pre><code class="python">
+class GradeSystem:
+    def __init__(self):
+        self.grades = {}  # {学生名: {课程: 分数}}
+    
+    def add_grade(self, student, course, score):
+        if student not in self.grades:
+            self.grades[student] = {}
+        self.grades[student][course] = score
+    
+    def get_average(self, student):
+        if student in self.grades:
+            scores = self.grades[student].values()
+            return sum(scores) / len(scores)
+        return 0
+    
+    def get_course_average(self, course):
+        scores = [grades[course] for grades in self.grades.values() 
+                 if course in grades]
+        return sum(scores) / len(scores) if scores else 0
+    
+    def get_report(self):
+        for student, courses in self.grades.items():
+            print(f"\n{student}的成绩单:")
+            for course, score in courses.items():
+                print(f"{course}: {score}")
+            print(f"平均分: {self.get_average(student):.2f}")
+
+# 使用示例
+system = GradeSystem()
+system.add_grade("张三", "数学", 95)
+system.add_grade("张三", "英语", 88)
+system.add_grade("李四", "数学", 92)
+system.add_grade("李四", "英语", 85)
+system.get_report()
+                        </code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 返回链接 -->
+            <section class="course-section">
+                <div class="link-box">
+                    <a href="../../courses/basic/dicts.html" class="link-box__item">
+                        <i class="fas fa-book"></i>
+                        返回字典教程
+                    </a>
+                    <a href="../../exercises/dict_exercises.html" class="link-box__item">
+                        <i class="fas fa-tasks"></i>
+                        字典练习题
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="https://cdn.bytedance.com/highlight.js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html> 

@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python练习题 - Python学习</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/course.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/highlight.js/styles/github.min.css">
+</head>
+<body>
+    <header class="course-header">
+        <h1 class="course-header__title">
+            <i class="fas fa-code"></i>
+            Python练习题
+        </h1>
+        <p class="course-header__description">
+            本页面提供了一系列Python练习题，从基础到进阶，帮助你巩固Python编程知识，提高编程能力。每道题都包含详细的解答和说明。
+        </p>
+    </header>
+
+    <main class="course-container">
+        <!-- 导航菜单 -->
+        <nav class="course-nav">
+            <ul class="course-nav__list">
+                <li><a href="#basic" class="course-nav__link">基础练习</a></li>
+                <li><a href="#advanced" class="course-nav__link">进阶练习</a></li>
+                <li><a href="#project" class="course-nav__link">实战项目</a></li>
+            </ul>
+        </nav>
+
+        <div class="course-content">
+            <!-- 基础练习 -->
+            <section id="basic" class="course-section">
+                <h2 class="course-section__title">基础练习</h2>
+                
+                <div class="exercise-list">
+                    <div class="exercise-item">
+                        <h3 class="exercise-item__title">1. 数字游戏</h3>
+                        <div class="exercise-item__content">
+                            <p class="exercise-item__description">
+                                编写一个程序，生成一个1-100的随机数，让用户猜这个数字。根据用户的输入，提示数字是偏大还是偏小，直到猜对为止。记录用户猜测的次数。
+                            </p>
+                            <pre><code class="python">
+import random
+
+def number_game():
+    """数字猜猜猜游戏"""
+    # 生成1-100的随机数
+    target = random.randint(1, 100)
+    attempts = 0
+    
+    print("欢迎玩数字猜猜猜游戏！")
+    print("我已经想好了一个1-100之间的数字，请你猜猜是多少。")
+    
+    while True:
+        try:
+            # 获取用户输入
+            guess = int(input("请输入你猜的数字："))
+            attempts += 1
+            
+            # 判断大小
+            if guess < target:
+                print("太小了，再大一点！")
+            elif guess > target:
+                print("太大了，再小一点！")
+            else:
+                print(f"恭喜你，猜对了！答案就是{target}")
+                print(f"你总共猜了{attempts}次。")
+                break
+                
+        except ValueError:
+            print("请输入有效的数字！")
+
+if __name__ == '__main__':
+    number_game()
+                            </code></pre>
+                        </div>
+                    </div>
+
+                    <div class="exercise-item">
+                        <h3 class="exercise-item__title">2. 密码生成器</h3>
+                        <div class="exercise-item__content">
+                            <p class="exercise-item__description">
+                                编写一个密码生成器，可以生成指定长度的随机密码。密码需要包含大小写字母、数字和特殊字符，保证密码的强度。
+                            </p>
+                            <pre><code class="python">
+import random
+import string
+
+def generate_password(length: int = 12) -> str:
+    """生成随机密码
+    
+    Args:
+        length: 密码长度，默认12位
+        
+    Returns:
+        生成的随机密码
+    """
+    # 定义字符集
+    lowercase = string.ascii_lowercase
+    uppercase = string.ascii_uppercase
+    digits = string.digits
+    special = '!@#$%^&*()_+-=[]{}|;:,.<>?'
+    
+    # 确保密码包含所有类型的字符
+    password = [
+        random.choice(lowercase),
+        random.choice(uppercase),
+        random.choice(digits),
+        random.choice(special)
+    ]
+    
+    # 生成剩余字符
+    all_chars = lowercase + uppercase + digits + special
+    for _ in range(length - 4):
+        password.append(random.choice(all_chars))
+    
+    # 打乱密码字符顺序
+    random.shuffle(password)
+    
+    return ''.join(password)
+
+def main():
+    """主函数"""
+    try:
+        length = int(input("请输入需要生成的密码长度（至少8位）："))
+        if length < 8:
+            print("密码长度太短，至少需要8位！")
+            return
+        
+        password = generate_password(length)
+        print(f"生成的密码是：{password}")
+        
+    except ValueError:
+        print("请输入有效的数字！")
+
+if __name__ == '__main__':
+    main()
+                            </code></pre>
+                        </div>
+                    </div>
+
+                    <div class="exercise-item">
+                        <h3 class="exercise-item__title">3. 文本统计工具</h3>
+                        <div class="exercise-item__content">
+                            <p class="exercise-item__description">
+                                编写一个文本统计工具，统计一段文本中的字符数、单词数、行数，以及每个单词出现的频率。
+                            </p>
+                            <pre><code class="python">
+import re
+from collections import Counter
+from typing import Dict, Tuple
+
+def analyze_text(text: str) -> Tuple[int, int, int, Dict[str, int]]:
+    """分析文本
+    
+    Args:
+        text: 要分析的文本
+        
+    Returns:
+        包含字符数、单词数、行数和单词频率的元组
+    """
+    # 统计字符数（不包括空白字符）
+    char_count = len(''.join(text.split()))
+    
+    # 统计行数
+    line_count = len(text.splitlines()) or 1  # 如果没有换行符，算作1行
+    
+    # 分割单词并统计
+    words = re.findall(r'\b\w+\b', text.lower())
+    word_count = len(words)
+    
+    # 统计单词频率
+    word_frequency = dict(Counter(words))
+    
+    return char_count, word_count, line_count, word_frequency
+
+def format_frequency(frequency: Dict[str, int]) -> str:
+    """格式化频率统计结果"""
+    # 按频率降序排序
+    sorted_items = sorted(frequency.items(), key=lambda x: (-x[1], x[0]))
+    
+    # 格式化输出
+    result = []
+    for word, count in sorted_items:
+        result.append(f"'{word}': {count}次")
+    
+    return '\n'.join(result)
+
+def main():
+    """主函数"""
+    print("请输入要分析的文本（按Ctrl+D或Ctrl+Z结束输入）：")
+    
+    # 读取多行输入
+    lines = []
+    try:
+        while True:
+            line = input()
+            lines.append(line)
+    except (EOFError, KeyboardInterrupt):
+        pass
+    
+    text = '\n'.join(lines)
+    
+    if not text.strip():
+        print("错误：输入文本为空！")
+        return
+    
+    # 分析文本
+    char_count, word_count, line_count, frequency = analyze_text(text)
+    
+    # 输出结果
+    print("\n分析结果：")
+    print(f"字符数：{char_count}")
+    print(f"单词数：{word_count}")
+    print(f"行数：{line_count}")
+    print("\n单词频率：")
+    print(format_frequency(frequency))
+
+if __name__ == '__main__':
+    main()
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 进阶练习 -->
+            <section id="advanced" class="course-section">
+                <h2 class="course-section__title">进阶练习</h2>
+                
+                <div class="exercise-list">
+                    <div class="exercise-item">
+                        <h3 class="exercise-item__title">1. 简单数据库实现</h3>
+                        <div class="exercise-item__content">
+                            <p class="exercise-item__description">
+                                实现一个简单的基于文件的数据库系统，支持基本的CRUD操作（创建、读取、更新、删除），使用JSON格式存储数据。
+                            </p>
+                            <pre><code class="python">
+import json
+import os
+from typing import Dict, List, Any, Optional
+from datetime import datetime
+
+class SimpleDB:
+    """简单的文件数据库实现"""
+    
+    def __init__(self, filename: str):
+        self.filename = filename
+        self.data = self._load_data()
+    
+    def _load_data(self) -> Dict[str, List[Dict[str, Any]]]:
+        """加载数据"""
+        if os.path.exists(self.filename):
+            try:
+                with open(self.filename, 'r', encoding='utf-8') as f:
+                    return json.load(f)
+            except json.JSONDecodeError:
+                return {}
+        return {}
+    
+    def _save_data(self):
+        """保存数据"""
+        with open(self.filename, 'w', encoding='utf-8') as f:
+            json.dump(self.data, f, ensure_ascii=False, indent=2)
+    
+    def create_table(self, table_name: str):
+        """创建表"""
+        if table_name not in self.data:
+            self.data[table_name] = []
+            self._save_data()
+            return True
+        return False
+    
+    def insert(self, table_name: str, record: Dict[str, Any]) -> bool:
+        """插入记录"""
+        if table_name not in self.data:
+            return False
+        
+        # 添加创建时间和ID
+        record['_id'] = len(self.data[table_name]) + 1
+        record['_created_at'] = datetime.now().isoformat()
+        
+        self.data[table_name].append(record)
+        self._save_data()
+        return True
+    
+    def find(self, table_name: str, query: Dict[str, Any]) -> List[Dict[str, Any]]:
+        """查找记录"""
+        if table_name not in self.data:
+            return []
+        
+        # 如果没有查询条件，返回所有记录
+        if not query:
+            return self.data[table_name]
+        
+        # 根据查询条件过滤记录
+        results = []
+        for record in self.data[table_name]:
+            match = True
+            for key, value in query.items():
+                if key not in record or record[key] != value:
+                    match = False
+                    break
+            if match:
+                results.append(record)
+        
+        return results
+    
+    def update(self, table_name: str, query: Dict[str, Any], 
+               new_values: Dict[str, Any]) -> int:
+        """更新记录"""
+        if table_name not in self.data:
+            return 0
+        
+        # 更新匹配的记录
+        count = 0
+        for record in self.data[table_name]:
+            match = True
+            for key, value in query.items():
+                if key not in record or record[key] != value:
+                    match = False
+                    break
+            
+            if match:
+                # 不允许修改内部字段
+                for key in new_values:
+                    if not key.startswith('_'):
+                        record[key] = new_values[key]
+                record['_updated_at'] = datetime.now().isoformat()
+                count += 1
+        
+        if count > 0:
+            self._save_data()
+        
+        return count
+    
+    def delete(self, table_name: str, query: Dict[str, Any]) -> int:
+        """删除记录"""
+        if table_name not in self.data:
+            return 0
+        
+        # 删除匹配的记录
+        original_length = len(self.data[table_name])
+        self.data[table_name] = [
+            record for record in self.data[table_name]
+            if not all(
+                key in record and record[key] == value
+                for key, value in query.items()
+            )
+        ]
+        
+        deleted = original_length - len(self.data[table_name])
+        if deleted > 0:
+            self._save_data()
+        
+        return deleted
+
+def main():
+    """示例用法"""
+    # 创建数据库实例
+    db = SimpleDB('test.json')
+    
+    # 创建表
+    db.create_table('users')
+    
+    # 插入记录
+    db.insert('users', {
+        'name': '张三',
+        'age': 25,
+        'email': 'zhangsan@example.com'
+    })
+    
+    db.insert('users', {
+        'name': '李四',
+        'age': 30,
+        'email': 'lisi@example.com'
+    })
+    
+    # 查询记录
+    results = db.find('users', {'age': 25})
+    print("查询结果：")
+    for record in results:
+        print(record)
+    
+    # 更新记录
+    updated = db.update('users', {'name': '张三'}, {'age': 26})
+    print(f"\n更新了 {updated} 条记录")
+    
+    # 删除记录
+    deleted = db.delete('users', {'name': '李四'})
+    print(f"删除了 {deleted} 条记录")
+
+if __name__ == '__main__':
+    main()
+                            </code></pre>
+                        </div>
+                    </div>
+
+                    <div class="exercise-item">
+                        <h3 class="exercise-item__title">2. 命令行待办事项管理器</h3>
+                        <div class="exercise-item__content">
+                            <p class="exercise-item__description">
+                                实现一个命令行的待办事项管理器，支持添加、查看、更新和删除待办事项，使用SQLite数据库存储数据。
+                            </p>
+                            <pre><code class="python">
+import sqlite3
+import argparse
+from datetime import datetime
+from typing import List, Optional
+
+class Todo:
+    """待办事项类"""
+    def __init__(self, db_path: str = 'todo.db'):
+        self.db_path = db_path
+        self._init_db()
+    
+    def _init_db(self):
+        """初始化数据库"""
+        with sqlite3.connect(self.db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute('''
+                CREATE TABLE IF NOT EXISTS todos (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    title TEXT NOT NULL,
+                    description TEXT,
+                    due_date TEXT,
+                    priority INTEGER DEFAULT 0,
+                    completed INTEGER DEFAULT 0,
+                    created_at TEXT DEFAULT CURRENT_TIMESTAMP
+                )
+            ''')
+            conn.commit()
+    
+    def add(self, title: str, description: str = "", 
+            due_date: Optional[str] = None, priority: int = 0) -> bool:
+        """添加待办事项"""
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                cursor = conn.cursor()
+                cursor.execute('''
+                    INSERT INTO todos (title, description, due_date, priority)
+                    VALUES (?, ?, ?, ?)
+                ''', (title, description, due_date, priority))
+                conn.commit()
+                return True
+        except sqlite3.Error as e:
+            print(f"添加失败: {e}")
+            return False
+    
+    def list_todos(self, show_completed: bool = False) -> List[tuple]:
+        """列出待办事项"""
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                cursor = conn.cursor()
+                if show_completed:
+                    cursor.execute('SELECT * FROM todos ORDER BY priority DESC, due_date ASC')
+                else:
+                    cursor.execute('''
+                        SELECT * FROM todos 
+                        WHERE completed = 0 
+                        ORDER BY priority DESC, due_date ASC
+                    ''')
+                return cursor.fetchall()
+        except sqlite3.Error as e:
+            print(f"查询失败: {e}")
+            return []
+    
+    def update(self, todo_id: int, **kwargs) -> bool:
+        """更新待办事项"""
+        valid_fields = {'title', 'description', 'due_date', 'priority', 'completed'}
+        update_fields = {k: v for k, v in kwargs.items() if k in valid_fields and v is not None}
+        
+        if not update_fields:
+            return False
+        
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                cursor = conn.cursor()
+                set_clause = ', '.join(f"{k} = ?" for k in update_fields)
+                values = list(update_fields.values()) + [todo_id]
+                
+                cursor.execute(f'''
+                    UPDATE todos 
+                    SET {set_clause}
+                    WHERE id = ?
+                ''', values)
+                
+                conn.commit()
+                return cursor.rowcount > 0
+        except sqlite3.Error as e:
+            print(f"更新失败: {e}")
+            return False
+    
+    def delete(self, todo_id: int) -> bool:
+        """删除待办事项"""
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                cursor = conn.cursor()
+                cursor.execute('DELETE FROM todos WHERE id = ?', (todo_id,))
+                conn.commit()
+                return cursor.rowcount > 0
+        except sqlite3.Error as e:
+            print(f"删除失败: {e}")
+            return False
+    
+    def complete(self, todo_id: int) -> bool:
+        """完成待办事项"""
+        return self.update(todo_id, completed=1)
+
+def format_todo(todo: tuple) -> str:
+    """格式化待办事项显示"""
+    id, title, desc, due, priority, completed, created = todo
+    status = "✓" if completed else " "
+    priority_str = "!" * priority
+    due_str = f"截止: {due}" if due else "无截止日期"
+    
+    return f"[{status}] {id}. {title} {priority_str}\n   {desc}\n   {due_str}"
+
+def main():
+    """主函数"""
+    parser = argparse.ArgumentParser(description="待办事项管理器")
+    subparsers = parser.add_subparsers(dest="command", help="可用命令")
+    
+    # 添加命令
+    add_parser = subparsers.add_parser("add", help="添加待办事项")
+    add_parser.add_argument("title", help="标题")
+    add_parser.add_argument("-d", "--description", help="描述")
+    add_parser.add_argument("--due", help="截止日期 (YYYY-MM-DD)")
+    add_parser.add_argument("-p", "--priority", type=int, choices=[0,1,2,3], default=0,
+                           help="优先级 (0-3)")
+    
+    # 列表命令
+    list_parser = subparsers.add_parser("list", help="列出待办事项")
+    list_parser.add_argument("-a", "--all", action="store_true", help="显示所有事项")
+    
+    # 更新命令
+    update_parser = subparsers.add_parser("update", help="更新待办事项")
+    update_parser.add_argument("id", type=int, help="待办事项ID")
+    update_parser.add_argument("-t", "--title", help="新标题")
+    update_parser.add_argument("-d", "--description", help="新描述")
+    update_parser.add_argument("--due", help="新截止日期")
+    update_parser.add_argument("-p", "--priority", type=int, choices=[0,1,2,3],
+                              help="新优先级")
+    
+    # 完成命令
+    complete_parser = subparsers.add_parser("complete", help="完成待办事项")
+    complete_parser.add_argument("id", type=int, help="待办事项ID")
+    
+    # 删除命令
+    delete_parser = subparsers.add_parser("delete", help="删除待办事项")
+    delete_parser.add_argument("id", type=int, help="待办事项ID")
+    
+    args = parser.parse_args()
+    todo = Todo()
+    
+    if args.command == "add":
+        if todo.add(args.title, args.description, args.due, args.priority):
+            print("添加成功！")
+        else:
+            print("添加失败！")
+    
+    elif args.command == "list":
+        todos = todo.list_todos(args.all)
+        if todos:
+            for item in todos:
+                print(format_todo(item))
+                print("-" * 50)
+        else:
+            print("没有待办事项！")
+    
+    elif args.command == "update":
+        if todo.update(args.id, title=args.title, description=args.description,
+                      due_date=args.due, priority=args.priority):
+            print("更新成功！")
+        else:
+            print("更新失败！")
+    
+    elif args.command == "complete":
+        if todo.complete(args.id):
+            print("标记完成！")
+        else:
+            print("操作失败！")
+    
+    elif args.command == "delete":
+        if todo.delete(args.id):
+            print("删除成功！")
+        else:
+            print("删除失败！")
+    
+    else:
+        parser.print_help()
+
+if __name__ == "__main__":
+    main()
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 实战项目 -->
+            <section id="project" class="course-section">
+                <h2 class="course-section__title">实战项目</h2>
+                
+                <div class="exercise-list">
+                    <div class="exercise-item">
+                        <h3 class="exercise-item__title">1. 个人博客系统</h3>
+                        <p class="exercise-item__description">
+                            使用Flask框架开发一个简单的个人博客系统，包含以下功能：
+                            <ul>
+                                <li>文章的增删改查</li>
+                                <li>用户认证和授权</li>
+                                <li>评论系统</li>
+                                <li>标签和分类</li>
+                                <li>Markdown支持</li>
+                            </ul>
+                        </p>
+                        <a href="projects/blog.html" class="exercise-item__link">查看详情</a>
+                    </div>
+
+                    <div class="exercise-item">
+                        <h3 class="exercise-item__title">2. 天气预报应用</h3>
+                        <p class="exercise-item__description">
+                            开发一个天气预报应用，包含以下功能：
+                            <ul>
+                                <li>调用天气API获取数据</li>
+                                <li>数据可视化展示</li>
+                                <li>多城市管理</li>
+                                <li>天气提醒功能</li>
+                            </ul>
+                        </p>
+                        <a href="projects/weather.html" class="exercise-item__link">查看详情</a>
+                    </div>
+
+                    <div class="exercise-item">
+                        <h3 class="exercise-item__title">3. 聊天室应用</h3>
+                        <p class="exercise-item__description">
+                            使用WebSocket开发一个实时聊天室应用，包含以下功能：
+                            <ul>
+                                <li>实时消息传输</li>
+                                <li>用户在线状态</li>
+                                <li>群组聊天</li>
+                                <li>文件传输</li>
+                                <li>消息历史记录</li>
+                            </ul>
+                        </p>
+                        <a href="projects/chat.html" class="exercise-item__link">查看详情</a>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="https://cdn.bytedance.com/highlight.js/lib/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html> 

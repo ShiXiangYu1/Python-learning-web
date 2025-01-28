@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python面向对象编程基础 - Python学习</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/course.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/highlight.js/styles/github.min.css">
+</head>
+<body>
+    <header class="course-header">
+        <h1 class="course-header__title">
+            <i class="fas fa-cube"></i>
+            Python面向对象编程基础
+        </h1>
+        <p class="course-header__description">
+            面向对象编程（OOP）是一种程序设计范式，它使用"对象"来组织代码。本教程将帮助你理解Python中面向对象编程的基本概念和使用方法。
+        </p>
+    </header>
+
+    <main class="course-container">
+        <!-- 导航菜单 -->
+        <nav class="course-nav">
+            <ul class="course-nav__list">
+                <li><a href="#intro" class="course-nav__link">面向对象简介</a></li>
+                <li><a href="#class" class="course-nav__link">类与对象</a></li>
+                <li><a href="#inheritance" class="course-nav__link">继承与多态</a></li>
+                <li><a href="#encapsulation" class="course-nav__link">封装与访问控制</a></li>
+                <li><a href="#properties" class="course-nav__link">属性与方法</a></li>
+                <li><a href="#practice" class="course-nav__link">实践练习</a></li>
+            </ul>
+        </nav>
+
+        <div class="course-content">
+            <!-- 面向对象简介 -->
+            <section id="intro" class="course-section">
+                <h2 class="course-section__title">面向对象简介</h2>
+                
+                <div class="concept-box">
+                    <h3>什么是面向对象编程？</h3>
+                    <p>面向对象编程（Object-Oriented Programming，简称OOP）是一种编程范式，它具有以下特点：</p>
+                    <ul>
+                        <li>将数据和行为封装在对象中</li>
+                        <li>通过类来定义对象的模板</li>
+                        <li>支持继承和多态等特性</li>
+                        <li>提高代码的重用性和可维护性</li>
+                    </ul>
+                </div>
+
+                <div class="concept-box">
+                    <h3>面向对象的三大特性</h3>
+                    <ul>
+                        <li><strong>封装：</strong>将数据和方法捆绑在一起，对外隐藏实现细节</li>
+                        <li><strong>继承：</strong>允许创建一个类作为另一个类的基础，继承其特性</li>
+                        <li><strong>多态：</strong>允许使用一个接口来操作一系列类的对象</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 类与对象 -->
+            <section id="class" class="course-section">
+                <h2 class="course-section__title">类与对象</h2>
+
+                <div class="example-box">
+                    <h3>定义类</h3>
+                    <pre><code class="python">
+class Student:
+    """学生类"""
+    
+    def __init__(self, name, age):
+        """初始化方法"""
+        self.name = name  # 实例属性
+        self.age = age
+    
+    def introduce(self):
+        """实例方法"""
+        return f"我叫{self.name}，今年{self.age}岁"
+
+# 创建对象
+student = Student("张三", 18)
+print(student.introduce())  # 输出：我叫张三，今年18岁
+                    </code></pre>
+                </div>
+
+                <div class="concept-box">
+                    <h3>类的组成部分</h3>
+                    <ul>
+                        <li><strong>类属性：</strong>属于类的变量，被所有实例共享</li>
+                        <li><strong>实例属性：</strong>属于实例的变量，每个实例独立</li>
+                        <li><strong>方法：</strong>定义在类中的函数</li>
+                        <li><strong>构造方法：</strong>创建对象时自动调用的特殊方法</li>
+                    </ul>
+                </div>
+
+                <div class="example-box">
+                    <h3>类属性与实例属性</h3>
+                    <pre><code class="python">
+class School:
+    """学校类"""
+    
+    # 类属性
+    school_name = "Python学院"
+    student_count = 0
+    
+    def __init__(self, name, grade):
+        # 实例属性
+        self.name = name
+        self.grade = grade
+        # 修改类属性
+        School.student_count += 1
+    
+    @classmethod
+    def get_student_count(cls):
+        """类方法"""
+        return f"当前学生数量：{cls.student_count}"
+
+# 使用示例
+student1 = School("李四", "一年级")
+student2 = School("王五", "二年级")
+print(School.get_student_count())  # 输出：当前学生数量：2
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 继承与多态 -->
+            <section id="inheritance" class="course-section">
+                <h2 class="course-section__title">继承与多态</h2>
+
+                <div class="concept-box">
+                    <h3>继承的概念</h3>
+                    <ul>
+                        <li>子类可以继承父类的属性和方法</li>
+                        <li>子类可以重写父类的方法</li>
+                        <li>Python支持多重继承</li>
+                        <li>使用super()调用父类方法</li>
+                    </ul>
+                </div>
+
+                <div class="example-box">
+                    <h3>继承示例</h3>
+                    <pre><code class="python">
+class Animal:
+    """动物基类"""
+    
+    def __init__(self, name):
+        self.name = name
+    
+    def speak(self):
+        pass
+
+class Dog(Animal):
+    """狗类"""
+    
+    def speak(self):
+        return f"{self.name}说：汪汪!"
+
+class Cat(Animal):
+    """猫类"""
+    
+    def speak(self):
+        return f"{self.name}说：喵喵!"
+
+# 多态示例
+def animal_speak(animal):
+    """多态函数"""
+    print(animal.speak())
+
+# 使用示例
+dog = Dog("旺财")
+cat = Cat("咪咪")
+
+animal_speak(dog)  # 输出：旺财说：汪汪!
+animal_speak(cat)  # 输出：咪咪说：喵喵!
+                    </code></pre>
+                </div>
+
+                <div class="warning-box">
+                    <h3>继承注意事项</h3>
+                    <ul>
+                        <li>避免过深的继承层次</li>
+                        <li>优先使用组合而不是继承</li>
+                        <li>谨慎使用多重继承</li>
+                        <li>正确使用super()调用</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 封装与访问控制 -->
+            <section id="encapsulation" class="course-section">
+                <h2 class="course-section__title">封装与访问控制</h2>
+
+                <div class="concept-box">
+                    <h3>访问控制</h3>
+                    <ul>
+                        <li><strong>公有成员：</strong>正常命名的属性和方法</li>
+                        <li><strong>保护成员：</strong>以单下划线开头（_name）</li>
+                        <li><strong>私有成员：</strong>以双下划线开头（__name）</li>
+                    </ul>
+                </div>
+
+                <div class="example-box">
+                    <h3>封装示例</h3>
+                    <pre><code class="python">
+class BankAccount:
+    """银行账户类"""
+    
+    def __init__(self, account_number, balance):
+        self.__account_number = account_number  # 私有属性
+        self.__balance = balance
+        self._type = "储蓄账户"  # 保护属性
+    
+    def deposit(self, amount):
+        """存款方法"""
+        if amount > 0:
+            self.__balance += amount
+            return True
+        return False
+    
+    def get_balance(self):
+        """获取余额"""
+        return self.__balance
+    
+    def __str__(self):
+        return f"账户余额：{self.__balance}"
+
+# 使用示例
+account = BankAccount("1001", 1000)
+account.deposit(500)
+print(account.get_balance())  # 输出：1500
+# print(account.__balance)  # 错误：无法直接访问私有属性
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 属性与方法 -->
+            <section id="properties" class="course-section">
+                <h2 class="course-section__title">属性与方法</h2>
+
+                <div class="example-box">
+                    <h3>属性装饰器</h3>
+                    <pre><code class="python">
+class Rectangle:
+    """矩形类"""
+    
+    def __init__(self, width, height):
+        self._width = width
+        self._height = height
+    
+    @property
+    def width(self):
+        """宽度属性"""
+        return self._width
+    
+    @width.setter
+    def width(self, value):
+        """设置宽度"""
+        if value > 0:
+            self._width = value
+        else:
+            raise ValueError("宽度必须大于0")
+    
+    @property
+    def area(self):
+        """面积属性"""
+        return self._width * self._height
+
+# 使用示例
+rect = Rectangle(10, 5)
+print(rect.width)    # 获取宽度
+rect.width = 20      # 设置宽度
+print(rect.area)     # 计算面积
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>静态方法和类方法</h3>
+                    <pre><code class="python">
+class MathHelper:
+    """数学工具类"""
+    
+    PI = 3.14159
+    
+    @staticmethod
+    def is_prime(n):
+        """判断是否是素数"""
+        if n < 2:
+            return False
+        for i in range(2, int(n ** 0.5) + 1):
+            if n % i == 0:
+                return False
+        return True
+    
+    @classmethod
+    def circle_area(cls, radius):
+        """计算圆的面积"""
+        return cls.PI * radius * radius
+
+# 使用示例
+print(MathHelper.is_prime(17))       # 静态方法调用
+print(MathHelper.circle_area(5))     # 类方法调用
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 实践练习 -->
+            <section id="practice" class="course-section">
+                <h2 class="course-section__title">实践练习</h2>
+
+                <div class="example-box">
+                    <h3>练习1：创建一个简单的学生管理系统</h3>
+                    <pre><code class="python">
+class Student:
+    """学生类"""
+    
+    def __init__(self, student_id, name, age):
+        self.student_id = student_id
+        self.name = name
+        self.age = age
+        self.scores = {}
+    
+    def add_score(self, subject, score):
+        """添加成绩"""
+        self.scores[subject] = score
+    
+    def get_average(self):
+        """计算平均分"""
+        if not self.scores:
+            return 0
+        return sum(self.scores.values()) / len(self.scores)
+
+class StudentManager:
+    """学生管理类"""
+    
+    def __init__(self):
+        self.students = {}
+    
+    def add_student(self, student):
+        """添加学生"""
+        self.students[student.student_id] = student
+    
+    def remove_student(self, student_id):
+        """删除学生"""
+        if student_id in self.students:
+            del self.students[student_id]
+    
+    def get_student(self, student_id):
+        """获取学生信息"""
+        return self.students.get(student_id)
+    
+    def get_all_students(self):
+        """获取所有学生"""
+        return self.students.values()
+
+# 使用示例
+manager = StudentManager()
+
+# 添加学生
+student1 = Student("001", "张三", 18)
+student1.add_score("数学", 90)
+student1.add_score("语文", 85)
+manager.add_student(student1)
+
+student2 = Student("002", "李四", 19)
+student2.add_score("数学", 95)
+student2.add_score("语文", 88)
+manager.add_student(student2)
+
+# 查询学生信息
+for student in manager.get_all_students():
+    print(f"学生：{student.name}")
+    print(f"平均分：{student.get_average():.2f}")
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 返回链接 -->
+            <section class="course-section">
+                <div class="link-box">
+                    <a href="functions.html" class="link-box__item">
+                        <i class="fas fa-arrow-left"></i>
+                        返回函数教程
+                    </a>
+                    <a href="../../examples/intermediate/oop_examples.html" class="link-box__item">
+                        <i class="fas fa-code"></i>
+                        查看更多面向对象示例
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="https://cdn.bytedance.com/highlight.js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html> 

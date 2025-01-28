@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python环境搭建 - Python学习网站</title>
+    <link href="http://cdn.bytedance.com/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="css/course.css">
+    <!-- 代码高亮 -->
+    <link href="http://cdn.bytedance.com/highlight.js/11.7.0/styles/atom-one-dark.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav__logo">
+                <a href="../../index.html" class="nav__logo-link">
+                    <svg class="nav__logo-icon" width="40" height="40" viewBox="0 0 40 40">
+                        <path d="M20 0C8.954 0 0 8.954 0 20s8.954 20 20 20 20-8.954 20-20S31.046 0 20 0zm0 36c-8.837 0-16-7.163-16-16S11.163 4 20 4s16 7.163 16 16-7.163 16-16 16z" fill="#306998"/>
+                        <path d="M20 8c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12S26.627 8 20 8zm0 22c-5.514 0-10-4.486-10-10S14.486 10 20 10s10 4.486 10 10-4.486 10-10 10z" fill="#FFD43B"/>
+                    </svg>
+                    <span class="nav__logo-text">Python学习</span>
+                </a>
+            </div>
+            <ul class="nav__menu">
+                <li><a href="../../index.html" class="nav__link">首页</a></li>
+                <li><a href="index.html" class="nav__link nav__link--active">基础课程</a></li>
+                <li><a href="../intermediate/index.html" class="nav__link">进阶课程</a></li>
+                <li><a href="../advanced/index.html" class="nav__link">高级课程</a></li>
+                <li><a href="../../examples/index.html" class="nav__link">示例代码</a></li>
+                <li><a href="../../exercises/index.html" class="nav__link">练习题</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main">
+        <div class="course-container">
+            <aside class="course-sidebar">
+                <nav class="course-nav">
+                    <h3 class="course-nav__title">课程目录</h3>
+                    <ul class="course-nav__list">
+                        <li class="course-nav__item">
+                            <a href="environment.html" class="course-nav__link course-nav__link--active">
+                                <i class="fas fa-laptop-code course-nav__icon"></i>
+                                Python环境搭建
+                            </a>
+                        </li>
+                        <li class="course-nav__item">
+                            <a href="syntax.html" class="course-nav__link">
+                                <i class="fas fa-code course-nav__icon"></i>
+                                基本语法
+                            </a>
+                        </li>
+                        <li class="course-nav__item">
+                            <a href="data-types.html" class="course-nav__link">
+                                <i class="fas fa-database course-nav__icon"></i>
+                                数据类型
+                            </a>
+                        </li>
+                        <li class="course-nav__item">
+                            <a href="control-flow.html" class="course-nav__link">
+                                <i class="fas fa-random course-nav__icon"></i>
+                                控制流程
+                            </a>
+                        </li>
+                        <li class="course-nav__item">
+                            <a href="functions.html" class="course-nav__link">
+                                <i class="fas fa-cube course-nav__icon"></i>
+                                函数基础
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <section class="course-content">
+                <div class="course-header">
+                    <h1 class="course-header__title">Python环境搭建</h1>
+                    <p class="course-header__description">
+                        在开始学习Python编程之前，我们需要先搭建开发环境。本章节将指导您完成Python解释器的安装、开发环境的配置，并创建第一个Python程序。
+                    </p>
+                </div>
+
+                <article class="lesson-content">
+                    <section class="lesson-section">
+                        <h2 class="lesson-section__title">
+                            <i class="fas fa-download lesson-section__icon"></i>
+                            下载Python
+                        </h2>
+                        <div class="lesson-section__content">
+                            <p>首先，我们需要从Python官方网站下载Python解释器。</p>
+                            
+                            <div class="info-box">
+                                <h3 class="info-box__title">
+                                    <i class="fas fa-info-circle"></i>
+                                    Python版本选择
+                                </h3>
+                                <p>推荐下载Python 3.x版本（最新稳定版），因为Python 2.x已经停止维护。本教程使用Python 3.9作为示例。</p>
+                            </div>
+
+                            <div class="step-box">
+                                <h4 class="step-box__title">下载步骤：</h4>
+                                <ol class="step-box__list">
+                                    <li>访问Python官网：<a href="https://www.python.org/downloads/" target="_blank" class="external-link">https://www.python.org/downloads/</a></li>
+                                    <li>点击"Download Python 3.9.x"按钮</li>
+                                    <li>选择适合您操作系统的安装包（Windows/macOS/Linux）</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="lesson-section">
+                        <h2 class="lesson-section__title">
+                            <i class="fas fa-cog lesson-section__icon"></i>
+                            安装Python
+                        </h2>
+                        <div class="lesson-section__content">
+                            <div class="os-tabs">
+                                <div class="os-tab" data-os="windows">
+                                    <h3>Windows安装步骤</h3>
+                                    <ol class="instruction-list">
+                                        <li>双击下载的安装包（例如：python-3.9.x-amd64.exe）</li>
+                                        <li>勾选"Add Python 3.9 to PATH"选项</li>
+                                        <li>选择"Install Now"进行标准安装</li>
+                                        <li>等待安装完成</li>
+                                    </ol>
+                                    
+                                    <div class="warning-box">
+                                        <p><strong>注意：</strong>勾选"Add Python to PATH"非常重要，这样可以在命令行中直接使用Python命令。</p>
+                                    </div>
+                                </div>
+
+                                <div class="os-tab" data-os="macos">
+                                    <h3>macOS安装步骤</h3>
+                                    <ol class="instruction-list">
+                                        <li>双击下载的安装包（.pkg文件）</li>
+                                        <li>按照安装向导的提示进行安装</li>
+                                        <li>输入管理员密码授权安装</li>
+                                        <li>等待安装完成</li>
+                                    </ol>
+                                </div>
+
+                                <div class="os-tab" data-os="linux">
+                                    <h3>Linux安装步骤</h3>
+                                    <p>大多数Linux发行版已预装Python。如果需要安装，可以使用包管理器：</p>
+                                    <pre><code class="language-bash"># Ubuntu/Debian
+sudo apt update
+sudo apt install python3
+
+# CentOS/RHEL
+sudo yum install python3</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="lesson-section">
+                        <h2 class="lesson-section__title">
+                            <i class="fas fa-terminal lesson-section__icon"></i>
+                            验证安装
+                        </h2>
+                        <div class="lesson-section__content">
+                            <p>安装完成后，我们需要验证Python是否正确安装：</p>
+                            
+                            <ol class="instruction-list">
+                                <li>打开命令行终端（Windows按Win+R，输入cmd；macOS打开终端）</li>
+                                <li>输入以下命令：</li>
+                            </ol>
+                            
+                            <pre><code class="language-bash">python --version
+# 或
+python3 --version</code></pre>
+
+                            <p>如果看到类似以下输出，说明安装成功：</p>
+                            <pre><code class="language-bash">Python 3.9.x</code></pre>
+                        </div>
+                    </section>
+
+                    <section class="lesson-section">
+                        <h2 class="lesson-section__title">
+                            <i class="fas fa-edit lesson-section__icon"></i>
+                            选择开发环境
+                        </h2>
+                        <div class="lesson-section__content">
+                            <p>Python开发可以使用多种IDE（集成开发环境）或文本编辑器：</p>
+
+                            <div class="tool-grid">
+                                <div class="tool-card">
+                                    <div class="tool-card__header">
+                                        <i class="fas fa-pencil-alt"></i>
+                                        <h4>PyCharm</h4>
+                                    </div>
+                                    <div class="tool-card__content">
+                                        <p>功能强大的专业Python IDE，适合大型项目开发</p>
+                                        <a href="https://www.jetbrains.com/pycharm/" target="_blank" class="button">下载</a>
+                                    </div>
+                                </div>
+
+                                <div class="tool-card">
+                                    <div class="tool-card__header">
+                                        <i class="fas fa-code"></i>
+                                        <h4>Visual Studio Code</h4>
+                                    </div>
+                                    <div class="tool-card__content">
+                                        <p>轻量级编辑器，支持丰富的插件，适合初学者</p>
+                                        <a href="https://code.visualstudio.com/" target="_blank" class="button">下载</a>
+                                    </div>
+                                </div>
+
+                                <div class="tool-card">
+                                    <div class="tool-card__header">
+                                        <i class="fas fa-laptop-code"></i>
+                                        <h4>IDLE</h4>
+                                    </div>
+                                    <div class="tool-card__content">
+                                        <p>Python自带的简单IDE，适合快速学习和测试</p>
+                                        <p class="note">Python安装时已包含</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="lesson-section">
+                        <h2 class="lesson-section__title">
+                            <i class="fas fa-code lesson-section__icon"></i>
+                            第一个Python程序
+                        </h2>
+                        <div class="lesson-section__content">
+                            <p>让我们创建第一个Python程序来验证环境是否正确配置：</p>
+
+                            <ol class="instruction-list">
+                                <li>创建一个新文件，命名为 <code>hello.py</code></li>
+                                <li>输入以下代码：</li>
+                            </ol>
+
+                            <pre><code class="language-python"># 这是我的第一个Python程序
+print("Hello, Python!")
+
+# 输入你的名字
+name = input("请输入你的名字：")
+print(f"你好，{name}！欢迎学习Python！")</code></pre>
+
+                            <div class="action-box">
+                                <h4>运行程序：</h4>
+                                <ol>
+                                    <li>打开命令行终端</li>
+                                    <li>进入文件所在目录</li>
+                                    <li>输入命令：<code>python hello.py</code></li>
+                                </ol>
+                            </div>
+
+                            <div class="success-box">
+                                <h4>预期输出：</h4>
+                                <pre><code>Hello, Python!
+请输入你的名字：小明
+你好，小明！欢迎学习Python！</code></pre>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="lesson-section">
+                        <h2 class="lesson-section__title">
+                            <i class="fas fa-lightbulb lesson-section__icon"></i>
+                            练习与实践
+                        </h2>
+                        <div class="lesson-section__content">
+                            <div class="exercise-box">
+                                <h4>练习1：环境验证</h4>
+                                <p>完成以下任务来确保您的Python环境正确配置：</p>
+                                <ol>
+                                    <li>验证Python版本</li>
+                                    <li>运行Python交互式环境（REPL）</li>
+                                    <li>创建并运行示例程序</li>
+                                </ol>
+                            </div>
+
+                            <div class="exercise-box">
+                                <h4>练习2：IDE熟悉</h4>
+                                <p>使用您选择的IDE完成以下操作：</p>
+                                <ol>
+                                    <li>创建新的Python文件</li>
+                                    <li>编写并运行简单的代码</li>
+                                    <li>熟悉IDE的基本功能（如代码补全、运行、调试等）</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </section>
+
+                    <nav class="lesson-navigation">
+                        <a href="index.html" class="lesson-navigation__link lesson-navigation__link--prev">
+                            <i class="fas fa-arrow-left"></i>
+                            返回课程主页
+                        </a>
+                        <a href="syntax.html" class="lesson-navigation__link lesson-navigation__link--next">
+                            下一章：基本语法
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </nav>
+                </article>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer__content">
+            <div class="footer__section">
+                <h4 class="footer__title">关于我们</h4>
+                <p class="footer__text">致力于为初学者提供优质的Python编程学习资源</p>
+            </div>
+            <div class="footer__section">
+                <h4 class="footer__title">快速链接</h4>
+                <ul class="footer__links">
+                    <li><a href="../../index.html">返回首页</a></li>
+                    <li><a href="../../examples/index.html">示例代码</a></li>
+                    <li><a href="../../exercises/index.html">练习题</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            <p>&copy; 2024 Python学习网站. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../../assets/js/main.js"></script>
+    <script src="js/course.js"></script>
+    <!-- 代码高亮 -->
+    <script src="http://cdn.bytedance.com/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html> 

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python测试工具示例 - Python学习</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/course.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/highlight.js/styles/github.min.css">
+</head>
+<body>
+    <header class="course-header">
+        <h1 class="course-header__title">
+            <i class="fas fa-vial"></i>
+            Python测试工具示例
+        </h1>
+        <p class="course-header__description">
+            本页面提供了Python测试工具的实用示例，包括单元测试、集成测试、性能测试、安全测试等内容。这些示例将帮助你更好地理解软件测试的概念，提高代码质量。
+        </p>
+    </header>
+
+    <main class="course-container">
+        <!-- 导航菜单 -->
+        <nav class="course-nav">
+            <ul class="course-nav__list">
+                <li><a href="#unit" class="course-nav__link">单元测试</a></li>
+                <li><a href="#integration" class="course-nav__link">集成测试</a></li>
+                <li><a href="#performance" class="course-nav__link">性能测试</a></li>
+                <li><a href="#security" class="course-nav__link">安全测试</a></li>
+            </ul>
+        </nav>
+
+        <div class="course-content">
+            <!-- 单元测试 -->
+            <section id="unit" class="course-section">
+                <h2 class="course-section__title">单元测试</h2>
+
+                <div class="example-box">
+                    <h3>数学函数测试</h3>
+                    <pre><code class="python">
+import unittest
+import math
+from typing import List, Union, Optional
+import pytest
+
+class MathFunctions:
+    """数学函数示例类"""
+    
+    @staticmethod
+    def is_prime(n: int) -> bool:
+        """判断一个数是否为素数"""
+        if n < 2:
+            return False
+        for i in range(2, int(math.sqrt(n)) + 1):
+            if n % i == 0:
+                return False
+        return True
+    
+    @staticmethod
+    def fibonacci(n: int) -> List[int]:
+        """生成斐波那契数列"""
+        if n <= 0:
+            return []
+        elif n == 1:
+            return [0]
+        
+        fib = [0, 1]
+        for i in range(2, n):
+            fib.append(fib[i-1] + fib[i-2])
+        return fib
+    
+    @staticmethod
+    def calculate_statistics(numbers: List[float]) -> dict:
+        """计算统计数据"""
+        if not numbers:
+            raise ValueError("输入列表不能为空")
+        
+        n = len(numbers)
+        mean = sum(numbers) / n
+        sorted_nums = sorted(numbers)
+        
+        # 计算中位数
+        if n % 2 == 0:
+            median = (sorted_nums[n//2-1] + sorted_nums[n//2]) / 2
+        else:
+            median = sorted_nums[n//2]
+        
+        # 计算方差和标准差
+        variance = sum((x - mean) ** 2 for x in numbers) / n
+        std_dev = math.sqrt(variance)
+        
+        return {
+            'mean': mean,
+            'median': median,
+            'min': min(numbers),
+            'max': max(numbers),
+            'variance': variance,
+            'std_dev': std_dev
+        }
+
+class TestMathFunctions(unittest.TestCase):
+    """使用unittest测试数学函数"""
+    
+    def setUp(self):
+        """测试前的准备工作"""
+        self.math_funcs = MathFunctions()
+    
+    def test_is_prime(self):
+        """测试素数判断"""
+        # 测试基本情况
+        self.assertFalse(self.math_funcs.is_prime(1))
+        self.assertTrue(self.math_funcs.is_prime(2))
+        self.assertTrue(self.math_funcs.is_prime(3))
+        self.assertFalse(self.math_funcs.is_prime(4))
+        self.assertTrue(self.math_funcs.is_prime(5))
+        
+        # 测试较大的数
+        self.assertTrue(self.math_funcs.is_prime(97))
+        self.assertFalse(self.math_funcs.is_prime(100))
+    
+    def test_fibonacci(self):
+        """测试斐波那契数列"""
+        # 测试边界情况
+        self.assertEqual(self.math_funcs.fibonacci(0), [])
+        self.assertEqual(self.math_funcs.fibonacci(1), [0])
+        self.assertEqual(self.math_funcs.fibonacci(2), [0, 1])
+        
+        # 测试正常情况
+        self.assertEqual(self.math_funcs.fibonacci(5), [0, 1, 1, 2, 3])
+        self.assertEqual(self.math_funcs.fibonacci(8), [0, 1, 1, 2, 3, 5, 8, 13])
+    
+    def test_calculate_statistics(self):
+        """测试统计计算"""
+        # 测试正常情况
+        numbers = [1, 2, 3, 4, 5]
+        stats = self.math_funcs.calculate_statistics(numbers)
+        
+        self.assertEqual(stats['mean'], 3.0)
+        self.assertEqual(stats['median'], 3.0)
+        self.assertEqual(stats['min'], 1)
+        self.assertEqual(stats['max'], 5)
+        self.assertAlmostEqual(stats['variance'], 2.0)
+        self.assertAlmostEqual(stats['std_dev'], math.sqrt(2.0))
+        
+        # 测试异常情况
+        with self.assertRaises(ValueError):
+            self.math_funcs.calculate_statistics([])
+
+# 使用pytest的测试
+class TestMathFunctionsWithPytest:
+    """使用pytest测试数学函数"""
+    
+    @pytest.fixture
+    def math_funcs(self):
+        """创建MathFunctions实例"""
+        return MathFunctions()
+    
+    def test_is_prime(self, math_funcs):
+        """测试素数判断"""
+        assert not math_funcs.is_prime(1)
+        assert math_funcs.is_prime(2)
+        assert math_funcs.is_prime(3)
+        assert not math_funcs.is_prime(4)
+        assert math_funcs.is_prime(5)
+        assert math_funcs.is_prime(97)
+        assert not math_funcs.is_prime(100)
+    
+    def test_fibonacci(self, math_funcs):
+        """测试斐波那契数列"""
+        assert math_funcs.fibonacci(0) == []
+        assert math_funcs.fibonacci(1) == [0]
+        assert math_funcs.fibonacci(2) == [0, 1]
+        assert math_funcs.fibonacci(5) == [0, 1, 1, 2, 3]
+        assert math_funcs.fibonacci(8) == [0, 1, 1, 2, 3, 5, 8, 13]
+    
+    def test_calculate_statistics(self, math_funcs):
+        """测试统计计算"""
+        numbers = [1, 2, 3, 4, 5]
+        stats = math_funcs.calculate_statistics(numbers)
+        
+        assert stats['mean'] == 3.0
+        assert stats['median'] == 3.0
+        assert stats['min'] == 1
+        assert stats['max'] == 5
+        assert math.isclose(stats['variance'], 2.0)
+        assert math.isclose(stats['std_dev'], math.sqrt(2.0))
+        
+        with pytest.raises(ValueError):
+            math_funcs.calculate_statistics([])
+
+def run_tests():
+    """运行测试"""
+    # 运行unittest测试
+    unittest.main(argv=[''], verbosity=2, exit=False)
+    
+    # 运行pytest测试
+    pytest.main(['-v'])
+
+if __name__ == '__main__':
+    run_tests()
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>字符串处理测试</h3>
+                    <pre><code class="python">
+import unittest
+import re
+from typing import List, Dict, Optional
+import pytest
+
+class StringProcessor:
+    """字符串处理类"""
+    
+    @staticmethod
+    def reverse_string(text: str) -> str:
+        """反转字符串"""
+        return text[::-1]
+    
+    @staticmethod
+    def count_words(text: str) -> Dict[str, int]:
+        """统计单词频率"""
+        if not text:
+            return {}
+        
+        # 将文本转换为小写并分割成单词
+        words = re.findall(r'\w+', text.lower())
+        
+        # 统计频率
+        frequency = {}
+        for word in words:
+            frequency[word] = frequency.get(word, 0) + 1
+        
+        return frequency
+    
+    @staticmethod
+    def format_string(template: str, **kwargs) -> str:
+        """格式化字符串"""
+        try:
+            return template.format(**kwargs)
+        except KeyError as e:
+            raise ValueError(f"缺少必要的参数: {e}")
+        except Exception as e:
+            raise ValueError(f"格式化失败: {e}")
+
+class TestStringProcessor(unittest.TestCase):
+    """使用unittest测试字符串处理"""
+    
+    def setUp(self):
+        """测试前的准备工作"""
+        self.processor = StringProcessor()
+    
+    def test_reverse_string(self):
+        """测试字符串反转"""
+        # 测试基本情况
+        self.assertEqual(self.processor.reverse_string("hello"), "olleh")
+        self.assertEqual(self.processor.reverse_string("python"), "nohtyp")
+        
+        # 测试空字符串
+        self.assertEqual(self.processor.reverse_string(""), "")
+        
+        # 测试中文
+        self.assertEqual(self.processor.reverse_string("你好"), "好你")
+    
+    def test_count_words(self):
+        """测试单词频率统计"""
+        # 测试基本情况
+        text = "hello world hello python"
+        expected = {"hello": 2, "world": 1, "python": 1}
+        self.assertEqual(self.processor.count_words(text), expected)
+        
+        # 测试空字符串
+        self.assertEqual(self.processor.count_words(""), {})
+        
+        # 测试特殊字符
+        text = "hello! world? hello... python!!!"
+        expected = {"hello": 2, "world": 1, "python": 1}
+        self.assertEqual(self.processor.count_words(text), expected)
+    
+    def test_format_string(self):
+        """测试字符串格式化"""
+        # 测试基本情况
+        template = "Hello, {name}! You are {age} years old."
+        result = self.processor.format_string(template, name="Alice", age=25)
+        self.assertEqual(result, "Hello, Alice! You are 25 years old.")
+        
+        # 测试缺少参数
+        with self.assertRaises(ValueError):
+            self.processor.format_string(template, name="Alice")
+        
+        # 测试错误的格式
+        with self.assertRaises(ValueError):
+            self.processor.format_string("Hello, {name!", name="Alice")
+
+# 使用pytest的测试
+class TestStringProcessorWithPytest:
+    """使用pytest测试字符串处理"""
+    
+    @pytest.fixture
+    def processor(self):
+        """创建StringProcessor实例"""
+        return StringProcessor()
+    
+    def test_reverse_string(self, processor):
+        """测试字符串反转"""
+        assert processor.reverse_string("hello") == "olleh"
+        assert processor.reverse_string("python") == "nohtyp"
+        assert processor.reverse_string("") == ""
+        assert processor.reverse_string("你好") == "好你"
+    
+    def test_count_words(self, processor):
+        """测试单词频率统计"""
+        text = "hello world hello python"
+        expected = {"hello": 2, "world": 1, "python": 1}
+        assert processor.count_words(text) == expected
+        
+        assert processor.count_words("") == {}
+        
+        text = "hello! world? hello... python!!!"
+        expected = {"hello": 2, "world": 1, "python": 1}
+        assert processor.count_words(text) == expected
+    
+    def test_format_string(self, processor):
+        """测试字符串格式化"""
+        template = "Hello, {name}! You are {age} years old."
+        result = processor.format_string(template, name="Alice", age=25)
+        assert result == "Hello, Alice! You are 25 years old."
+        
+        with pytest.raises(ValueError):
+            processor.format_string(template, name="Alice")
+        
+        with pytest.raises(ValueError):
+            processor.format_string("Hello, {name!", name="Alice")
+
+def run_string_tests():
+    """运行字符串处理测试"""
+    # 运行unittest测试
+    unittest.main(argv=[''], verbosity=2, exit=False)
+    
+    # 运行pytest测试
+    pytest.main(['-v'])
+
+if __name__ == '__main__':
+    run_string_tests()
+                    </code></pre>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="https://cdn.bytedance.com/highlight.js/lib/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html> 

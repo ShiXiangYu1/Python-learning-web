@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python推导式详解 - Python学习</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/course.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/highlight.js/styles/github.min.css">
+</head>
+<body>
+    <header class="course-header">
+        <h1 class="course-header__title">
+            <i class="fas fa-code"></i>
+            Python推导式详解
+        </h1>
+        <p class="course-header__description">
+            推导式是Python中一种简洁而强大的特性，可以用一行代码创建列表、字典和集合。本教程将帮助你掌握推导式的语法和应用技巧。
+        </p>
+    </header>
+
+    <main class="course-container">
+        <!-- 导航菜单 -->
+        <nav class="course-nav">
+            <ul class="course-nav__list">
+                <li><a href="#intro" class="course-nav__link">推导式简介</a></li>
+                <li><a href="#list" class="course-nav__link">列表推导式</a></li>
+                <li><a href="#dict" class="course-nav__link">字典推导式</a></li>
+                <li><a href="#set" class="course-nav__link">集合推导式</a></li>
+                <li><a href="#nested" class="course-nav__link">嵌套推导式</a></li>
+                <li><a href="#best-practices" class="course-nav__link">最佳实践</a></li>
+            </ul>
+        </nav>
+
+        <div class="course-content">
+            <!-- 推导式简介 -->
+            <section id="intro" class="course-section">
+                <h2 class="course-section__title">推导式简介</h2>
+                
+                <div class="concept-box">
+                    <h3>什么是推导式？</h3>
+                    <p>推导式是Python中一种独特的特性，它提供了一种简洁的方式来创建序列。主要有以下几种：</p>
+                    <ul>
+                        <li>列表推导式：创建列表的简洁方式</li>
+                        <li>字典推导式：创建字典的简洁方式</li>
+                        <li>集合推导式：创建集合的简洁方式</li>
+                        <li>生成器表达式：创建生成器的简洁方式</li>
+                    </ul>
+                </div>
+
+                <div class="tip-box">
+                    <h3>为什么使用推导式？</h3>
+                    <ul>
+                        <li>代码更简洁：用一行代码替代多行循环</li>
+                        <li>性能更好：通常比等效的for循环快</li>
+                        <li>可读性强：直观地表达数据转换意图</li>
+                        <li>函数式风格：支持函数式编程理念</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 列表推导式 -->
+            <section id="list" class="course-section">
+                <h2 class="course-section__title">列表推导式</h2>
+
+                <div class="example-box">
+                    <h3>基本语法</h3>
+                    <pre><code class="python">
+# 基本形式：[表达式 for 变量 in 可迭代对象]
+squares = [x**2 for x in range(10)]
+print(squares)  # [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+
+# 带条件的推导式
+even_squares = [x**2 for x in range(10) if x % 2 == 0]
+print(even_squares)  # [0, 4, 16, 36, 64]
+
+# 使用多个变量
+points = [(x, y) for x in range(3) for y in range(3)]
+print(points)  # [(0,0), (0,1), (0,2), (1,0), ...]
+
+# 处理字符串
+words = ["hello", "world", "python"]
+lengths = [len(word) for word in words]
+print(lengths)  # [5, 5, 6]
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>实际应用</h3>
+                    <pre><code class="python">
+# 数据转换
+celsius = [0, 10, 20, 30, 40]
+fahrenheit = [(9/5 * temp + 32) for temp in celsius]
+print(fahrenheit)  # [32.0, 50.0, 68.0, 86.0, 104.0]
+
+# 文件处理
+import os
+files = [f for f in os.listdir('.') if f.endswith('.py')]
+print(f"Python文件: {files}")
+
+# 矩阵转置
+matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+transposed = [[row[i] for row in matrix] for i in range(3)]
+print(f"转置后: {transposed}")
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 字典推导式 -->
+            <section id="dict" class="course-section">
+                <h2 class="course-section__title">字典推导式</h2>
+
+                <div class="example-box">
+                    <h3>基本用法</h3>
+                    <pre><code class="python">
+# 基本形式：{键表达式: 值表达式 for 表达式 in 可迭代对象}
+squares_dict = {x: x**2 for x in range(5)}
+print(squares_dict)  # {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}
+
+# 带条件的字典推导式
+even_squares = {x: x**2 for x in range(10) if x % 2 == 0}
+print(even_squares)  # {0: 0, 2: 4, 4: 16, 6: 36, 8: 64}
+
+# 键值转换
+dict1 = {'a': 1, 'b': 2, 'c': 3}
+dict2 = {v: k for k, v in dict1.items()}
+print(dict2)  # {1: 'a', 2: 'b', 3: 'c'}
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>实际应用</h3>
+                    <pre><code class="python">
+# 字符计数
+text = "hello world"
+char_count = {char: text.count(char) for char in set(text)}
+print(char_count)  # {'h': 1, 'e': 1, 'l': 3, ...}
+
+# 数据转换
+names = ['Alice', 'Bob', 'Charlie']
+scores = [85, 92, 78]
+student_scores = {name: score for name, score in zip(names, scores)}
+print(student_scores)
+
+# 条件过滤
+scores = {'Alice': 85, 'Bob': 92, 'Charlie': 78}
+high_scores = {name: score for name, score in scores.items() 
+               if score >= 85}
+print(high_scores)
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 集合推导式 -->
+            <section id="set" class="course-section">
+                <h2 class="course-section__title">集合推导式</h2>
+
+                <div class="example-box">
+                    <h3>基本用法</h3>
+                    <pre><code class="python">
+# 基本形式：{表达式 for 变量 in 可迭代对象}
+squares_set = {x**2 for x in range(5)}
+print(squares_set)  # {0, 1, 4, 9, 16}
+
+# 带条件的集合推导式
+even_squares = {x**2 for x in range(10) if x % 2 == 0}
+print(even_squares)  # {0, 4, 16, 36, 64}
+
+# 字符串处理
+vowels = {'a', 'e', 'i', 'o', 'u'}
+text = "hello world"
+text_vowels = {char for char in text if char.lower() in vowels}
+print(text_vowels)  # {'e', 'o'}
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 嵌套推导式 -->
+            <section id="nested" class="course-section">
+                <h2 class="course-section__title">嵌套推导式</h2>
+
+                <div class="example-box">
+                    <h3>复杂示例</h3>
+                    <pre><code class="python">
+# 创建二维矩阵
+matrix = [[i + j for j in range(3)] for i in range(0, 9, 3)]
+print(matrix)  # [[0, 1, 2], [3, 4, 5], [6, 7, 8]]
+
+# 扁平化嵌套列表
+nested = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+flattened = [x for row in nested for x in row]
+print(flattened)  # [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+# 创建复杂字典
+matrix_dict = {i: [j for j in range(i, i+3)] 
+               for i in range(0, 9, 3)}
+print(matrix_dict)
+                    </code></pre>
+                </div>
+
+                <div class="warning-box">
+                    <h3>注意事项</h3>
+                    <ul>
+                        <li>嵌套推导式可能降低代码可读性</li>
+                        <li>建议不要超过两层嵌套</li>
+                        <li>复杂逻辑建议使用常规循环</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 最佳实践 -->
+            <section id="best-practices" class="course-section">
+                <h2 class="course-section__title">最佳实践</h2>
+
+                <div class="tip-box">
+                    <h3>使用建议</h3>
+                    <ul>
+                        <li>保持简单：推导式应该简单明了</li>
+                        <li>避免副作用：推导式应专注于创建新的数据结构</li>
+                        <li>考虑可读性：如果推导式难以理解，使用常规循环</li>
+                        <li>注意性能：大数据集时考虑使用生成器表达式</li>
+                    </ul>
+                </div>
+
+                <div class="example-box">
+                    <h3>对比示例</h3>
+                    <pre><code class="python">
+# 好的示例 - 简单明了
+squares = [x**2 for x in range(10)]
+
+# 不好的示例 - 过于复杂
+bad = [x**2 for x in range(10) if x % 2 == 0 
+       if x > 2 if x < 8]
+
+# 更好的写法
+better = [x**2 for x in range(4, 8, 2)]
+
+# 使用生成器表达式处理大数据
+numbers = (x for x in range(1000000))
+filtered = (x for x in numbers if x % 2 == 0)
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 返回链接 -->
+            <section class="course-section">
+                <div class="link-box">
+                    <a href="../basic/sets.html" class="link-box__item">
+                        <i class="fas fa-arrow-left"></i>
+                        返回集合教程
+                    </a>
+                    <a href="generators.html" class="link-box__item">
+                        <i class="fas fa-arrow-right"></i>
+                        下一步：生成器
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="https://cdn.bytedance.com/highlight.js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html> 

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python文件操作基础 - Python学习</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/course.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/highlight.js/styles/github.min.css">
+</head>
+<body>
+    <header class="course-header">
+        <h1 class="course-header__title">
+            <i class="fas fa-file-alt"></i>
+            Python文件操作基础
+        </h1>
+        <p class="course-header__description">
+            文件操作是编程中最基础也是最重要的技能之一。本教程将帮助你掌握Python中文件操作的基本概念和常用方法，包括文件的读写、目录操作等内容。
+        </p>
+    </header>
+
+    <main class="course-container">
+        <!-- 导航菜单 -->
+        <nav class="course-nav">
+            <ul class="course-nav__list">
+                <li><a href="#intro" class="course-nav__link">文件操作简介</a></li>
+                <li><a href="#open" class="course-nav__link">打开和关闭文件</a></li>
+                <li><a href="#read" class="course-nav__link">读取文件</a></li>
+                <li><a href="#write" class="course-nav__link">写入文件</a></li>
+                <li><a href="#directory" class="course-nav__link">目录操作</a></li>
+                <li><a href="#practice" class="course-nav__link">实践练习</a></li>
+            </ul>
+        </nav>
+
+        <div class="course-content">
+            <!-- 文件操作简介 -->
+            <section id="intro" class="course-section">
+                <h2 class="course-section__title">文件操作简介</h2>
+                
+                <div class="concept-box">
+                    <h3>什么是文件操作？</h3>
+                    <p>文件操作是程序与外部文件进行交互的过程，主要包括：</p>
+                    <ul>
+                        <li>打开和关闭文件</li>
+                        <li>读取文件内容</li>
+                        <li>写入和修改文件</li>
+                        <li>管理文件和目录</li>
+                    </ul>
+                </div>
+
+                <div class="tip-box">
+                    <h3>文件类型</h3>
+                    <ul>
+                        <li>文本文件：包含可读字符的文件（.txt, .py, .html等）</li>
+                        <li>二进制文件：包含原始字节数据的文件（图片、音频等）</li>
+                        <li>特殊文件：系统设备文件、管道等</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 打开和关闭文件 -->
+            <section id="open" class="course-section">
+                <h2 class="course-section__title">打开和关闭文件</h2>
+
+                <div class="concept-box">
+                    <h3>文件打开模式</h3>
+                    <ul>
+                        <li>'r'：只读模式（默认）</li>
+                        <li>'w'：写入模式（会覆盖原文件）</li>
+                        <li>'a'：追加模式</li>
+                        <li>'b'：二进制模式</li>
+                        <li>'t'：文本模式（默认）</li>
+                        <li>'+'：读写模式</li>
+                    </ul>
+                </div>
+
+                <div class="example-box">
+                    <h3>基本用法</h3>
+                    <pre><code class="python">
+# 推荐使用with语句（自动关闭文件）
+with open('example.txt', 'r', encoding='utf-8') as file:
+    content = file.read()
+    print(content)
+
+# 传统方式（需要手动关闭）
+file = open('example.txt', 'r', encoding='utf-8')
+try:
+    content = file.read()
+    print(content)
+finally:
+    file.close()
+                    </code></pre>
+                </div>
+
+                <div class="warning-box">
+                    <h3>注意事项</h3>
+                    <ul>
+                        <li>始终使用适当的字符编码（如UTF-8）</li>
+                        <li>记得关闭文件（最好使用with语句）</li>
+                        <li>正确处理文件不存在等异常情况</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 读取文件 -->
+            <section id="read" class="course-section">
+                <h2 class="course-section__title">读取文件</h2>
+
+                <div class="example-box">
+                    <h3>读取方法</h3>
+                    <pre><code class="python">
+# 读取整个文件
+with open('file.txt', 'r', encoding='utf-8') as f:
+    content = f.read()  # 读取全部内容
+    print(content)
+
+# 按行读取
+with open('file.txt', 'r', encoding='utf-8') as f:
+    # 方法1：逐行读取
+    for line in f:
+        print(line.strip())
+
+    # 方法2：读取所有行到列表
+    lines = f.readlines()
+    for line in lines:
+        print(line.strip())
+
+# 按字节读取
+with open('file.txt', 'r', encoding='utf-8') as f:
+    chunk = f.read(100)  # 读取100个字符
+    print(chunk)
+                    </code></pre>
+                </div>
+
+                <div class="tip-box">
+                    <h3>读取技巧</h3>
+                    <ul>
+                        <li>大文件使用逐行读取或分块读取</li>
+                        <li>使用strip()去除行尾换行符</li>
+                        <li>注意文件指针的位置</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 写入文件 -->
+            <section id="write" class="course-section">
+                <h2 class="course-section__title">写入文件</h2>
+
+                <div class="example-box">
+                    <h3>写入方法</h3>
+                    <pre><code class="python">
+# 写入字符串
+with open('output.txt', 'w', encoding='utf-8') as f:
+    f.write('Hello, World!\n')  # 写入单行
+    f.write('这是第二行\n')     # 写入中文
+
+# 写入多行
+lines = ['第一行\n', '第二行\n', '第三行\n']
+with open('output.txt', 'w', encoding='utf-8') as f:
+    f.writelines(lines)
+
+# 追加内容
+with open('output.txt', 'a', encoding='utf-8') as f:
+    f.write('追加的内容\n')
+
+# 格式化写入
+name = "张三"
+age = 25
+with open('info.txt', 'w', encoding='utf-8') as f:
+    f.write(f"姓名：{name}\n年龄：{age}\n")
+                    </code></pre>
+                </div>
+
+                <div class="warning-box">
+                    <h3>写入注意事项</h3>
+                    <ul>
+                        <li>'w'模式会覆盖原文件内容</li>
+                        <li>写入换行符需要手动添加\n</li>
+                        <li>确保写入的内容是字符串类型</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 目录操作 -->
+            <section id="directory" class="course-section">
+                <h2 class="course-section__title">目录操作</h2>
+
+                <div class="example-box">
+                    <h3>基本目录操作</h3>
+                    <pre><code class="python">
+import os
+
+# 获取当前工作目录
+current_dir = os.getcwd()
+print(f"当前目录：{current_dir}")
+
+# 创建目录
+os.mkdir('new_folder')  # 创建单个目录
+os.makedirs('path/to/new/folder')  # 创建多级目录
+
+# 删除目录
+os.rmdir('empty_folder')  # 删除空目录
+
+# 列出目录内容
+files = os.listdir('.')  # 列出当前目录内容
+print(f"目录内容：{files}")
+
+# 判断路径
+print(os.path.exists('file.txt'))  # 检查文件是否存在
+print(os.path.isfile('file.txt'))  # 检查是否是文件
+print(os.path.isdir('folder'))     # 检查是否是目录
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>使用pathlib模块</h3>
+                    <pre><code class="python">
+from pathlib import Path
+
+# 创建Path对象
+path = Path('folder/subfolder/file.txt')
+
+# 创建目录
+path.parent.mkdir(parents=True, exist_ok=True)
+
+# 文件操作
+if not path.exists():
+    path.touch()  # 创建空文件
+
+# 遍历目录
+for file in Path('.').glob('*.txt'):
+    print(f"找到文件：{file}")
+
+# 路径操作
+print(f"父目录：{path.parent}")
+print(f"文件名：{path.name}")
+print(f"扩展名：{path.suffix}")
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 实践练习 -->
+            <section id="practice" class="course-section">
+                <h2 class="course-section__title">实践练习</h2>
+
+                <div class="example-box">
+                    <h3>练习1：文件复制程序</h3>
+                    <pre><code class="python">
+def copy_file(source, destination):
+    try:
+        # 读取源文件
+        with open(source, 'r', encoding='utf-8') as src:
+            content = src.read()
+        
+        # 写入目标文件
+        with open(destination, 'w', encoding='utf-8') as dst:
+            dst.write(content)
+        
+        print(f"文件已从 {source} 复制到 {destination}")
+    except FileNotFoundError:
+        print("源文件不存在！")
+    except Exception as e:
+        print(f"复制过程中出错：{e}")
+
+# 使用示例
+copy_file('source.txt', 'destination.txt')
+                    </code></pre>
+                </div>
+
+                <div class="example-box">
+                    <h3>练习2：日志文件分析</h3>
+                    <pre><code class="python">
+def analyze_log(log_file):
+    error_count = 0
+    warning_count = 0
+    
+    try:
+        with open(log_file, 'r', encoding='utf-8') as f:
+            for line in f:
+                if 'ERROR' in line:
+                    error_count += 1
+                elif 'WARNING' in line:
+                    warning_count += 1
+        
+        print(f"分析结果：")
+        print(f"错误数量：{error_count}")
+        print(f"警告数量：{warning_count}")
+    except FileNotFoundError:
+        print("日志文件不存在！")
+
+# 使用示例
+analyze_log('app.log')
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 返回链接 -->
+            <section class="course-section">
+                <div class="link-box">
+                    <a href="strings.html" class="link-box__item">
+                        <i class="fas fa-arrow-left"></i>
+                        返回字符串教程
+                    </a>
+                    <a href="../../examples/basics/file_operations.html" class="link-box__item">
+                        <i class="fas fa-code"></i>
+                        查看更多文件操作示例
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="https://cdn.bytedance.com/highlight.js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html> 

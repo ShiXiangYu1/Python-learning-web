@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Web编程示例 - Python学习</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/course.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/highlight.js/styles/github.min.css">
+</head>
+<body>
+    <header class="course-header">
+        <h1 class="course-header__title">
+            <i class="fas fa-globe"></i>
+            Python Web编程示例
+        </h1>
+        <p class="course-header__description">
+            本页面提供了Python Web编程的实用示例，包括Flask、FastAPI等框架的使用示例。这些示例将帮助你更好地理解Web开发的概念，快速构建Web应用。
+        </p>
+    </header>
+
+    <main class="course-container">
+        <!-- 导航菜单 -->
+        <nav class="course-nav">
+            <ul class="course-nav__list">
+                <li><a href="#flask" class="course-nav__link">Flask框架</a></li>
+                <li><a href="#fastapi" class="course-nav__link">FastAPI框架</a></li>
+                <li><a href="#templates" class="course-nav__link">模板引擎</a></li>
+                <li><a href="#practical" class="course-nav__link">实际应用</a></li>
+            </ul>
+        </nav>
+
+        <div class="course-content">
+            <!-- Flask框架 -->
+            <section id="flask" class="course-section">
+                <h2 class="course-section__title">Flask框架</h2>
+
+                <div class="example-box">
+                    <h3>简单博客系统</h3>
+                    <pre><code class="python">
+from flask import Flask, request, render_template, redirect, url_for, flash
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
+import markdown
+
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'your-secret-key'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
+db = SQLAlchemy(app)
+
+class Post(db.Model):
+    """博客文章模型"""
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    
+    def to_html(self):
+        """将Markdown内容转换为HTML"""
+        return markdown.markdown(self.content)
+
+@app.route('/')
+def index():
+    """首页：显示所有文章列表"""
+    posts = Post.query.order_by(Post.created_at.desc()).all()
+    return render_template('index.html', posts=posts)
+
+@app.route('/post/<int:post_id>')
+def view_post(post_id):
+    """查看文章详情"""
+    post = Post.query.get_or_404(post_id)
+    return render_template('post.html', post=post)
+
+@app.route('/post/new', methods=['GET', 'POST'])
+def new_post():
+    """创建新文章"""
+    if request.method == 'POST':
+        title = request.form.get('title')
+        content = request.form.get('content')
+        
+        if not title or not content:
+            flash('标题和内容不能为空')
+            return redirect(url_for('new_post'))
+        
+        post = Post(title=title, content=content)
+        db.session.add(post)
+        db.session.commit()
+        
+        flash('文章发布成功！')
+        return redirect(url_for('index'))
+    
+    return render_template('new_post.html')
+
+@app.route('/post/<int:post_id>/edit', methods=['GET', 'POST'])
+def edit_post(post_id):
+    """编辑文章"""
+    post = Post.query.get_or_404(post_id)
+    
+    if request.method == 'POST':
+        title = request.form.get('title')
+        content = request.form.get('content')
+        
+        if not title or not content:
+            flash('标题和内容不能为空')
+            return redirect(url_for('edit_post', post_id=post_id))
+        
+        post.title = title
+        post.content = content
+        db.session.commit()
+        
+        flash('文章更新成功！')
+        return redirect(url_for('view_post', post_id=post_id))
+    
+    return render_template('edit_post.html', post=post)
+
+@app.route('/post/<int:post_id>/delete', methods=['POST'])
+def delete_post(post_id):
+    """删除文章"""
+    post = Post.query.get_or_404(post_id)
+    db.session.delete(post)
+    db.session.commit()
+    
+    flash('文章已删除！')
+    return redirect(url_for('index'))
+
+# HTML模板示例 (templates/base.html)
+"""
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}博客{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav>
+        <a href="{{ url_for('index') }}">首页</a>
+        <a href="{{ url_for('new_post') }}">写文章</a>
+    </nav>
+    
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="flash">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    
+    {% block content %}{% endblock %}
+</body>
+</html>
+"""
+
+# 启动应用
+if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()
+    app.run(debug=True)
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- FastAPI框架 -->
+            <section id="fastapi" class="course-section">
+                <h2 class="course-section__title">FastAPI框架</h2>
+
+                <div class="example-box">
+                    <h3>RESTful API服务</h3>
+                    <pre><code class="python">
+from fastapi import FastAPI, HTTPException, Depends
+from sqlalchemy import create_engine, Column, Integer, String, Float, DateTime
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker, Session
+from pydantic import BaseModel
+from datetime import datetime
+from typing import List, Optional
+
+# 数据库配置
+SQLALCHEMY_DATABASE_URL = "sqlite:///./products.db"
+engine = create_engine(SQLALCHEMY_DATABASE_URL)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Base = declarative_base()
+
+class ProductDB(Base):
+    """产品数据库模型"""
+    __tablename__ = "products"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, index=True)
+    description = Column(String)
+    price = Column(Float)
+    stock = Column(Integer)
+    created_at = Column(DateTime, default=datetime.now)
+
+# 创建数据库表
+Base.metadata.create_all(bind=engine)
+
+# Pydantic模型
+class ProductBase(BaseModel):
+    name: str
+    description: Optional[str] = None
+    price: float
+    stock: int
+
+class ProductCreate(ProductBase):
+    pass
+
+class Product(ProductBase):
+    id: int
+    created_at: datetime
+    
+    class Config:
+        orm_mode = True
+
+# FastAPI应用
+app = FastAPI(title="产品管理API")
+
+# 依赖项
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+@app.post("/products/", response_model=Product)
+def create_product(product: ProductCreate, db: Session = Depends(get_db)):
+    """创建新产品"""
+    db_product = ProductDB(**product.dict())
+    db.add(db_product)
+    db.commit()
+    db.refresh(db_product)
+    return db_product
+
+@app.get("/products/", response_model=List[Product])
+def list_products(
+    skip: int = 0,
+    limit: int = 10,
+    db: Session = Depends(get_db)
+):
+    """获取产品列表"""
+    products = db.query(ProductDB).offset(skip).limit(limit).all()
+    return products
+
+@app.get("/products/{product_id}", response_model=Product)
+def get_product(product_id: int, db: Session = Depends(get_db)):
+    """获取单个产品详情"""
+    product = db.query(ProductDB).filter(ProductDB.id == product_id).first()
+    if product is None:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return product
+
+@app.put("/products/{product_id}", response_model=Product)
+def update_product(
+    product_id: int,
+    product: ProductCreate,
+    db: Session = Depends(get_db)
+):
+    """更新产品信息"""
+    db_product = db.query(ProductDB).filter(ProductDB.id == product_id).first()
+    if db_product is None:
+        raise HTTPException(status_code=404, detail="Product not found")
+    
+    for key, value in product.dict().items():
+        setattr(db_product, key, value)
+    
+    db.commit()
+    db.refresh(db_product)
+    return db_product
+
+@app.delete("/products/{product_id}")
+def delete_product(product_id: int, db: Session = Depends(get_db)):
+    """删除产品"""
+    db_product = db.query(ProductDB).filter(ProductDB.id == product_id).first()
+    if db_product is None:
+        raise HTTPException(status_code=404, detail="Product not found")
+    
+    db.delete(db_product)
+    db.commit()
+    return {"message": "Product deleted"}
+
+# 启动命令：uvicorn main:app --reload
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 模板引擎 -->
+            <section id="templates" class="course-section">
+                <h2 class="course-section__title">模板引擎</h2>
+
+                <div class="example-box">
+                    <h3>Jinja2模板示例</h3>
+                    <pre><code class="html">
+<!-- 基础模板 base.html -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}默认标题{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('index') }}">首页</a></li>
+                {% if current_user.is_authenticated %}
+                    <li><a href="{{ url_for('profile') }}">个人中心</a></li>
+                    <li><a href="{{ url_for('logout') }}">退出</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}">登录</a></li>
+                    <li><a href="{{ url_for('register') }}">注册</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; {{ now.year }} 我的网站. All rights reserved.</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
+
+<!-- 列表页面 list.html -->
+{% extends "base.html" %}
+
+{% block title %}文章列表{% endblock %}
+
+{% block content %}
+<div class="articles">
+    {% for article in articles %}
+    <article class="article-card">
+        <h2>{{ article.title }}</h2>
+        <div class="meta">
+            <span>作者: {{ article.author }}</span>
+            <span>发布于: {{ article.created_at|datetime }}</span>
+        </div>
+        <div class="summary">
+            {{ article.summary|safe }}
+        </div>
+        <div class="tags">
+            {% for tag in article.tags %}
+            <span class="tag">{{ tag }}</span>
+            {% endfor %}
+        </div>
+        <a href="{{ url_for('article.detail', id=article.id) }}" class="read-more">
+            阅读更多
+        </a>
+    </article>
+    {% else %}
+    <p class="no-content">暂无文章</p>
+    {% endfor %}
+    
+    {% if pagination %}
+    <div class="pagination">
+        {% if pagination.has_prev %}
+            <a href="{{ url_for('article.list', page=pagination.prev_num) }}">&laquo; 上一页</a>
+        {% endif %}
+        
+        {% for page in pagination.iter_pages() %}
+            {% if page %}
+                {% if page != pagination.page %}
+                    <a href="{{ url_for('article.list', page=page) }}">{{ page }}</a>
+                {% else %}
+                    <strong>{{ page }}</strong>
+                {% endif %}
+            {% else %}
+                <span>...</span>
+            {% endif %}
+        {% endfor %}
+        
+        {% if pagination.has_next %}
+            <a href="{{ url_for('article.list', page=pagination.next_num) }}">下一页 &raquo;</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+<!-- 表单页面 form.html -->
+{% extends "base.html" %}
+
+{% block title %}编辑文章{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <form method="POST" action="{{ url_for('article.edit', id=article.id) }}" class="article-form">
+        {{ form.csrf_token }}
+        
+        <div class="form-group">
+            {{ form.title.label }}
+            {{ form.title(class="form-control") }}
+            {% if form.title.errors %}
+            <div class="errors">
+                {% for error in form.title.errors %}
+                <span class="error">{{ error }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            {{ form.content.label }}
+            {{ form.content(class="form-control") }}
+            {% if form.content.errors %}
+            <div class="errors">
+                {% for error in form.content.errors %}
+                <span class="error">{{ error }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            {{ form.tags.label }}
+            {{ form.tags(class="form-control") }}
+            <small class="help-text">使用逗号分隔多个标签</small>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">保存</button>
+            <a href="{{ url_for('article.detail', id=article.id) }}" class="btn btn-secondary">
+                取消
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}
+                    </code></pre>
+                </div>
+            </section>
+
+            <!-- 实际应用 -->
+            <section id="practical" class="course-section">
+                <h2 class="course-section__title">实际应用</h2>
+
+                <div class="example-box">
+                    <h3>文件上传服务</h3>
+                    <pre><code class="python">
+from flask import Flask, request, send_file, render_template
+from werkzeug.utils import secure_filename
+import os
+from datetime import datetime
+import hashlib
+
+app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = 'uploads'
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB限制
+
+# 确保上传目录存在
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+
+def allowed_file(filename):
+    """检查文件类型是否允许"""
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'pdf', 'txt', 'doc', 'docx'}
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def get_file_hash(file_stream):
+    """计算文件哈希值"""
+    sha256_hash = hashlib.sha256()
+    for chunk in iter(lambda: file_stream.read(4096), b''):
+        sha256_hash.update(chunk)
+    file_stream.seek(0)
+    return sha256_hash.hexdigest()
+
+@app.route('/')
+def index():
+    """上传页面"""
+    return render_template('upload.html')
+
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    """处理文件上传"""
+    if 'file' not in request.files:
+        return {'error': '没有文件'}, 400
+    
+    file = request.files['file']
+    if file.filename == '':
+        return {'error': '没有选择文件'}, 400
+    
+    if file and allowed_file(file.filename):
+        # 安全的文件名
+        filename = secure_filename(file.filename)
+        
+        # 使用时间戳和哈希值创建唯一文件名
+        file_hash = get_file_hash(file)
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        ext = filename.rsplit('.', 1)[1].lower()
+        new_filename = f"{timestamp}_{file_hash[:8]}.{ext}"
+        
+        # 保存文件
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], new_filename)
+        file.save(file_path)
+        
+        # 返回文件信息
+        return {
+            'message': '文件上传成功',
+            'filename': new_filename,
+            'original_name': filename,
+            'download_url': f'/download/{new_filename}'
+        }
+    
+    return {'error': '不允许的文件类型'}, 400
+
+@app.route('/download/<filename>')
+def download_file(filename):
+    """下载文件"""
+    try:
+        return send_file(
+            os.path.join(app.config['UPLOAD_FOLDER'], filename),
+            as_attachment=True
+        )
+    except FileNotFoundError:
+        return {'error': '文件不存在'}, 404
+
+@app.route('/files')
+def list_files():
+    """列出所有上传的文件"""
+    files = []
+    for filename in os.listdir(app.config['UPLOAD_FOLDER']):
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file_stat = os.stat(file_path)
+        files.append({
+            'name': filename,
+            'size': file_stat.st_size,
+            'created_at': datetime.fromtimestamp(file_stat.st_ctime),
+            'download_url': f'/download/{filename}'
+        })
+    
+    return render_template('files.html', files=files)
+
+# 上传页面模板
+"""
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>文件上传</title>
+    <style>
+        .upload-form {
+            max-width: 500px;
+            margin: 2rem auto;
+            padding: 2rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .file-input {
+            margin: 1rem 0;
+        }
+        .progress {
+            display: none;
+            margin: 1rem 0;
+        }
+        .progress.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="upload-form">
+        <h2>文件上传</h2>
+        <form id="uploadForm">
+            <input type="file" name="file" class="file-input" required>
+            <div class="progress">
+                <progress value="0" max="100"></progress>
+                <span class="progress-text">0%</span>
+            </div>
+            <button type="submit">上传</button>
+        </form>
+    </div>
+    
+    <script>
+        document.getElementById('uploadForm').onsubmit = async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const progress = document.querySelector('.progress');
+            const progressBar = progress.querySelector('progress');
+            const progressText = progress.querySelector('.progress-text');
+            
+            progress.classList.add('active');
+            
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    alert('上传成功！');
+                    window.location.href = '/files';
+                } else {
+                    alert(result.error || '上传失败');
+                }
+            } catch (error) {
+                alert('上传出错：' + error.message);
+            } finally {
+                progress.classList.remove('active');
+            }
+        };
+    </script>
+</body>
+</html>
+"""
+
+if __name__ == '__main__':
+    app.run(debug=True)
+                    </code></pre>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="https://cdn.bytedance.com/highlight.js/lib/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html> 

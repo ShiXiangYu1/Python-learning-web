@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python数据类型 - Python学习网站</title>
+    <link href="http://cdn.bytedance.com/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="css/course.css">
+    <!-- 代码高亮 -->
+    <link href="http://cdn.bytedance.com/highlight.js/11.7.0/styles/atom-one-dark.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav__logo">
+                <a href="../../index.html" class="nav__logo-link">
+                    <svg class="nav__logo-icon" width="40" height="40" viewBox="0 0 40 40">
+                        <path d="M20 0C8.954 0 0 8.954 0 20s8.954 20 20 20 20-8.954 20-20S31.046 0 20 0zm0 36c-8.837 0-16-7.163-16-16S11.163 4 20 4s16 7.163 16 16-7.163 16-16 16z" fill="#306998"/>
+                        <path d="M20 8c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12S26.627 8 20 8zm0 22c-5.514 0-10-4.486-10-10S14.486 10 20 10s10 4.486 10 10-4.486 10-10 10z" fill="#FFD43B"/>
+                    </svg>
+                    <span class="nav__logo-text">Python学习</span>
+                </a>
+            </div>
+            <ul class="nav__menu">
+                <li><a href="../../index.html" class="nav__link">首页</a></li>
+                <li><a href="index.html" class="nav__link nav__link--active">基础课程</a></li>
+                <li><a href="../intermediate/index.html" class="nav__link">进阶课程</a></li>
+                <li><a href="../advanced/index.html" class="nav__link">高级课程</a></li>
+                <li><a href="../../examples/index.html" class="nav__link">示例代码</a></li>
+                <li><a href="../../exercises/index.html" class="nav__link">练习题</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main">
+        <div class="course-container">
+            <aside class="course-sidebar">
+                <nav class="course-nav">
+                    <h3 class="course-nav__title">课程目录</h3>
+                    <ul class="course-nav__list">
+                        <li class="course-nav__item">
+                            <a href="environment.html" class="course-nav__link">
+                                <i class="fas fa-laptop-code course-nav__icon"></i>
+                                Python环境搭建
+                            </a>
+                        </li>
+                        <li class="course-nav__item">
+                            <a href="syntax.html" class="course-nav__link">
+                                <i class="fas fa-code course-nav__icon"></i>
+                                基本语法
+                            </a>
+                        </li>
+                        <li class="course-nav__item">
+                            <a href="data-types.html" class="course-nav__link course-nav__link--active">
+                                <i class="fas fa-database course-nav__icon"></i>
+                                数据类型
+                            </a>
+                        </li>
+                        <li class="course-nav__item">
+                            <a href="control-flow.html" class="course-nav__link">
+                                <i class="fas fa-random course-nav__icon"></i>
+                                控制流程
+                            </a>
+                        </li>
+                        <li class="course-nav__item">
+                            <a href="functions.html" class="course-nav__link">
+                                <i class="fas fa-cube course-nav__icon"></i>
+                                函数基础
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <section class="course-content">
+                <div class="course-header">
+                    <h1 class="course-header__title">Python数据类型</h1>
+                    <p class="course-header__description">
+                        在本章节中，您将学习Python的各种数据类型，包括数字、字符串、列表、元组、字典和集合。
+                        了解这些数据类型的特点和使用方法，是编写Python程序的重要基础。
+                    </p>
+                </div>
+
+                <article class="lesson-content">
+                    <section class="lesson-section">
+                        <h2 class="lesson-section__title">
+                            <i class="fas fa-hashtag lesson-section__icon"></i>
+                            数字类型
+                        </h2>
+                        <div class="lesson-section__content">
+                            <div class="info-box">
+                                <h3 class="info-box__title">
+                                    <i class="fas fa-info-circle"></i>
+                                    Python中的数字类型
+                                </h3>
+                                <p>Python支持整数（int）、浮点数（float）和复数（complex）三种数字类型。</p>
+                            </div>
+
+                            <pre><code class="language-python"># 整数（int）
+age = 25
+population = 1_000_000  # 使用下划线分隔数字，提高可读性
+
+# 浮点数（float）
+height = 1.75
+pi = 3.14159
+
+# 复数（complex）
+c = 3 + 4j
+print(c.real)    # 实部：3.0
+print(c.imag)    # 虚部：4.0
+
+# 类型转换
+x = int(3.9)     # 结果：3
+y = float(5)     # 结果：5.0
+z = complex(2)   # 结果：2+0j</code></pre>
+                        </div>
+                    </section>
+
+                    <section class="lesson-section">
+                        <h2 class="lesson-section__title">
+                            <i class="fas fa-font lesson-section__icon"></i>
+                            字符串
+                        </h2>
+                        <div class="lesson-section__content">
+                            <p>字符串是Python中最常用的数据类型之一，用于处理文本数据：</p>
+
+                            <pre><code class="language-python"># 字符串创建
+name = 'Python'
+message = "Hello, World!"
+paragraph = '''这是一个
+多行字符串
+示例'''
+
+# 字符串操作
+print(len(name))         # 长度：6
+print(name[0])          # 索引：'P'
+print(name[-1])         # 负索引：'n'
+print(name[0:2])        # 切片：'Py'
+
+# 字符串方法
+text = "  Python编程  "
+print(text.strip())     # 去除空白：'Python编程'
+print(text.upper())     # 转大写：'  PYTHON编程  '
+print(text.lower())     # 转小写：'  python编程  '
+print(text.replace('Python', 'Java'))  # 替换：'  Java编程  '
+
+# 字符串格式化
+name = "小明"
+age = 18
+# f-string（推荐）
+print(f"我叫{name}，今年{age}岁")
+# format方法
+print("我叫{}，今年{}岁".format(name, age))
+# %运算符
+print("我叫%s，今年%d岁" % (name, age))</code></pre>
+
+                            <div class="warning-box">
+                                <p><strong>注意：</strong>字符串是不可变类型，一旦创建就不能修改。所有的字符串操作都会返回一个新的字符串。</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="lesson-section">
+                        <h2 class="lesson-section__title">
+                            <i class="fas fa-list lesson-section__icon"></i>
+                            列表和元组
+                        </h2>
+                        <div class="lesson-section__content">
+                            <div class="info-box">
+                                <h3 class="info-box__title">
+                                    <i class="fas fa-info-circle"></i>
+                                    列表和元组的区别
+                                </h3>
+                                <p>列表是可变序列，可以修改其内容；元组是不可变序列，创建后不能修改。</p>
+                            </div>
+
+                            <h4>列表（List）</h4>
+                            <pre><code class="language-python"># 创建列表
+fruits = ['苹果', '香蕉', '橙子']
+numbers = [1, 2, 3, 4, 5]
+mixed = [1, '你好', 3.14, True]
+
+# 列表操作
+fruits.append('梨')     # 添加元素
+fruits.insert(1, '草莓') # 插入元素
+fruits.remove('香蕉')    # 删除元素
+fruits.pop()           # 弹出最后一个元素
+fruits.sort()          # 排序
+fruits.reverse()       # 反转
+
+# 列表切片
+print(numbers[1:4])    # [2, 3, 4]
+print(numbers[::-1])   # 反转：[5, 4, 3, 2, 1]
+
+# 列表推导式
+squares = [x**2 for x in range(5)]  # [0, 1, 4, 9, 16]</code></pre>
+
+                            <h4>元组（Tuple）</h4>
+                            <pre><code class="language-python"># 创建元组
+point = (3, 4)
+coordinates = (1,)     # 单元素元组需要加逗号
+rgb = (255, 128, 0)
+
+# 元组操作
+x, y = point          # 元组解包
+print(len(rgb))       # 长度：3
+print(rgb.count(255)) # 计数：1
+print(rgb.index(128)) # 索引：1
+
+# 元组的优势
+# 1. 数据不可变，更安全
+# 2. 性能更好
+# 3. 可以作为字典的键</code></pre>
+                        </div>
+                    </section>
+
+                    <section class="lesson-section">
+                        <h2 class="lesson-section__title">
+                            <i class="fas fa-book lesson-section__icon"></i>
+                            字典和集合
+                        </h2>
+                        <div class="lesson-section__content">
+                            <h4>字典（Dictionary）</h4>
+                            <pre><code class="language-python"># 创建字典
+student = {
+    'name': '小明',
+    'age': 18,
+    'scores': {'语文': 90, '数学': 95}
+}
+
+# 字典操作
+student['class'] = '一年级'  # 添加键值对
+del student['age']         # 删除键值对
+print(student.get('name')) # 获取值
+print(student.keys())      # 所有键
+print(student.values())    # 所有值
+print(student.items())     # 所有键值对
+
+# 字典推导式
+squares = {x: x**2 for x in range(5)}</code></pre>
+
+                            <h4>集合（Set）</h4>
+                            <pre><code class="language-python"># 创建集合
+fruits = {'苹果', '香蕉', '橙子'}
+numbers = set([1, 2, 2, 3, 3, 4])  # 自动去重
+
+# 集合操作
+fruits.add('梨')        # 添加元素
+fruits.remove('香蕉')    # 删除元素
+fruits.discard('梨')    # 安全删除（元素不存在不会报错）
+
+# 集合运算
+a = {1, 2, 3}
+b = {3, 4, 5}
+print(a | b)  # 并集：{1, 2, 3, 4, 5}
+print(a & b)  # 交集：{3}
+print(a - b)  # 差集：{1, 2}
+print(a ^ b)  # 对称差：{1, 2, 4, 5}</code></pre>
+                        </div>
+                    </section>
+
+                    <section class="lesson-section">
+                        <h2 class="lesson-section__title">
+                            <i class="fas fa-lightbulb lesson-section__icon"></i>
+                            练习与实践
+                        </h2>
+                        <div class="lesson-section__content">
+                            <div class="exercise-box">
+                                <h4>练习1：数据类型转换</h4>
+                                <p>创建一个程序，尝试以下转换：</p>
+                                <ol>
+                                    <li>将字符串转换为整数和浮点数</li>
+                                    <li>将列表转换为元组和集合</li>
+                                    <li>将字典的键和值分别转换为列表</li>
+                                </ol>
+                            </div>
+
+                            <div class="exercise-box">
+                                <h4>练习2：数据结构应用</h4>
+                                <p>创建一个学生信息管理系统，要求：</p>
+                                <ol>
+                                    <li>使用字典存储学生信息（姓名、年龄、成绩等）</li>
+                                    <li>使用列表存储多个学生的信息</li>
+                                    <li>实现添加、查询、修改学生信息的功能</li>
+                                </ol>
+                                <div class="success-box">
+                                    <h4>参考代码：</h4>
+                                    <pre><code class="language-python"># 学生信息管理系统
+students = []
+
+def add_student(name, age, scores):
+    student = {
+        'name': name,
+        'age': age,
+        'scores': scores
+    }
+    students.append(student)
+
+def find_student(name):
+    return next((s for s in students if s['name'] == name), None)
+
+# 使用示例
+add_student('小明', 18, {'语文': 90, '数学': 95})
+add_student('小红', 17, {'语文': 88, '数学': 92})
+print(find_student('小明'))</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <nav class="lesson-navigation">
+                        <a href="syntax.html" class="lesson-navigation__link lesson-navigation__link--prev">
+                            <i class="fas fa-arrow-left"></i>
+                            上一章：基本语法
+                        </a>
+                        <a href="control-flow.html" class="lesson-navigation__link lesson-navigation__link--next">
+                            下一章：控制流程
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </nav>
+                </article>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer__content">
+            <div class="footer__section">
+                <h4 class="footer__title">关于我们</h4>
+                <p class="footer__text">致力于为初学者提供优质的Python编程学习资源</p>
+            </div>
+            <div class="footer__section">
+                <h4 class="footer__title">快速链接</h4>
+                <ul class="footer__links">
+                    <li><a href="../../index.html">返回首页</a></li>
+                    <li><a href="../../examples/index.html">示例代码</a></li>
+                    <li><a href="../../exercises/index.html">练习题</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            <p>&copy; 2024 Python学习网站. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../../assets/js/main.js"></script>
+    <script src="js/course.js"></script>
+    <!-- 代码高亮 -->
+    <script src="http://cdn.bytedance.com/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html> 

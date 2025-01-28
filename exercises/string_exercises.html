@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python字符串练习题 - Python学习</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/course.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.bytedance.com/highlight.js/styles/github.min.css">
+</head>
+<body>
+    <header class="course-header">
+        <h1 class="course-header__title">
+            <i class="fas fa-tasks"></i>
+            Python字符串练习题
+        </h1>
+        <p class="course-header__description">
+            通过这些精心设计的练习题，提升你的Python字符串处理能力，从基础到实际应用，循序渐进地掌握字符串操作技巧。
+        </p>
+    </header>
+
+    <main class="course-container">
+        <!-- 练习导航 -->
+        <nav class="course-nav">
+            <ul class="course-nav__list">
+                <li><a href="#basic" class="course-nav__link">基础练习</a></li>
+                <li><a href="#intermediate" class="course-nav__link">进阶练习</a></li>
+                <li><a href="#practical" class="course-nav__link">实际应用</a></li>
+                <li><a href="#project" class="course-nav__link">项目练习</a></li>
+            </ul>
+        </nav>
+
+        <div class="course-content">
+            <!-- 基础练习 -->
+            <section id="basic" class="course-section">
+                <h2 class="course-section__title">基础练习</h2>
+                <div class="exercise-box">
+                    <h3 class="exercise-box__title">1. 字符串反转</h3>
+                    <p>编写一个函数，将输入的字符串反转。要求同时处理中英文字符。</p>
+                    <details>
+                        <summary>查看提示和解答</summary>
+                        <div class="code-block">
+                            <pre><code class="python">
+def reverse_string(text):
+    return text[::-1]
+
+# 测试
+print(reverse_string("Hello世界"))  # "界世olleH"
+                            </code></pre>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="exercise-box">
+                    <h3 class="exercise-box__title">2. 字符统计</h3>
+                    <p>编写一个函数，统计字符串中的字母、数字和其他字符的数量。</p>
+                    <details>
+                        <summary>查看提示和解答</summary>
+                        <div class="code-block">
+                            <pre><code class="python">
+def count_char_types(text):
+    counts = {'letters': 0, 'digits': 0, 'others': 0}
+    for char in text:
+        if char.isalpha():
+            counts['letters'] += 1
+        elif char.isdigit():
+            counts['digits'] += 1
+        else:
+            counts['others'] += 1
+    return counts
+
+# 测试
+print(count_char_types("Hello123!"))  # {'letters': 5, 'digits': 3, 'others': 1}
+                            </code></pre>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="exercise-box">
+                    <h3 class="exercise-box__title">3. 首字母大写</h3>
+                    <p>编写一个函数，将句子中每个单词的首字母转换为大写。</p>
+                    <details>
+                        <summary>查看提示和解答</summary>
+                        <div class="code-block">
+                            <pre><code class="python">
+def capitalize_words(sentence):
+    return ' '.join(word.capitalize() for word in sentence.split())
+
+# 测试
+print(capitalize_words("hello world python"))  # "Hello World Python"
+                            </code></pre>
+                        </div>
+                    </details>
+                </div>
+            </section>
+
+            <!-- 进阶练习 -->
+            <section id="intermediate" class="course-section">
+                <h2 class="course-section__title">进阶练习</h2>
+                <div class="exercise-box">
+                    <h3 class="exercise-box__title">1. 字符串压缩</h3>
+                    <p>编写一个函数，实现基本的字符串压缩功能。例如："aaabbc" → "a3b2c1"</p>
+                    <details>
+                        <summary>查看提示和解答</summary>
+                        <div class="code-block">
+                            <pre><code class="python">
+def compress_string(text):
+    if not text:
+        return ""
+    
+    result = []
+    count = 1
+    current = text[0]
+    
+    for char in text[1:]:
+        if char == current:
+            count += 1
+        else:
+            result.append(f"{current}{count}")
+            current = char
+            count = 1
+    
+    result.append(f"{current}{count}")
+    compressed = "".join(result)
+    
+    return compressed if len(compressed) < len(text) else text
+
+# 测试
+print(compress_string("aaabbc"))  # "a3b2c1"
+print(compress_string("abc"))     # "abc"
+                            </code></pre>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="exercise-box">
+                    <h3 class="exercise-box__title">2. 验证括号匹配</h3>
+                    <p>编写一个函数，检查字符串中的括号是否正确匹配。支持 (), [], {} 三种括号。</p>
+                    <details>
+                        <summary>查看提示和解答</summary>
+                        <div class="code-block">
+                            <pre><code class="python">
+def check_brackets(text):
+    stack = []
+    brackets = {')': '(', ']': '[', '}': '{'}
+    
+    for char in text:
+        if char in '([{':
+            stack.append(char)
+        elif char in ')]}':
+            if not stack or stack.pop() != brackets[char]:
+                return False
+    
+    return len(stack) == 0
+
+# 测试
+print(check_brackets("(a[b{c}]d)"))  # True
+print(check_brackets("([)]"))        # False
+                            </code></pre>
+                        </div>
+                    </details>
+                </div>
+            </section>
+
+            <!-- 实际应用 -->
+            <section id="practical" class="course-section">
+                <h2 class="course-section__title">实际应用</h2>
+                <div class="exercise-box">
+                    <h3 class="exercise-box__title">1. 电子邮件验证</h3>
+                    <p>编写一个函数，验证电子邮件地址是否合法。</p>
+                    <details>
+                        <summary>查看提示和解答</summary>
+                        <div class="code-block">
+                            <pre><code class="python">
+import re
+
+def validate_email(email):
+    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    return bool(re.match(pattern, email))
+
+# 测试
+print(validate_email("user@example.com"))     # True
+print(validate_email("invalid.email@com"))    # False
+                            </code></pre>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="exercise-box">
+                    <h3 class="exercise-box__title">2. 日志解析</h3>
+                    <p>编写一个函数，解析日志文件中的时间戳和消息。</p>
+                    <details>
+                        <summary>查看提示和解答</summary>
+                        <div class="code-block">
+                            <pre><code class="python">
+def parse_log_line(line):
+    try:
+        # 假设日志格式：[2024-01-01 12:00:00] Message
+        timestamp = line[1:20]
+        message = line[22:].strip()
+        return {
+            'timestamp': timestamp,
+            'message': message
+        }
+    except:
+        return None
+
+# 测试
+log_line = "[2024-01-01 12:00:00] Server started"
+print(parse_log_line(log_line))
+                            </code></pre>
+                        </div>
+                    </details>
+                </div>
+            </section>
+
+            <!-- 项目练习 -->
+            <section id="project" class="course-section">
+                <h2 class="course-section__title">项目练习</h2>
+                <div class="exercise-box">
+                    <h3 class="exercise-box__title">1. 简单文本编辑器</h3>
+                    <p>实现一个简单的文本编辑器，支持以下功能：</p>
+                    <ul>
+                        <li>插入文本</li>
+                        <li>删除文本</li>
+                        <li>查找和替换</li>
+                        <li>撤销操作</li>
+                    </ul>
+                    <details>
+                        <summary>查看框架代码</summary>
+                        <div class="code-block">
+                            <pre><code class="python">
+class TextEditor:
+    def __init__(self):
+        self.content = ""
+        self.history = []
+    
+    def insert(self, pos, text):
+        self.history.append(self.content)
+        self.content = self.content[:pos] + text + self.content[pos:]
+    
+    def delete(self, start, end):
+        self.history.append(self.content)
+        self.content = self.content[:start] + self.content[end:]
+    
+    def find_replace(self, old, new):
+        self.history.append(self.content)
+        self.content = self.content.replace(old, new)
+    
+    def undo(self):
+        if self.history:
+            self.content = self.history.pop()
+
+# 使用示例
+editor = TextEditor()
+editor.insert(0, "Hello World")
+editor.insert(5, " Beautiful")
+print(editor.content)  # "Hello Beautiful World"
+editor.undo()
+print(editor.content)  # "Hello World"
+                            </code></pre>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="exercise-box">
+                    <h3 class="exercise-box__title">2. Markdown解析器</h3>
+                    <p>实现一个简单的Markdown解析器，支持以下功能：</p>
+                    <ul>
+                        <li>标题（# ## ###）</li>
+                        <li>粗体（**text**）</li>
+                        <li>斜体（*text*）</li>
+                        <li>链接（[text](url)）</li>
+                    </ul>
+                    <details>
+                        <summary>查看框架代码</summary>
+                        <div class="code-block">
+                            <pre><code class="python">
+class MarkdownParser:
+    def parse_heading(self, line):
+        level = 0
+        while line.startswith('#'):
+            level += 1
+            line = line[1:]
+        if level > 0:
+            return f"<h{level}>{line.strip()}</h{level}>"
+        return line
+
+    def parse_bold(self, text):
+        import re
+        return re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', text)
+
+    def parse_italic(self, text):
+        import re
+        return re.sub(r'\*(.*?)\*', r'<em>\1</em>', text)
+
+    def parse_link(self, text):
+        import re
+        return re.sub(r'\[(.*?)\]\((.*?)\)', r'<a href="\2">\1</a>', text)
+
+    def parse(self, markdown):
+        lines = markdown.split('\n')
+        html = []
+        for line in lines:
+            line = self.parse_heading(line)
+            line = self.parse_bold(line)
+            line = self.parse_italic(line)
+            line = self.parse_link(line)
+            html.append(line)
+        return '\n'.join(html)
+
+# 使用示例
+parser = MarkdownParser()
+markdown = """# 标题
+这是**粗体**和*斜体*
+这是一个[链接](https://example.com)"""
+print(parser.parse(markdown))
+                            </code></pre>
+                        </div>
+                    </details>
+                </div>
+            </section>
+
+            <!-- 返回链接 -->
+            <section class="course-section">
+                <div class="link-box">
+                    <a href="../courses/basic/strings.html" class="link-box__item">
+                        <i class="fas fa-book"></i>返回字符串教程
+                    </a>
+                    <a href="../examples/basics/string_operations.html" class="link-box__item">
+                        <i class="fas fa-code"></i>查看字符串示例
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="https://cdn.bytedance.com/highlight.js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html> 
