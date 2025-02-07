@@ -372,4 +372,112 @@ body {
 .feature-card,
 .course-card {
     animation: fadeIn 0.6s ease-out forwards;
+}
+
+/* 最新教程模块样式 */
+.latest-tutorials {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--spacing-xl) var(--spacing-md);
+}
+
+.latest-tutorials__title {
+    text-align: center;
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--spacing-xl);
+    color: var(--color-primary);
+}
+
+.latest-tutorials__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.tutorial-card {
+    background: var(--color-background);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.tutorial-card:hover {
+    transform: translateY(-5px);
+}
+
+.tutorial-card__header {
+    padding: var(--spacing-lg);
+    color: white;
+    text-align: center;
+}
+
+.tutorial-card__header--environment {
+    background: linear-gradient(135deg, #4CAF50, #2E7D32);
+}
+
+.tutorial-card__header--data {
+    background: linear-gradient(135deg, #2196F3, #1565C0);
+}
+
+.tutorial-card__header--control {
+    background: linear-gradient(135deg, #9C27B0, #6A1B9A);
+}
+
+.tutorial-card__header--functions {
+    background: linear-gradient(135deg, #FF9800, #EF6C00);
+}
+
+.tutorial-card__icon {
+    font-size: 2rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+.tutorial-card__content {
+    padding: var(--spacing-lg);
+}
+
+.tutorial-card__content p {
+    color: var(--color-text-light);
+    margin-bottom: var(--spacing-md);
+}
+
+.tutorial-card__topics {
+    list-style: none;
+    margin-bottom: var(--spacing-lg);
+}
+
+.tutorial-card__topics li {
+    padding: var(--spacing-xs) 0;
+    padding-left: var(--spacing-md);
+    position: relative;
+}
+
+.tutorial-card__topics li::before {
+    content: "•";
+    color: var(--color-primary);
+    position: absolute;
+    left: 0;
+}
+
+.tutorial-card__link {
+    display: inline-flex;
+    align-items: center;
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.tutorial-card__link i {
+    margin-left: var(--spacing-xs);
+    transition: transform 0.3s ease;
+}
+
+.tutorial-card__link:hover {
+    color: #1a4971;
+}
+
+.tutorial-card__link:hover i {
+    transform: translateX(4px);
 } 
